@@ -8,6 +8,7 @@
         :fn
         ;; :for
         ;; :iterate ;; conflicts with for
+        :local-time
         :modf
         :parse-float
         :cl-ansi-text

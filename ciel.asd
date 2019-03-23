@@ -23,6 +23,7 @@
                :fset
                ;; :generic-cl ;; on newer quicklisp
                ;; :listopia ;; not until reddit's review is fixed.
+               :local-time
                :log4cl
                :modf
                :parse-float
