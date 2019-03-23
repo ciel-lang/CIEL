@@ -10,7 +10,8 @@
         ;; :iterate ;; conflicts with for
         :modf
         :parse-float
-        :cl-ansi-text))
+        :cl-ansi-text
+        :trivia))
 
 ;; conflicts:
 ;; for::returning and sxql::returning

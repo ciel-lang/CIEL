@@ -29,6 +29,7 @@
                :cl-ppcre
                :pythonic-string-reader
                :str
+               :trivia  ;; pattern matching
                ;; :trivial-monitored-thread ;; newer quicklisp
                :unix-opts
 
