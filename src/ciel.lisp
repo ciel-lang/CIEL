@@ -19,6 +19,11 @@
 ;; sxql::returning and for::returning
 ;; dissect:object and for-iterator:object
 
+
+(defpackage ciel-user
+  (:use :cl
+        :ciel))
+
 (defpackage generic-ciel
   (:use :generic-cl
         :ciel))
