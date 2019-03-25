@@ -19,6 +19,10 @@
 ;; sxql::returning and for::returning
 ;; dissect:object and for-iterator:object
 
+(defpackage generic-ciel
+  (:use :generic-cl
+        :ciel))
+
 (in-package :ciel)
 ;; enable ^(* 2 _) syntax.
 (cl-punch:enable-punch-syntax)

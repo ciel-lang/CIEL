@@ -21,7 +21,7 @@
                :dexador
                :dissect
                :fset
-               ;; :generic-cl ;; on newer quicklisp
+               :generic-cl
                ;; :listopia ;; not until reddit's review is fixed.
                :local-time
                :log4cl
