@@ -14,6 +14,14 @@
         :cl-ansi-text
         :trivia
         :trivial-arguments
+        :trivial-types ;; conflicts: alexandria:
+        )
+  (:shadowing-import-from :trivial-types
+                           ;; These are also defined in alexandria.
+                          :string-designator
+                          :proper-list
+                          :proper-list-p
+                          ))
 
 ;; conflicts:
 ;; iterate and for
