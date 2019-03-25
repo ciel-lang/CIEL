@@ -7,8 +7,7 @@
         :cl-ppcre
         :defclass-std
         :fn
-        ;; :for
-        ;; :iterate ;; conflicts with for
+        :for
         :local-time
         :modf
         :parse-float
@@ -16,8 +15,9 @@
         :trivia))
 
 ;; conflicts:
-;; for::returning and sxql::returning
-;; for::  and iterate
+;; iterate and for
+;; sxql::returning and for::returning
+;; dissect:object and for-iterator:object
 
 (in-package :ciel)
 ;; enable ^(* 2 _) syntax.
