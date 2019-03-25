@@ -29,5 +29,10 @@
         :ciel))
 
 (in-package :ciel)
-;; enable ^(* 2 _) syntax.
+
+;; Enable ^(* 2 _) syntax.
 (cl-punch:enable-punch-syntax)
+
+;; Enable triple quotes for the functions docstring.
+;; (in-readtable pythonic-string-reader:pythonic-string-syntax)
+(pythonic-string-reader:enable-pythonic-string-syntax)
