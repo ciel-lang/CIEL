@@ -12,7 +12,8 @@
         :modf
         :parse-float
         :cl-ansi-text
-        :trivia))
+        :trivia
+        :trivial-arguments
 
 ;; conflicts:
 ;; iterate and for
