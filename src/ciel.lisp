@@ -5,6 +5,7 @@
         :arrow-macros
         :cl-csv
         :cl-ppcre
+        :defclass-std
         :fn
         ;; :for
         ;; :iterate ;; conflicts with for
