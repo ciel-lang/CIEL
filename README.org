@@ -1,0 +1,48 @@
+
+Packages:
+- =ciel=
+- =ciel-user=: commodity.
+- =generic-ciel=: uses [[https://github.com/alex-gutev/generic-cl/][generic-cl]] instead of =cl=.
+
+* What is this ?
+
+
+* generic-cl
+
+TODO: contribute a defmethod example.
+
+#+BEGIN_SRC emacs-lisp
+;; with a struct or class "point":
+(defmethod equalp ((p1 point) (p2 point))
+   (…))
+#+END_SRC
+
+* Libraries
+** cl-annot: Python-like annotations
+
+ https://github.com/m2ym/cl-annot
+
+ Without the slime helper, can't use it in the REPL ??
+
+ #+BEGIN_QUOTE
+ If you  use Emacs,  it is  recommended to  install misc/slime-annot.el
+ which  contains   some  features   of  annotations.    After  locating
+ misc/slime-annot.el into your loadpath,  write the following code into
+ your .emacs.
+ #+END_QUOTE
+
+ : (require 'slime-annot)
+
+** trivial-arguments
+
+ https://github.com/Shinmera/trivial-arguments
+
+ #+BEGIN_SRC emacs-lisp
+ (defun foo (a b c &optional d) nil)
+ (arglist #'foo)
+ ;; (a b c &optional d)
+ #+END_SRC
+
+* Rules
+
+- don't install libraries that need a Slime helper to work in the REPL (cl-annot).
