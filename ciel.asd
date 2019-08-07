@@ -22,7 +22,7 @@
                :dissect
                :fset
                :generic-cl
-               ;; :listopia ;; not until reddit's review is fixed.
+               :listopia  ;; list manipulation library, inspired by Haskell.
                :local-time
                :log4cl
                :modf
