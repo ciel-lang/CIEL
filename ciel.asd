@@ -29,6 +29,7 @@
                :parse-float
                :cl-ppcre
                :pythonic-string-reader
+               :quri
                :str
                :trivia  ;; pattern matching
                :trivial-arguments

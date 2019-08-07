@@ -12,6 +12,7 @@
         :modf
         :parse-float
         :cl-ansi-text
+        :quri
         :trivia
         :trivial-arguments
         :trivial-types ;; conflicts: alexandria:
