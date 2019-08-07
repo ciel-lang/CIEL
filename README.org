@@ -32,7 +32,63 @@ TODO: contribute a defmethod example.
  #+END_QUOTE
 
  : (require 'slime-annot)
+** Parsing numbers, floats, decimals
+*** cl-decimals: parse and format decimal numbers
 
+ https://github.com/tlikonen/cl-decimals
+
+ The  main  interface  are  the  functions  =parse-decimal-number=  and
+ =format-decimal-number=. The former is for parsing strings for decimal
+ numbers and the latter for pretty-printing them as strings.
+
+ Reading:
+
+ #+BEGIN_SRC lisp
+ DECIMALS> (parse-decimal-number "0.24")
+ 6/25
+
+
+ DECIMALS> (parse-decimal-number "−12,345"
+                                 :decimal-separator #\,
+                                 :negative-sign #\−)
+ -2469/200
+ #+end_src
+
+ Parsing:
+
+ #+BEGIN_SRC lisp
+ DECIMALS> (format-decimal-number -100/6 :round-magnitude -3)
+ "-16.667"
+ ("-" "16" "." "667")
+
+ DECIMALS> (loop for e from -5 upto 5
+                 do (print (format-decimal-number
+                            (expt 10 e) :round-magnitude -5
+                            :decimal-separator ","
+                            :integer-minimum-width 7
+                            :integer-group-separator " "
+                            :fractional-minimum-width 7
+                            :fractional-group-separator " ")))
+
+ "      0,000 01"
+ "      0,000 1 "
+ "      0,001   "
+ "      0,01    "
+ "      0,1     "
+ "      1       "
+ "     10       "
+ "    100       "
+ "  1 000       "
+ " 10 000       "
+ "100 000       "
+ NIL
+ #+end_src
+
+*** parse-number
+https://github.com/sharplispers/parse-number
+
+*** parse-float
+https://github.com/soemraws/parse-float
 ** trivial-arguments
 
  https://github.com/Shinmera/trivial-arguments

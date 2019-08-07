@@ -5,6 +5,7 @@
         :arrow-macros
         :cl-csv
         :cl-ppcre
+        :decimals
         :defclass-std
         :fn
         :for

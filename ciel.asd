@@ -17,6 +17,7 @@
                :cl-interpol
                :cl-json
                :cl-yaclyaml            ;; only loader, not writer.
+               :decimals
                :defclass-std
                :dexador
                :dissect
