@@ -23,6 +23,7 @@
                :fset
                :generic-cl
                :listopia  ;; list manipulation library, inspired by Haskell.
+               :hunchentoot
                :local-time
                :log4cl
                :modf
