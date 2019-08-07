@@ -23,15 +23,45 @@ TODO: contribute a defmethod example.
 
 https://github.com/smithzvk/pythonic-string-reader
 
-We can use triple quotes for docstrings, and single quotes within it.
+We can use triple quotes for docstrings, and double quotes within them.
 
 #+BEGIN_SRC lisp
 (defun foo ()
   """foo "bar"."""
   t)
 #+end_src
+*** Lambda shortcuts
 
-*** cl-annot: Python-like annotations
+https://github.com/windymelt/cl-punch/ - Scala-like anonymous lambda literal.
+
+#+BEGIN_SRC lisp
+;; ^() is converted into (lambda ...) .
+;; Each underscore is converted into a lambda argument.
+
+(mapcar ^(* 2 _) '(1 2 3 4 5))
+;; => '(2 4 6 8 10)
+
+;; One underscore corresponds one argument.
+
+(^(* _ _) 2 3)
+;; => 6
+
+;; <_ reuses last argument.
+
+(mapcar ^(if (oddp _) (* 2 <_) <_) '(1 2 3 4 5))
+;; => '(2 2 6 4 10)
+
+;; _! corresponds one argument but it is brought to top of the argument list.
+;; It can be useful when you want to change argument order.
+
+(^(cons _ _!) :a :b)
+;; => (:b . :a)
+
+(^(list _! _! _!) 1 2 3)
+;; => '(3 2 1)
+#+end_src
+
+*** [TODO] cl-annot: Python-like annotations
 
   https://github.com/m2ym/cl-annot
 
