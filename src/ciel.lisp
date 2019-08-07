@@ -11,6 +11,7 @@
         :local-time
         :modf
         :parse-float
+        :parse-number
         :cl-ansi-text
         :quri
         :trivia

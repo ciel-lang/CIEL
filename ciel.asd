@@ -27,6 +27,7 @@
                :log4cl
                :modf
                :parse-float
+               :parse-number
                :cl-ppcre
                :pythonic-string-reader
                :quri
