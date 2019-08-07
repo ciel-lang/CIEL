@@ -18,20 +18,33 @@ TODO: contribute a defmethod example.
 #+END_SRC
 
 * Libraries
-** cl-annot: Python-like annotations
+** Syntax extensions
+*** Pythonic triple quotes docstring
 
- https://github.com/m2ym/cl-annot
+https://github.com/smithzvk/pythonic-string-reader
 
- Without the slime helper, can't use it in the REPL ??
+We can use triple quotes for docstrings, and single quotes within it.
 
- #+BEGIN_QUOTE
- If you  use Emacs,  it is  recommended to  install misc/slime-annot.el
- which  contains   some  features   of  annotations.    After  locating
- misc/slime-annot.el into your loadpath,  write the following code into
- your .emacs.
- #+END_QUOTE
+#+BEGIN_SRC lisp
+(defun foo ()
+  """foo "bar"."""
+  t)
+#+end_src
 
- : (require 'slime-annot)
+*** cl-annot: Python-like annotations
+
+  https://github.com/m2ym/cl-annot
+
+  Without the slime helper, can't use it in the REPL ??
+
+  #+BEGIN_QUOTE
+  If you  use Emacs,  it is  recommended to  install misc/slime-annot.el
+  which  contains   some  features   of  annotations.    After  locating
+  misc/slime-annot.el into your loadpath,  write the following code into
+  your .emacs.
+  #+END_QUOTE
+
+  : (require 'slime-annot)
 ** Parsing numbers, floats, decimals
 *** cl-decimals: parse and format decimal numbers
 
