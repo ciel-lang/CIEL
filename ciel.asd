@@ -9,7 +9,14 @@
   :depends-on (
                :alexandria
                :arrow-macros
+
+               ;; threads
                :bordeaux-threads
+               :trivial-monitored-thread
+               :moira
+               :lparallel
+               :cl-cron
+
                :closer-mop
                :cl-annot
                :cl-ansi-text
