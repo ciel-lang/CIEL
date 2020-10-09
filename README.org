@@ -72,7 +72,7 @@ Mito and SxQL
 
 ** Pattern matching
 
-Use Trivia.
+Use Trivia, also available with the =match= local nickname.
 
 ** Numbers
 *** Parsing numbers, floats, decimals
