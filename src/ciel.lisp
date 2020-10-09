@@ -1,49 +1,77 @@
 (in-package :cl-user)
 (defpackage ciel
-  (:use :cl
-        :alexandria
-        :arrow-macros
-        :cl-csv
-        :cl-ppcre
-        :decimals
-        :defclass-std
-        :fn
-        :for
-        :local-time
-        :modf
-        :parse-float
-        :parse-number
-        :cl-ansi-text
-        :quri
-        :trivia
-        :trivial-arguments
-        :trivial-types ;; conflicts: alexandria:
-        )
-  (:shadowing-import-from :trivial-types
-                           ;; These are also defined in alexandria.
-                          :string-designator
-                          :proper-list
-                          :proper-list-p
-                          ))
+  (:use :cl)
+  (:import-from :parse-float
+                :parse-float)
+  (:import-from :access
+                :access
+                :accesses)
+  (:import-from :trivial-do
+                :doalist ;; key value alist
+                :dohash  ;; key value ht
+                :dolist* ;; position value list
+                :doplist ;; key value plist
+                :doseq   ;; value sequence
+                :doseq*  ;; position value sequence
+                )
+  (:import-from :repl-utilities
+                :readme
+                :doc
+                :summary
+                :package-apropos
+                :trace-package
+                :print-hash)
+  (:import-from :serapeum
+                :assort
+                :batches
+                :iota
+                :runs
+                :partition
+                :partitions
+                :split-sequence
 
-;; conflicts:
-;; iterate and for
-;; sxql::returning and for::returning
-;; dissect:object and for-iterator:object
+                ;; Compile-time exhaustiveness checking
+                :etypecase-of
+                :ctypecase-of
+                :typecase-of
+                :case-of
+                :ccase-of
+
+                :count-cpus
+                :ignoring
+
+                ;; hash-tables
+                :dict
+                :do-hash-table ;; trivial-do
+                :dict*
+                :dictq  ;; quoted
+                :href  ;; nested lookup. Also @.
+                :href-default
+                :pophash
+                :swaphash
+                :hash-fold
+                :maphash-return
+                :merge-tables
+                :flip-hash-table
+                :set-hash-table
+                :hash-table-set
+                :hash-table-predicate
+                :hash-table-function
+                :make-hash-table-function
+                :delete-from-hash-table
+                :pairhash
+                ;; to be continued
+                ))
 
 
 (defpackage ciel-user
-  (:use :cl
-        :ciel))
+  (:use :ciel))
 
 (defpackage generic-ciel
   (:use :generic-cl
         :ciel))
 
 (in-package :ciel)
-
-;; Enable ^(* 2 _) syntax.
-(cl-punch:enable-punch-syntax)
 
 ;; Enable triple quotes for the functions docstring.
 ;; (in-readtable pythonic-string-reader:pythonic-string-syntax)
