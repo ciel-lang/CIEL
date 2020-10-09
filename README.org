@@ -12,7 +12,7 @@ Packages:
   Common Lisp, batteries included.
 
 
-* TODO
+* TODOs
 
 - settle on libraries that help newcomers
 - automate the documentation
@@ -33,6 +33,11 @@ Rules
 
 - don't install libraries that need a Slime helper to work in the REPL (cl-annot).
 - reader syntax changes may not be enabled by default.
+
+* Install
+
+Clone, load the .asd, =(ql:quickload "ciel")= and =(in-package :ciel-user)=.
+
 
 * Libraries
 ** Data structures

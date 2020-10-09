@@ -7,6 +7,7 @@
   :author "vindarel"
   :license "MIT"
   :depends-on (
+               :cl-reexport ;; for us
                :access
                :alexandria
                :arrow-macros
@@ -52,7 +53,7 @@
                ;; iteration
                :iterate
                :for
-               :trivial-do
+               ;; :trivial-do  ;; wait a bit, only in QL oct, 2020
 
                ;; lambda shorthands
                ;; xxx: or rutils
