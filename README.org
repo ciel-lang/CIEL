@@ -44,15 +44,12 @@ Clone, load the .asd, =(ql:quickload "ciel")= and =(in-package :ciel-user)=.
 
 https://github.com/AccelerationNet/access/
 
-https://lisp-journey.gitlab.io/blog/generice-consistent-access-of-data-structures-dotted-path/
-
 It's always
 
 #+BEGIN_SRC lisp
 (access my-structure :elt)
 #+end_src
 
-*** str, a string manipulation library
 *** hash-table utilities
 
 We import functions from Serapeum.
@@ -62,6 +59,12 @@ https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#hash-tables
 
 https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#sequences
 
+*** str, a string manipulation library
+
+    Available with the =str= prefix.
+
+    https://github.com/vindarel/cl-str/
+
 ** Data formats
 *** JSON
 *** CSV
@@ -69,6 +72,8 @@ https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#sequences
 ** Databases
 
 Mito and SxQL
+
+https://lispcookbook.github.io/cl-cookbook/databases.html
 
 ** Pattern matching
 
@@ -160,11 +165,13 @@ cl-cron http://quickdocs.org/cl-cron/api
 
 Imported:
 
-Hunchentoot
-Easy-routes
-Djula
-Spinneret
-Quri
+- Hunchentoot
+- Easy-routes
+- Djula
+- Spinneret
+- Quri
+
+https://lispcookbook.github.io/cl-cookbook/web.html
 
 ** Syntax extensions
 *** Pythonic triple quotes docstring
@@ -240,6 +247,8 @@ https://github.com/alex-gutev/generic-cl/
 todo:
 
 : generic-ciel
+
+Example:
 
 #+BEGIN_SRC emacs-lisp
 ;; with a struct or class "point":
