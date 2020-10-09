@@ -3,9 +3,8 @@ EARLY LOW QUALITY DRAFT
 CIEL Is an Extended Lisp
 
 Packages:
-- =ciel=
-- =ciel-user=: commodity.
-- =generic-ciel=: uses [[https://github.com/alex-gutev/generic-cl/][generic-cl]] instead of =cl=.
+- =ciel-user=
+- =generic-ciel=: uses [[https://github.com/alex-gutev/generic-cl/][generic-cl]] instead of =cl= (todo)
 
 * What is this ?
 
