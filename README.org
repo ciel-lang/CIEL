@@ -1,3 +1,6 @@
+EARLY LOW QUALITY DRAFT
+
+CIEL Is an Extended Lisp
 
 Packages:
 - =ciel=
@@ -6,77 +9,70 @@ Packages:
 
 * What is this ?
 
+  Common Lisp, batteries included.
 
-* generic-cl
 
-TODO: contribute a defmethod example.
+* TODO
 
-#+BEGIN_SRC emacs-lisp
-;; with a struct or class "point":
-(defmethod equalp ((p1 point) (p2 point))
-   (…))
-#+END_SRC
+- settle on libraries that help newcomers
+- automate the documentation
+- distribute (Quicklisp, Qlot, Quicklisp distribution, Ultralisp,
+  Ultralisp distribution (upcoming)…)
+- ship a binary
+- optionnal: create a tool that, given a CIEL code base, explains what
+  packages to import in order to switch to "plain CL".
+
+How to procede ?
+
+This is an experiment. I'd be happy to give push rights to more
+maintainers. We will send pull requests, discuss, and in case we don't
+find a consensus for what should be on by default, we can create other
+packages.
+
+Rules
+
+- don't install libraries that need a Slime helper to work in the REPL (cl-annot).
+- reader syntax changes may not be enabled by default.
 
 * Libraries
-** Syntax extensions
-*** Pythonic triple quotes docstring
+** Data structures
+*** access, generic and nested access to all common datastructures
 
-https://github.com/smithzvk/pythonic-string-reader
+https://github.com/AccelerationNet/access/
 
-We can use triple quotes for docstrings, and double quotes within them.
+https://lisp-journey.gitlab.io/blog/generice-consistent-access-of-data-structures-dotted-path/
 
-#+BEGIN_SRC lisp
-(defun foo ()
-  """foo "bar"."""
-  t)
-#+end_src
-*** Lambda shortcuts
-
-https://github.com/windymelt/cl-punch/ - Scala-like anonymous lambda literal.
+It's always
 
 #+BEGIN_SRC lisp
-;; ^() is converted into (lambda ...) .
-;; Each underscore is converted into a lambda argument.
-
-(mapcar ^(* 2 _) '(1 2 3 4 5))
-;; => '(2 4 6 8 10)
-
-;; One underscore corresponds one argument.
-
-(^(* _ _) 2 3)
-;; => 6
-
-;; <_ reuses last argument.
-
-(mapcar ^(if (oddp _) (* 2 <_) <_) '(1 2 3 4 5))
-;; => '(2 2 6 4 10)
-
-;; _! corresponds one argument but it is brought to top of the argument list.
-;; It can be useful when you want to change argument order.
-
-(^(cons _ _!) :a :b)
-;; => (:b . :a)
-
-(^(list _! _! _!) 1 2 3)
-;; => '(3 2 1)
+(access my-structure :elt)
 #+end_src
 
-*** [TODO] cl-annot: Python-like annotations
+*** str, a string manipulation library
+*** hash-table utilities
 
-  https://github.com/m2ym/cl-annot
+We import functions from Serapeum.
+https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#hash-tables
 
-  Without the slime helper, can't use it in the REPL ??
+*** sequences
 
-  #+BEGIN_QUOTE
-  If you  use Emacs,  it is  recommended to  install misc/slime-annot.el
-  which  contains   some  features   of  annotations.    After  locating
-  misc/slime-annot.el into your loadpath,  write the following code into
-  your .emacs.
-  #+END_QUOTE
+https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#sequences
 
-  : (require 'slime-annot)
-** Parsing numbers, floats, decimals
-*** cl-decimals: parse and format decimal numbers
+** Data formats
+*** JSON
+*** CSV
+
+** Databases
+
+Mito and SxQL
+
+** Pattern matching
+
+Use Trivia.
+
+** Numbers
+*** Parsing numbers, floats, decimals
+**** cl-decimals: parse and format decimal numbers
 
  https://github.com/tlikonen/cl-decimals
 
@@ -132,7 +128,98 @@ https://github.com/sharplispers/parse-number
 
 *** parse-float
 https://github.com/soemraws/parse-float
-** trivial-arguments
+
+** Regular expressions
+
+Use =ppcre=.
+
+** Threads, monitoring, scheduling
+
+Bordeaux-Threads (=bt= prefix)
+
+Lparallel
+
+Moira: https://github.com/ruricolist/moira (monitor and restart
+background threads)
+
+http://quickdocs.org/trivial-monitored-thread/
+
+#+begin_quote
+Trivial Monitored Thread offers a very simple (aka trivial) way of
+spawning threads and being informed when one any of them crash and
+die.
+#+end_quote
+
+cl-cron http://quickdocs.org/cl-cron/api
+
+** Web
+
+Imported:
+
+Hunchentoot
+Easy-routes
+Djula
+Spinneret
+Quri
+
+** Syntax extensions
+*** Pythonic triple quotes docstring
+
+https://github.com/smithzvk/pythonic-string-reader
+
+We can use triple quotes for docstrings, and double quotes within them.
+
+#+BEGIN_SRC lisp
+(defun foo ()
+  """foo "bar"."""
+  t)
+#+end_src
+*** Lambda shortcuts
+
+Would be available by enabling cl-punch's syntax: https://github.com/windymelt/cl-punch/ - Scala-like anonymous lambda literal.
+
+#+BEGIN_SRC lisp
+;; ^() is converted into (lambda ...) .
+;; Each underscore is converted into a lambda argument.
+
+(mapcar ^(* 2 _) '(1 2 3 4 5))
+;; => '(2 4 6 8 10)
+
+;; One underscore corresponds one argument.
+
+(^(* _ _) 2 3)
+;; => 6
+
+;; <_ reuses last argument.
+
+(mapcar ^(if (oddp _) (* 2 <_) <_) '(1 2 3 4 5))
+;; => '(2 2 6 4 10)
+
+;; _! corresponds one argument but it is brought to top of the argument list.
+;; It can be useful when you want to change argument order.
+
+(^(cons _ _!) :a :b)
+;; => (:b . :a)
+
+(^(list _! _! _!) 1 2 3)
+;; => '(3 2 1)
+#+end_src
+
+** Other utilities
+
+***  Logging (log4cl)
+
+https://github.com/sharplispers/log4cl/
+
+: (log:info …)
+
+*** repl-utilities (readme, summary,…)
+
+[[http://quickdocs.org/repl-utilities/][repl-utilities]]:
+
+: (repl-utilities:readme repl-utilities)
+
+*** Getting a function's arguments list (trivial-arguments)
 
  https://github.com/Shinmera/trivial-arguments
 
@@ -142,6 +229,16 @@ https://github.com/soemraws/parse-float
  ;; (a b c &optional d)
  #+END_SRC
 
-* Rules
+* generic-cl
 
-- don't install libraries that need a Slime helper to work in the REPL (cl-annot).
+https://github.com/alex-gutev/generic-cl/
+
+todo:
+
+: generic-ciel
+
+#+BEGIN_SRC emacs-lisp
+;; with a struct or class "point":
+(defmethod equalp ((p1 point) (p2 point))
+   (…))
+#+END_SRC
