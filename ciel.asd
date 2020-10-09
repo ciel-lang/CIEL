@@ -19,19 +19,13 @@
                :cl-cron
 
                :closer-mop
-               :cl-annot
                :cl-ansi-text
                :cl-csv
-               :cl-interpol
                :cl-json
-               :cl-yaclyaml            ;; only loader, not writer.
-               :decimals
-               :defclass-std
                :dexador
                :dissect
                :fset
                :generic-cl
-               :listopia  ;; list manipulation library, inspired by Haskell.
 
                ;; web
                :hunchentoot
@@ -41,33 +35,44 @@
                :quri
 
                :local-time
-               :log4cl
                :modf
+
+               ;; number parsing
+               :decimals
                :parse-float
                :parse-number
+
                :cl-ppcre
                :pythonic-string-reader
-               :quri
                :str
                :trivia  ;; pattern matching
                :trivial-arguments
-               ;; :trivial-monitored-thread ;; newer quicklisp
-               :unix-opts
+               :trivial-types
 
                ;; iteration
                :iterate
                :for
+               :trivial-do
 
                ;; lambda shorthands
+               ;; xxx: or rutils
                :fn
                :cl-punch
 
                ;; database
                :mito
                :sxql
+
+               ;; :rutils ;; yes?
+               :serapeum
+
+               ;; debugging, developer utilities
+               :log4cl
+               :printv
+               :repl-utilities  ;; see readme, summary, doc, package-apropos, trace-package etc
                )
   :components ((:module "src"
                 :components
                 ((:file "ciel"))))
 
-  :description "A bigger CL, batteries included.")
+  :description "CIEL Is an Extended Lisp.")
