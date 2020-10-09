@@ -80,6 +80,12 @@ https://lispcookbook.github.io/cl-cookbook/databases.html
 Use Trivia, also available with the =match= local nickname.
 
 ** Numbers
+*** parse-float
+https://github.com/soemraws/parse-float
+
+*** parse-number
+https://github.com/sharplispers/parse-number
+
 *** Parsing numbers, floats, decimals
 **** cl-decimals: parse and format decimal numbers
 
@@ -132,12 +138,6 @@ Use Trivia, also available with the =match= local nickname.
  NIL
  #+end_src
 
-*** parse-number
-https://github.com/sharplispers/parse-number
-
-*** parse-float
-https://github.com/soemraws/parse-float
-
 ** Regular expressions
 
 Use =ppcre=.
@@ -187,7 +187,11 @@ We can use triple quotes for docstrings, and double quotes within them.
 #+end_src
 *** Lambda shortcuts
 
-Would be available by enabling cl-punch's syntax: https://github.com/windymelt/cl-punch/ - Scala-like anonymous lambda literal.
+You have to enable cl-punch's syntax yourself.
+
+ https://github.com/windymelt/cl-punch/ - Scala-like anonymous lambda literal.
+
+: (cl-punch:enable-punch-syntax)
 
 #+BEGIN_SRC lisp
 ;; ^() is converted into (lambda ...) .
@@ -229,6 +233,26 @@ https://github.com/sharplispers/log4cl/
 [[http://quickdocs.org/repl-utilities/][repl-utilities]]:
 
 : (repl-utilities:readme repl-utilities)
+
+*** printv
+
+    https://github.com/danlentz/printv
+
+    #+BEGIN_SRC lisp
+ (:printv
+  (defvar *y*)
+  (defparameter *x* 2)
+  (setf *y* (sqrt *x*))
+  (setf *y* (/ 1 *y*)))
+
+;; This produces the following text to PRINTV's output stream, and still results in the same returned value: 0.70710677.
+
+;;;   (DEFVAR *Y*) => *Y*
+;;;   (DEFPARAMETER *X* 2) => *X*
+;;;   (SETF *Y* (SQRT *X*)) => 1.4142135
+;;;   (SETF *Y* (/ 1 *Y*)) => 0.70710677
+
+    #+end_src
 
 *** Getting a function's arguments list (trivial-arguments)
 
