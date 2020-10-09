@@ -32,7 +32,14 @@
                :fset
                :generic-cl
                :listopia  ;; list manipulation library, inspired by Haskell.
+
+               ;; web
                :hunchentoot
+               :easy-routes  ;; better route definition for Hunchentoot.
+               :djula
+               :spinneret
+               :quri
+
                :local-time
                :log4cl
                :modf
