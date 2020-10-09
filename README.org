@@ -37,6 +37,8 @@ Rules
 
 Clone, load the .asd, =(ql:quickload "ciel")= and =(in-package :ciel-user)=.
 
+CIEL is on [[https://ultralisp.org][Ultralisp]].
+
 
 * Libraries
 ** Data structures
