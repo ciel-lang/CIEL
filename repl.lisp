@@ -186,8 +186,6 @@ based on SBCLI")
   (declare (ignore start) (ignore end))
   (select-completions text (get-all-symbols)))
 
-;; TODO: I don't have completion.
-(rl:register-function :complete #'custom-complete)
 
 ;; -1 means take the string as one arg
 (defvar *special*
@@ -264,10 +262,14 @@ based on SBCLI")
     (sbcli "" *prompt*)))
 
 (defun repl ()
+  ;; TODO: I don't have completion.
+  (rl:register-function :complete #'custom-complete)
+
   (if (probe-file *config-file*)
       (load *config-file*))
 
   (print *banner*)
+  (print "hello !!!")
   (write-line (str:repeat 80 "-"))
   (print-system-info)
   (write-line (str:repeat 80 "-"))

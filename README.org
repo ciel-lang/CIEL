@@ -72,7 +72,7 @@ and use it:
 
 TODO: we will distribute ready-to-use core images.
 
-** With a binary. Use CIEL's own REPL.
+** With a binary. Use CIEL's custom REPL.
 
    You don't need anything, just download the CIEL executable and run
    its REPL.
@@ -85,11 +85,15 @@ TODO: we will distribute ready-to-use core images.
 
    You are dropped into a custom Lisp REPL, freely based on [[https://github.com/hellerve/sbcli][sbcli]].
 
-   This REPL is more user friendly than the default SBCL one. It
-   handles errors gracefully, it is not too verbose and it has readline
-   capabilities, including multiline input and reset.
+   This REPL is more user friendly than the default SBCL one:
 
-   # todo: symbol completion is broken?
+- it has readline capabilities, meaning that the arrow keys work (!)
+  and there is a persistent history, like in any shell.
+- it has *multiline input* and reset.
+- it has *TAB completion* of symbols.
+- it handles errors gracefully: you are not dropped into the debugger
+  and its sub-REPL, you simply see the error message.
+
 
 * Libraries
 ** Data structures
