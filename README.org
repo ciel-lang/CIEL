@@ -93,9 +93,9 @@ TODO: we will distribute ready-to-use core images.
 
 * Libraries
 ** Data structures
-*** access, generic and nested access to all common datastructures
+*** Generic and nested access to datastructures (access)
 
-https://github.com/AccelerationNet/access/
+From [[https://github.com/AccelerationNet/access/%0A][Access]], we import =access= and =accesses= (plural).
 
 It's always
 
@@ -103,23 +103,62 @@ It's always
 (access my-structure :elt)
 #+end_src
 
-*** hash-table utilities
+for an alist, a hash-table, a struct, an object… Use =accesses= for
+nested access (specially useful with JSON).
+
+*** Hash-table utilities (Serapeum)
 
 We import functions from Serapeum.
 https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#hash-tables
 
-*** sequences
+#+begin_export ascii
+:dict
+:do-hash-table ;; see also trivial-do
+:dict*
+:dictq  ;; quoted
+:href  ;; for nested lookup.
+:href-default
+:pophash
+:swaphash
+:hash-fold
+:maphash-return
+:merge-tables
+:flip-hash-table
+:set-hash-table
+:hash-table-set
+:hash-table-predicate
+:hash-table-function
+:make-hash-table-function
+:delete-from-hash-table
+:pairhash
+#+end_export
 
-https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#sequences
+#+BEGIN_SRC lisp
+;; create a hash-table:
+(dict :a 1 :b 2 :c 3)
+#+end_src
 
-*** str, a string manipulation library
+*** Sequences utilities (Serapeum)
+
+See https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#sequences
+
+#+begin_export ascii
+:assort
+:batches
+:iota
+:runs
+:partition
+:partitions
+:split-sequence
+#+end_export
+
+*** String manipulation (str)
 
     Available with the =str= prefix.
 
     https://github.com/vindarel/cl-str/
 
 ** Data formats
-*** JSON
 *** CSV
 
     You have [[https://github.com/AccelerationNet/cl-csv][cl-csv]], under its =cl-csv= package name and the =csv=
@@ -228,14 +267,13 @@ Use =ppcre=.
 
 ** Threads, monitoring, scheduling
 
-Bordeaux-Threads (=bt= prefix)
+[[https://common-lisp.net/project/bordeaux-threads/][Bordeaux-Threads]] (=bt= prefix)
 
-Lparallel
+[[https://lparallel.org/][Lparallel]]
 
-Moira: https://github.com/ruricolist/moira (monitor and restart
-background threads)
+[[https://github.com/ruricolist/moira][Moira]]  (monitor and restart background threads)
 
-http://quickdocs.org/trivial-monitored-thread/
+[[http://quickdocs.org/trivial-monitored-thread/][trivial-monitored-thread]]
 
 #+begin_quote
 Trivial Monitored Thread offers a very simple (aka trivial) way of
@@ -243,7 +281,28 @@ spawning threads and being informed when one any of them crash and
 die.
 #+end_quote
 
-cl-cron http://quickdocs.org/cl-cron/api
+[[http://quickdocs.org/cl-cron/api][cl-cron]] (with [[https://github.com/ciel-lang/cl-cron][our fork here]])
+
+For example, run a function every minute:
+
+#+BEGIN_SRC lisp
+  (defun say-hi () (print "Hi!"))
+  (cl-cron:make-cron-job #'say-hi)
+  (cl-cron:start-cron)
+#+end_src
+
+Wait a minute to see some output.
+
+Stop all jobs with =stop-cron=.
+
+=make-cron='s keyword arguments are:
+
+#+BEGIN_SRC lisp
+(minute :every) (step-min 1) (hour :every) (step-hour 1) (day-of-month :every)
+(step-dom 1) (month :every) (step-month 1) (day-of-week :every)
+(step-dow 1)
+(boot-only nil) (hash-key nil))
+#+end_src
 
 ** Web
 
