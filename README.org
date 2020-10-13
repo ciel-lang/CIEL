@@ -35,10 +35,30 @@ Rules
 
 * Install
 
-Clone, load the .asd, =(ql:quickload "ciel")= and =(in-package :ciel-user)=.
+** With Quicklisp
 
-Alternatively, build a /core image/ of your lisp with CIEL's
-dependencies:
+You need a Lisp implementation and Quicklisp installed.
+
+CIEL is not yet on Quicklisp (but it is on [[https://ultralisp.org][Ultralisp]]), so clone this
+repository and load the .asd (with =load= or =C-c C-k= in
+Slime). Then, quickload it:
+
+#+BEGIN_SRC lisp
+(ql:quickload "ciel")
+#+end_src
+
+and enter the =ciel-user= package, instead of the default
+=common-lisp-user= (or =cl-user=):
+
+#+BEGIN_SRC lisp
+(in-package :ciel-user)
+#+end_src
+
+** With a core image
+
+You need a Lisp implementation, but you don't need Quicklisp.
+
+Build a /core image/ for your lisp with all CIEL's dependencies:
 
 : sbcl --load build-image.lisp
 
@@ -46,7 +66,19 @@ and use it:
 
 : sbcl --core ciel --eval '(in-package :ciel-user)'
 
-CIEL is on [[https://ultralisp.org][Ultralisp]].
+TODO: we will distribute ready-to-use core images.
+
+** With a binary. Use CIEL's own REPL.
+
+   You don't need anything, just download the CIEL executable and run
+   its REPL.
+
+   TODO: build it on CI for different platforms.
+
+   You can build it. Clone this repository, run =make build= and then
+   =./ciel-repl=.
+
+   You are dropped into a custom Lisp REPL, freely based onto [[https://github.com/hellerve/sbcli][sbcli]].
 
 
 * Libraries

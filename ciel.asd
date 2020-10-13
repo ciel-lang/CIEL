@@ -8,6 +8,8 @@
   :license "MIT"
   :depends-on (
                :cl-reexport ;; for us
+               :cl-readline    ;; for the binary
+
                :access
                :alexandria
                :arrow-macros
@@ -73,7 +75,14 @@
                :repl-utilities  ;; see readme, summary, doc, package-apropos, trace-package etc
                )
   :components ((:module "src"
-                :components
-                ((:file "ciel"))))
+                        :components
+                        ((:file "ciel")
+                         ))
+               (:file "repl")
+               )
+
+  :build-operation "program-op"
+  :build-pathname "ciel-repl"
+  :entry-point "cieli-user::repl"
 
   :description "CIEL Is an Extended Lisp.")
