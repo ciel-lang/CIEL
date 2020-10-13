@@ -1,0 +1,8 @@
+
+* vindarel
+
+I got hooked into Lisp circa 2017. I contributed massively to the
+Common Lisp Coobook, the Awesome-CL list, and eventually wrote my own
+libraries and software. I did my first contracting job in Lisp in
+2019, and I am now running an open-source web application for
+bookshops in production©. For more: [[https://lisp-journey.gitlab.io/about/][about]].

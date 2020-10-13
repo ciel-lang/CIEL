@@ -1,14 +1,14 @@
-EARLY LOW QUALITY DRAFT
+DISCLAIMER: this is an EARLY DRAFT, but it is usable.
 
 CIEL Is an Extended Lisp
 
-Packages:
-- =ciel-user=
-- =generic-ciel=: uses [[https://github.com/alex-gutev/generic-cl/][generic-cl]] instead of =cl= (todo)
-
 * What is this ?
 
-  Common Lisp, batteries included.
+  CIEL is a collection of useful Quicklisp libraries.
+
+  It's Common Lisp, batteries included.
+
+  Questions, doubts? See the [[file:FAQ.org][FAQ]].
 
 
 * TODOs
@@ -17,7 +17,7 @@ Packages:
 - automate the documentation
 - distribute (Quicklisp, Qlot, Quicklisp distribution, Ultralisp,
   Ultralisp distribution (upcoming)…)
-- ship a binary
+- ship a core image and a binary
 - optionnal: create a tool that, given a CIEL code base, explains what
   packages to import in order to switch to "plain CL".
 
@@ -41,7 +41,11 @@ You need a Lisp implementation and Quicklisp installed.
 
 CIEL is not yet on Quicklisp (but it is on [[https://ultralisp.org][Ultralisp]]), so clone this
 repository and load the .asd (with =load= or =C-c C-k= in
-Slime). Then, quickload it:
+Slime).
+
+: git clone https://github.com/ciel-lang/CIEL ~/quicklisp/local-projects/CIEL
+
+Then, quickload it:
 
 #+BEGIN_SRC lisp
 (ql:quickload "ciel")
@@ -313,21 +317,21 @@ https://github.com/sharplispers/log4cl/
  ;; (a b c &optional d)
  #+END_SRC
 
-* generic-cl
+** generic-cl
 
-https://github.com/alex-gutev/generic-cl/
+ https://github.com/alex-gutev/generic-cl/
 
-todo:
+ todo:
 
-: generic-ciel
+ : generic-ciel
 
-Example:
+ Example:
 
-#+BEGIN_SRC emacs-lisp
-;; with a struct or class "point":
-(defmethod equalp ((p1 point) (p2 point))
-   (…))
-#+END_SRC
+ #+BEGIN_SRC emacs-lisp
+ ;; with a struct or class "point":
+ (defmethod equalp ((p1 point) (p2 point))
+    (…))
+ #+END_SRC
 
 
 * Final words
