@@ -76,7 +76,8 @@
 
 (defpackage ciel-user
   (:use :cl :ciel)
-  (:local-nicknames (:match :trivia)))
+  (:local-nicknames (:match :trivia)
+                    (:csv :cl-csv)))
 
 ;TODO: a conflict between Serapeum and generic-cl
 ;; (defpackage generic-ciel

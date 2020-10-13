@@ -122,6 +122,37 @@ https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#sequences
 *** JSON
 *** CSV
 
+    You have [[https://github.com/AccelerationNet/cl-csv][cl-csv]], under its =cl-csv= package name and the =csv=
+    local nickname.
+
+    #+BEGIN_SRC lisp
+      ;; read a file into a list of lists
+      (cl-csv:read-csv #P"file.csv")
+      => (("1" "2" "3") ("4" "5" "6"))
+
+      ;; read csv from a string (streams also supported)
+      (cl-csv:read-csv "1,2,3
+      4,5,6")
+      => (("1" "2" "3") ("4" "5" "6"))
+
+      ;; read a file that's tab delimited
+      (cl-csv:read-csv #P"file.tab" :separator #\Tab)
+
+      ;; loop over a CSV for effect
+      (let ((sum 0))
+        (cl-csv:do-csv (row #P"file.csv")
+          (incf sum (parse-integer (nth 0 row))))
+        sum)
+    #+end_src
+
+See also:
+
+- [[https://github.com/defunkydrummer/auto-text][auto-text]], automatic detection for text files (encoding, end of
+  line, column width, csv delimiter etc). [[https://github.com/t-sin/inquisitor][inquisitor]] for detection of
+  asian and far eastern languages.
+- [[https://github.com/sharplispers/clawk][CLAWK]], an AWK implementation embedded into Common Lisp, to parse
+  files line-by-line.
+
 ** Databases
 
 Mito and SxQL
