@@ -37,6 +37,15 @@ Rules
 
 Clone, load the .asd, =(ql:quickload "ciel")= and =(in-package :ciel-user)=.
 
+Alternatively, build a /core image/ of your lisp with CIEL's
+dependencies:
+
+: sbcl --load build-image.lisp
+
+and use it:
+
+: sbcl --core ciel --eval '(in-package :ciel-user)'
+
 CIEL is on [[https://ultralisp.org][Ultralisp]].
 
 
