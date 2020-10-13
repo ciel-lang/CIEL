@@ -90,9 +90,24 @@ TODO: we will distribute ready-to-use core images.
 - it has readline capabilities, meaning that the arrow keys work (!)
   and there is a persistent history, like in any shell.
 - it has *multiline input* and reset.
-- it has *TAB completion* of symbols.
+- it has *TAB completion*.
 - it handles errors gracefully: you are not dropped into the debugger
   and its sub-REPL, you simply see the error message.
+
+  It also defines short helper commands:
+
+#+begin_src txt
+  :help => Prints this general help message
+  :? => Gets help on a symbol <sym>: :? str
+  :doc => Print the available documentation for this symbol, including wether it is of type variable, function, structure, type or setf.
+  :w => Writes the current session to a file <filename>
+  :d => Dumps the disassembly of a symbol <sym>
+  :t => Prints the type of a expression <expr>
+  :q => Ends the session.
+  :z => Resets the session environment
+#+end_src
+
+  For more, see also [[https://github.com/koji-kojiro/cl-repl/][cl-repl]].
 
 
 * Libraries

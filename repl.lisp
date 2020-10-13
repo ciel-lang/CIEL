@@ -1,7 +1,8 @@
-;; #!/usr/bin/env -S sbcl --script
+;; #!/usr/bin/sbcl --script
 (load "~/quicklisp/setup")
 
 (let ((*standard-output* (make-broadcast-stream)))
+  ;; (progn (load "ciel.asd") (ql:quickload '("swank" "ciel")))
   (ql:quickload "alexandria")
   (ql:quickload "cl-readline"))
 
@@ -123,6 +124,22 @@ based on SBCLI")
   ;; (print-currently-defined)
   (write-line "Press CTRL-C or CTRL-D or type :q to exit"))
 
+(defun symbol-documentation (symbol)
+  "Print the available documentation for this symbol."
+  ;; Normally, the documentation function takes as second argument the
+  ;; type designator. We loop over each type and print the available
+  ;; documentation.
+  (handler-case (loop for doc-type in '(variable function structure type setf)
+                   with sym = (if (stringp symbol)
+                                  ;; used from the readline REPL
+                                  (read-from-string symbol)
+                                  ;; used from Slime
+                                  symbol)
+                   for doc = (documentation sym doc-type)
+                   when (str:non-blank-string-p doc)
+                   do (format t "~a: ~a~&" doc-type doc))
+    (error (c) (format *error-output* "Error during documentation lookup: ~a~&" c))))
+
 (defun print-currently-defined ()
   (do-all-symbols (s *package*)
     (when (and (or (fboundp s) (boundp s)) (eql (symbol-package s) *package*))
@@ -192,6 +209,7 @@ based on SBCLI")
   (alexandria:alist-hash-table
    `(;; ("help" . (0 . ,#'general-help))
      ("help" . (0 . ,#'help))
+     ("doc" . (1 . ,#'symbol-documentation))
      ("?" . (1 . ,#'what))
      ;; ("r" . (1 . ,#'readme))
      ;; ("s" . (1 . ,#'summary))
@@ -283,3 +301,6 @@ based on SBCLI")
 
   (handler-case (sbcli "" *prompt*)
     (sb-sys:interactive-interrupt () (end))))
+
+;; When trying it out with --script:
+;; (repl)
