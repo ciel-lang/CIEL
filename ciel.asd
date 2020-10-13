@@ -33,10 +33,11 @@
 
                ;; web
                :hunchentoot
-               :easy-routes  ;; better route definition for Hunchentoot.
+               :easy-routes ;; better route definition for Hunchentoot.
                :djula
                :spinneret
                :quri
+               :lquery
 
                :local-time
                :modf
@@ -49,7 +50,7 @@
                :cl-ppcre
                :pythonic-string-reader
                :str
-               :trivia  ;; pattern matching
+               :trivia ;; pattern matching
                :trivial-arguments
                :trivial-types
 
@@ -70,10 +71,13 @@
                ;; :rutils ;; yes?
                :serapeum
 
+               ;; tests
+               :fiveam
+
                ;; debugging, developer utilities
                :log4cl
                :printv
-               :repl-utilities  ;; see readme, summary, doc, package-apropos, trace-package etc
+               :repl-utilities ;; see readme, summary, doc, package-apropos, trace-package etc
                )
   :components ((:module "src"
                         :components

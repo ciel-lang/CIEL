@@ -223,6 +223,7 @@ Imported:
 - Djula
 - Spinneret
 - Quri
+- Lquery
 
 https://lispcookbook.github.io/cl-cookbook/web.html
 
@@ -273,7 +274,88 @@ You have to enable cl-punch's syntax yourself.
 ;; => '(3 2 1)
 #+end_src
 
-** Other utilities
+** Development
+*** Testing (Fiveam)
+
+    The [[https://common-lisp.net/project/fiveam/docs/][FiveAM]] test framework is available for use.
+
+    Below we create a package to contain our tests and we define the
+    most simple one:
+
+    #+BEGIN_SRC lisp
+(defpackage ciel-5am
+  (:use :cl :5am))
+
+(in-package :ciel-5am)
+
+(test test-one
+  (is (= 1 1)))
+    #+end_src
+
+    Run the test with:
+
+: (run! 'test-one)
+
+You'll see an output with explanations:
+
+#+begin_export ascii
+(run! 'test-one)
+
+Running test TEST-ONE .
+ Did 1 check.
+    Pass: 1 (100%)
+    Skip: 0 ( 0%)
+    Fail: 0 ( 0%)
+
+T
+NIL
+NIL
+#+end_export
+
+However if the test fails you will see explanations:
+
+#+begin_export ascii
+> (run! 'test-one)
+
+Running test TEST-ONE .f
+ Did 2 checks.
+    Pass: 1 (50%)
+    Skip: 0 ( 0%)
+    Fail: 1 (50%)
+
+ Failure Details:
+ --------------------------------
+ TEST-ONE []:
+
+1
+
+ evaluated to
+
+1
+
+ which is not
+
+=
+
+ to
+
+2
+
+
+ --------------------------------
+
+NIL
+(#<IT.BESE.FIVEAM::TEST-FAILURE {1007307ED3}>)
+NIL
+#+end_export
+
+Use =run= to not print explanations.
+
+You can use =(!)= to re-run the last run test.
+
+You can ask 5am to open the interactive debugger on an error:
+
+: (setf *debug-on-error* t)
 
 ***  Logging (log4cl)
 
