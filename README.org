@@ -111,7 +111,7 @@ nested access (specially useful with JSON).
 We import functions from Serapeum.
 https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#hash-tables
 
-#+begin_export ascii
+#+begin_src txt
 :dict
 :do-hash-table ;; see also trivial-do
 :dict*
@@ -131,7 +131,7 @@ https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#hash-tables
 :make-hash-table-function
 :delete-from-hash-table
 :pairhash
-#+end_export
+#+end_src
 
 #+BEGIN_SRC lisp
 ;; create a hash-table:
@@ -142,7 +142,7 @@ https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#hash-tables
 
 See https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#sequences
 
-#+begin_export ascii
+#+begin_src txt
 :assort
 :batches
 :iota
@@ -150,7 +150,7 @@ See https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#sequences
 :partition
 :partitions
 :split-sequence
-#+end_export
+#+end_src
 
 *** String manipulation (str)
 
@@ -194,7 +194,7 @@ See also:
 
 ** Databases
 
-Mito and SxQL
+Mito and SxQL are available.
 
 https://lispcookbook.github.io/cl-cookbook/databases.html
 
@@ -388,7 +388,7 @@ You have to enable cl-punch's syntax yourself.
 
 You'll see an output with explanations:
 
-#+begin_export ascii
+#+begin_src txt
 (run! 'test-one)
 
 Running test TEST-ONE .
@@ -400,11 +400,11 @@ Running test TEST-ONE .
 T
 NIL
 NIL
-#+end_export
+#+end_src
 
 However if the test fails you will see explanations:
 
-#+begin_export ascii
+#+begin_src txt
 > (run! 'test-one)
 
 Running test TEST-ONE .f
@@ -437,7 +437,7 @@ Running test TEST-ONE .f
 NIL
 (#<IT.BESE.FIVEAM::TEST-FAILURE {1007307ED3}>)
 NIL
-#+end_export
+#+end_src
 
 Use =run= to not print explanations.
 
@@ -447,21 +447,23 @@ You can ask 5am to open the interactive debugger on an error:
 
 : (setf *debug-on-error* t)
 
-***  Logging (log4cl)
+*** Logging (log4cl)
 
 https://github.com/sharplispers/log4cl/
 
 : (log:info …)
 
-*** repl-utilities (readme, summary,…)
+*** Discoverability of documentation (repl-utilities' readme, summary,…)
 
-[[http://quickdocs.org/repl-utilities/][repl-utilities]]:
+We use =readme= and =summary= from [[http://quickdocs.org/repl-utilities/][repl-utilities]].
 
-: (repl-utilities:readme repl-utilities)
+Learn more with:
+
+: (readme repl-utilities)
 
 *** printv
 
-    https://github.com/danlentz/printv
+   [[https://github.com/danlentz/printv][printv]]
 
     #+BEGIN_SRC lisp
  (:printv
