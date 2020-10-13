@@ -228,9 +228,12 @@ based on SBCLI")
           (unbound-variable (var) (format *error-output* "~a~%" var))
           (undefined-function (fun) (format *error-output* "~a~%" fun))
           (sb-int:compiled-program-error ()
-            (format *error-output* "Compiler error.~%"))
+            (format *error-output* "~a"
+                    (cl-ansi-text:red "Compiler error.~%")))
           (error (condition)
-            (format *error-output* "Evaluation error: ~a~%" condition))))
+            (format *error-output* "~a~a~%"
+                    (cl-ansi-text:red "Evaluation error: ")
+                    condition))))
   (add-res text *last-result*)
   (if *last-result* (format t "~a~a~%" *ret* *last-result*)))
 
@@ -269,7 +272,6 @@ based on SBCLI")
       (load *config-file*))
 
   (print *banner*)
-  (print "hello !!!")
   (write-line (str:repeat 80 "-"))
   (print-system-info)
   (write-line (str:repeat 80 "-"))
