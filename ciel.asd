@@ -9,6 +9,7 @@
   :depends-on (
                :cl-reexport ;; for us
                :cl-readline    ;; for the binary
+               :cl-ansi-text
 
                :access
                :alexandria

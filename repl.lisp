@@ -7,7 +7,7 @@
 
 (defpackage :sbcli
   (:use :common-lisp :cffi)
-  (:export sbcli *repl-version* *repl-name* *prompt* *prompt2* *ret* *config-file*
+  (:export sbcli help what *repl-version* *repl-name* *prompt* *prompt2* *ret* *config-file*
            *hist-file* *special* *last-result*))
 
 (defpackage :cieli-user                 ;; note "i"
@@ -17,21 +17,52 @@
 (in-package :cieli-user)
 
 (defvar *repl-version* "0.1.3")
-(defvar *repl-name*    "Veit's REPL for SBCL")
-(defvar *prompt*       "sbcl> ")
+(defvar *banner* "
+
+       _..._
+    .-'_..._''.                         .---.
+  .' .'      '.\.--.      __.....__     |   |
+ / .'           |__|  .-''         '.   |   |
+. '             .--. /     .-''''-.  `. |   |
+| |             |  |/     /________\   \|   |
+| |             |  ||                  ||   |
+. '             |  |\    .-------------'|   |
+ \ '.          .|  | \    '-.____...---.|   |
+  '. `._____.-'/|__|  `.             .' |   |
+    `-.______ /         `''-...... -'   '---'
+             `
+
+
+")
+(defvar *repl-name*    "CIEL's REPL for SBCL
+based on SBCLI")
+(defvar *prompt*       (format nil "~a" (cl-ansi-text:green "ciel-user> ")))
 (defvar *prompt2*       "....> ")
 (defvar *ret*          "=> ")
-(defvar *config-file*  "~/.sbclirc")
-(defvar *hist-file*    "~/.sbcli_history")
+(defvar *config-file*  "~/.cielrc")
+(defvar *hist-file*    "~/.ciel_history")
 (defvar *last-result*  nil)
 (defvar *hist*         (list))
 (declaim (special *special*))
+
+(defun print-system-info (&optional (stream t))
+  ;; see also https://github.com/40ants/cl-info
+  (format stream "~&OS: ~a ~a~&" (software-type) (software-version))
+  (format stream "~&Lisp: ~a ~a~&" (lisp-implementation-type) (lisp-implementation-version))
+  #+asdf
+  (format stream "~&ASDF: ~a~&" (asdf:asdf-version))
+  #-asdf
+  (format stream "NO ASDF!")
+  #+quicklisp
+  (format stream "~&Quicklisp: ~a~&" (ql-dist:all-dists))
+  #-quicklisp
+  (format stream "!! Quicklisp is not installed !!"))
 
 (defun read-hist-file ()
   (with-open-file (in *hist-file* :if-does-not-exist :create)
     (loop for line = (read-line in nil nil)
       while line
-      ; hack because cl-readline has no function for this. sorry.
+      ; hack because cl-readline has no function for this. sorry. ;INFO: it does now.
       do (cffi:foreign-funcall "add_history"
                                :string line
                                :void))))
@@ -44,9 +75,9 @@
     (write-line str out)))
 
 (defun end ()
-  "Ends the session"
-  (format t "~&Bye!~&")
-  (sb-ext:quit))
+  "Ends the session."
+  (format t "~%Bye!~&")
+  (uiop:quit))
 
 (defun reset ()
   "Resets the session environment"
@@ -54,25 +85,12 @@
   (defpackage :sbcli (:use :common-lisp :ciel))
   (in-package :sbcli))
 
-(defun split (str chr)
-  (loop for i = 0 then (1+ j)
-        as j = (position chr str :start i)
-        collect (subseq str i j)
-        while j))
-
-(defun join (str chr)
-  (reduce (lambda (acc x)
-            (if (zerop (length acc))
-                x
-                (concatenate 'string acc chr x)))
-          str
-          :initial-value ""))
-
 (defun novelty-check (str1 str2)
   (string/= (string-trim " " str1)
             (string-trim " " str2)))
 
-(defun add-res (txt res) (setq *hist* (cons (list txt res) *hist*)))
+(defun add-res (txt res)
+  (setq *hist* (cons (list txt res) *hist*)))
 
 (defun format-output (&rest args)
   (format (car args) "~a ; => ~a" (caadr args) (cadadr args)))
@@ -85,20 +103,25 @@
                        :if-does-not-exist :create)
     (format file "~{~/sbcli:format-output/~^~%~}" (reverse *hist*))))
 
-(defun help (sym)
-  "Gets help on a symbol <sym>"
+(defun what (sym)
+  "Gets help on a symbol <sym>: :? str"
+  (format t "inspecting ~a.~&~
+  To inspect further objects, type their number.~&~
+  To quit, type q and Enter." sym)
   (handler-case (inspect (read-from-string sym))
     (error (c) (format *error-output* "Error during inspection: ~a~%" c))))
 
-(defun general-help ()
-  "Prints a general help message"
+(defun help ()
+  "Prints this general help message"
   (format t "~a version ~a~%" *repl-name* *repl-version*)
+  (write-line "Read more on packages with readme or summary. For example: (summary :str)")
   (write-line "Special commands:")
   (maphash
-    (lambda (k v) (format t "  :~a: ~a~%" k (documentation (cdr v) t)))
+    (lambda (k v) (format t "  :~a => ~a~%" k (documentation (cdr v) t)))
     *special*)
-  (write-line "Currently defined:")
-  (print-currently-defined))
+  ;; (write-line "Currently defined:")
+  ;; (print-currently-defined)
+  (write-line "Press CTRL-C or CTRL-D or type :q to exit"))
 
 (defun print-currently-defined ()
   (do-all-symbols (s *package*)
@@ -163,25 +186,30 @@
   (declare (ignore start) (ignore end))
   (select-completions text (get-all-symbols)))
 
+;; TODO: I don't have completion.
 (rl:register-function :complete #'custom-complete)
 
 ;; -1 means take the string as one arg
 (defvar *special*
   (alexandria:alist-hash-table
-    `(("h" . (1 . ,#'help))
-      ("help" . (0 . ,#'general-help))
-      ("s" . (1 . ,#'write-to-file))
-      ("d" . (1 . ,#'dump-disasm))
-      ("t" . (-1 . ,#'dump-type))
-      ("q" . (0 . ,#'end))
-      ("r" . (0 . ,#'reset))) :test 'equal))
+   `(;; ("help" . (0 . ,#'general-help))
+     ("help" . (0 . ,#'help))
+     ("?" . (1 . ,#'what))
+     ;; ("r" . (1 . ,#'readme))
+     ;; ("s" . (1 . ,#'summary))
+     ("w" . (1 . ,#'write-to-file))
+     ("d" . (1 . ,#'dump-disasm))
+     ("t" . (-1 . ,#'dump-type))
+     ("q" . (0 . ,#'end))
+     ("z" . (0 . ,#'reset)))
+   :test 'equal))
 
 (defun call-special (fundef call args)
   (let ((l (car fundef))
         (fun (cdr fundef))
         (rl (length args)))
     (cond
-      ((= -1 l) (funcall fun (join args " ")))
+      ((= -1 l) (funcall fun (str:join " " args)))
       ((< rl l)
         (format *error-output*
                 "Expected ~a arguments to ~a, but got ~a!~%"
@@ -189,7 +217,7 @@
       (t (apply fun (subseq args 0 l))))))
 
 (defun handle-special-input (text)
-  (let* ((splt (split text #\Space))
+  (let* ((splt (str:words text))
          (k (subseq (car splt) 1 (length (car splt))))
          (v (gethash k *special*)))
     (if v
@@ -239,8 +267,11 @@
   (if (probe-file *config-file*)
       (load *config-file*))
 
-  (format t "~a version ~a~%" *repl-name* *repl-version*)
-  (write-line "Press CTRL-C or CTRL-D or type :q to exit")
+  (print *banner*)
+  (write-line (str:repeat 80 "-"))
+  (print-system-info)
+  (write-line (str:repeat 80 "-"))
+  (help)
   (write-char #\linefeed)
   (finish-output nil)
 

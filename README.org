@@ -75,11 +75,17 @@ TODO: we will distribute ready-to-use core images.
 
    TODO: build it on CI for different platforms.
 
-   You can build it. Clone this repository, run =make build= and then
-   =./ciel-repl=.
+   To build it, clone this repository and run =make build=.
 
-   You are dropped into a custom Lisp REPL, freely based onto [[https://github.com/hellerve/sbcli][sbcli]].
+   Start it with =./ciel-repl=.
 
+   You are dropped into a custom Lisp REPL, freely based on [[https://github.com/hellerve/sbcli][sbcli]].
+
+   This REPL is more user friendly than the default SBCL one. It
+   handles errors gracefully, it is not too verbose and it has readline
+   capabilities, including multiline input and reset.
+
+   # todo: symbol completion is broken?
 
 * Libraries
 ** Data structures
