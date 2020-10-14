@@ -9,6 +9,21 @@
 (cl-reexport:reexport-from :access
                            :include '(:access
                                       :accesses))
+
+(cl-reexport:reexport-from :arrow-macros
+                           ;XXX: they would need docstrings.
+                           :include '(:->
+                                      :->>
+                                      :some->
+                                      :some->>
+                                      :as->
+                                      :cond->
+                                      :cond->>
+                                      :-<>
+                                      :-<>>
+                                      :some-<>
+                                      :some-<>>))
+
 ;XXX: it's only in the latest Quicklisp
 ;; (cl-reexport:reexport-from :trivial-do
 ;;                            :include

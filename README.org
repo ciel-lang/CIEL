@@ -98,8 +98,8 @@ TODO: we will distribute ready-to-use core images.
 
 #+begin_src txt
   :help => Prints this general help message
-  :? => Gets help on a symbol <sym>: :? str
   :doc => Print the available documentation for this symbol, including wether it is of type variable, function, structure, type or setf.
+  :? => Gets help on a symbol <sym>: :? str
   :w => Writes the current session to a file <filename>
   :d => Dumps the disassembly of a symbol <sym>
   :t => Prints the type of a expression <expr>
@@ -337,6 +337,48 @@ Imported:
 https://lispcookbook.github.io/cl-cookbook/web.html
 
 ** Syntax extensions
+*** Arrow macros
+
+    We provide the Clojure-like arrow macros and "diamond wands" from
+    the [[https://github.com/hipeta/arrow-macros][arrow-macros]] library.
+
+    #+BEGIN_SRC lisp
+      ;; -> inserts the previous value as its first argument:
+      (-> "  hello macros   "
+        str:trim
+        str:upcase
+        str:words) ; => ("HELLO" "MACROS")
+
+      ;; ->> inserts it as its second argument:
+      (->> "  hello macros   "
+        str:trim
+        str:upcase
+        str:words
+        (mapcar #'length)) ; => (5 6)
+
+
+      ;; use as-> to be flexible on the position of the argument:
+      (as-> 4 x
+        (1+ x)
+        (+ x x)) ; => 10
+    #+end_src
+
+    And there is more. All the available macros are:
+
+    #+begin_src txt
+:->
+:->>
+:some->
+:some->>
+:as->
+:cond->
+:cond->>
+:-<>
+:-<>>
+:some-<>
+:some-<>>
+    #+end_src
+
 *** Pythonic triple quotes docstring
 
 https://github.com/smithzvk/pythonic-string-reader
