@@ -176,7 +176,6 @@ based on SBCLI")
                              (char x           n)))
               (cdr items))
        (setf lst n)))
-   (write lst)
    (subseq (car items) 0 (1+ lst))))
 
 (defun starts-with (text)
