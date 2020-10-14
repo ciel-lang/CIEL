@@ -136,7 +136,7 @@ based on SBCLI")
                                   ;; used from Slime
                                   symbol)
                    for doc = (documentation sym doc-type)
-                   when (str:non-blank-string-p doc)
+                   when doc
                    do (format t "~a: ~a~&" doc-type doc))
     (error (c) (format *error-output* "Error during documentation lookup: ~a~&" c))))
 
