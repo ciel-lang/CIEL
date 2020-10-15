@@ -135,8 +135,10 @@ based on SBCLI")
                                   (read-from-string symbol)
                                   ;; used from Slime
                                   symbol)
-                   for doc = (documentation sym doc-type)
-                   when doc
+                   for doc = (unless (consp sym) ;; when a function is quoted: :doc 'defun
+                               ;; instead of :doc defun
+                               (documentation sym doc-type))
+                   when (stringp doc)
                    do (format t "~a: ~a~&" doc-type doc)
                    and when (equal doc-type 'function)
                    do (format t "ARGLIST: ~a~&" (str:downcase (str:unwords (arglist sym)))))
