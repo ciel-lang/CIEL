@@ -88,6 +88,8 @@
                              ;; to be continued
                              ))
 
+(cl-reexport:reexport-from :trivial-arguments
+                           :include '(:arglist))
 
 (defpackage ciel-user
   (:use :cl :ciel)

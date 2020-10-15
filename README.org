@@ -98,7 +98,7 @@ TODO: we will distribute ready-to-use core images.
 
 #+begin_src txt
   :help => Prints this general help message
-  :doc => Print the available documentation for this symbol, including wether it is of type variable, function, structure, type or setf.
+  :doc => Prints the available documentation for this symbol
   :? => Gets help on a symbol <sym>: :? str
   :w => Writes the current session to a file <filename>
   :d => Dumps the disassembly of a symbol <sym>
@@ -106,8 +106,6 @@ TODO: we will distribute ready-to-use core images.
   :q => Ends the session.
   :z => Resets the session environment
 #+end_src
-
-  For more, see also [[https://github.com/koji-kojiro/cl-repl/][cl-repl]].
 
 
 * Libraries
@@ -345,13 +343,11 @@ https://lispcookbook.github.io/cl-cookbook/web.html
     #+BEGIN_SRC lisp
       ;; -> inserts the previous value as its first argument:
       (-> "  hello macros   "
-        str:trim
         str:upcase
         str:words) ; => ("HELLO" "MACROS")
 
       ;; ->> inserts it as its second argument:
       (->> "  hello macros   "
-        str:trim
         str:upcase
         str:words
         (mapcar #'length)) ; => (5 6)
@@ -445,10 +441,6 @@ You have to enable cl-punch's syntax yourself.
 
     Run the test with:
 
-: (run! 'test-one)
-
-You'll see an output with explanations:
-
 #+begin_src txt
 (run! 'test-one)
 
@@ -463,7 +455,7 @@ NIL
 NIL
 #+end_src
 
-However if the test fails you will see explanations:
+If the test fails you will see explanations:
 
 #+begin_src txt
 > (run! 'test-one)
