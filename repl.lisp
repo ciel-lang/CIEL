@@ -138,7 +138,7 @@ based on SBCLI")
                    for doc = (unless (consp sym) ;; when a function is quoted: :doc 'defun
                                ;; instead of :doc defun
                                (documentation sym doc-type))
-                   when (stringp doc)
+                   when  doc
                    do (format t "~a: ~a~&" doc-type doc)
                    and when (equal doc-type 'function)
                    do (format t "ARGLIST: ~a~&" (str:downcase (str:unwords (arglist sym)))))
@@ -286,7 +286,6 @@ based on SBCLI")
     (sbcli "" *prompt*)))
 
 (defun repl ()
-  ;; TODO: I don't have completion.
   (rl:register-function :complete #'custom-complete)
 
   (if (probe-file *config-file*)

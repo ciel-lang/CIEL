@@ -106,3 +106,8 @@
 ;; Enable triple quotes for the functions docstring.
 ;; (in-readtable pythonic-string-reader:pythonic-string-syntax)
 (pythonic-string-reader:enable-pythonic-string-syntax)
+
+;; cl-json wants to convert our lisp symbols to camelCase, and the JSON ones to lisp-case.
+;; We disable that.
+(setf json:*json-identifier-name-to-lisp* #'identity)
+(setf json:*lisp-identifier-name-to-json* #'identity)

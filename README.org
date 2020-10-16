@@ -209,6 +209,62 @@ See also:
 - [[https://github.com/sharplispers/clawk][CLAWK]], an AWK implementation embedded into Common Lisp, to parse
   files line-by-line.
 
+*** JSON
+
+    We use [[https://common-lisp.net/project/cl-json/cl-json.html][cl-json]] ([[https://github.com/hankhero/cl-json][GitHub]]). It has a =json= nickname.
+
+To encode an object to a string, use =encode-json-to-string=:
+
+#+BEGIN_SRC lisp
+(json:encode-json-to-string (list (dict :a 1)))
+;; "[{\"A\":1}]"
+#+end_src
+
+To decode from a string: =decode-json-from-string=.
+
+To encode or decode objects from a /stream/, use:
+
+- =encode-json object &optional stream=
+- =decode-json &optional stream=
+
+as in:
+
+#+BEGIN_SRC lisp
+(with-output-to-string (s)
+   (json:encode-json (dict :foo (list 1 2 3)) s))
+;; "{\"FOO\":[1,2,3]}"
+
+(with-input-from-string (s "{\"foo\": [1, 2, 3], \"bar\": true, \"baz\": \"!\"}")
+  (json:decode-json s))
+;; ((:|foo| 1 2 3) (:|bar| . T) (:|baz| . "!"))
+#+end_src
+
+cl-json can encode and decode from objects. Given a simple class:
+
+#+BEGIN_SRC lisp
+(defclass person ()
+  ((name :initarg :name)
+   (lisper :initform t)))
+#+end_src
+
+We can encode an instance of it:
+
+#+BEGIN_SRC lisp
+(json:encode-json-to-string (make-instance 'person :name "you"))
+;; "{\"NAME\":\"you\",\"LISPER\":true}"
+#+end_src
+
+By default, cl-json wants to convert our lisp symbols to camelCase,
+and the JSON ones to lisp-case. We disable that in the =ciel-user= package.
+
+You can set this behaviour back with:
+
+#+BEGIN_SRC lisp
+(setf json:*json-identifier-name-to-lisp* #'json:camel-case-to-lisp)
+(setf json:*lisp-identifier-name-to-json* #'json:lisp-to-camel-case)
+#+end_src
+
+
 ** Databases
 
 Mito and SxQL are available.
@@ -321,6 +377,14 @@ Stop all jobs with =stop-cron=.
 (boot-only nil) (hash-key nil))
 #+end_src
 
+** HTTP and URI handling
+
+   See:
+
+- Dexador (=dex= nickname)
+- Quri
+- Lquery
+
 ** Web
 
 Imported:
@@ -329,8 +393,6 @@ Imported:
 - Easy-routes
 - Djula
 - Spinneret
-- Quri
-- Lquery
 
 https://lispcookbook.github.io/cl-cookbook/web.html
 
