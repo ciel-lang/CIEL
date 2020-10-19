@@ -11,12 +11,7 @@
   (:export sbcli help what *repl-version* *repl-name* *prompt* *prompt2* *ret* *config-file*
            *hist-file* *special* *last-result*))
 
-(defpackage :cieli-user ;; note "i"
-  (:use :cl :ciel :sbcli)
-  (:export :completer))
-
-;; (in-package :sbcli)
-(in-package :cieli-user)
+(in-package :sbcli)
 
 (defvar *repl-version* "0.1.3")
 (defvar *banner* "
@@ -308,7 +303,7 @@ strings to match candidates against (for example in the form \"package:sym\")."
 #+or(nil)
 (progn
   (assert (member "str:concat"
-                  (list "str:containsp" "str:concat" "str:constant-case")
+                  (select-completions "str:con" (list "str:containsp" "str:concat" "str:constant-case"))
                   :test #'string-equal)))
 
 (defun custom-complete (text &optional start end)
@@ -349,20 +344,20 @@ strings to match candidates against (for example in the form \"package:sym\")."
           (rl:readline :prompt (if (functionp p) (funcall p) p)
                        :add-history t
                        :novelty-check #'novelty-check)))
-    (in-package :cieli-user)
     (unless text (end))
     (if (string= text "")
         (sbcli "" *prompt*))
     (when *hist-file* (update-hist-file text))
+    (in-package :ciel-user) ; make a parameter
     (cond
       ((str:ends-with-p " ?" text)
-       (symbol-documentation (str:trim
-                              ;XXX: could be more robust
-                              (str:replace-using (list "("  ""
-                                                       " ?" "")
-                                                 text))))
+       (sbcli::symbol-documentation (str:trim
+                                        ;XXX: could be more robust
+                                    (str:replace-using (list "("  ""
+                                                             " ?" "")
+                                                       text))))
       (t
-       (handle-input txt text)))
+       (sbcli::handle-input txt text)))
     (in-package :sbcli)
     (finish-output nil)
     (format t "~&")

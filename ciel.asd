@@ -88,6 +88,6 @@
 
   :build-operation "program-op"
   :build-pathname "ciel-repl"
-  :entry-point "cieli-user::repl"
+  :entry-point "sbcli::repl"
 
   :description "CIEL Is an Extended Lisp.")
