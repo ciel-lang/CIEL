@@ -11,8 +11,9 @@
   (:export sbcli help what *repl-version* *repl-name* *prompt* *prompt2* *ret* *config-file*
            *hist-file* *special* *last-result*))
 
-(defpackage :cieli-user                 ;; note "i"
-  (:use :cl :ciel :sbcli))
+(defpackage :cieli-user ;; note "i"
+  (:use :cl :ciel :sbcli)
+  (:export :completer))
 
 ;; (in-package :sbcli)
 (in-package :cieli-user)
@@ -172,41 +173,6 @@ based on SBCLI")
     (sb-int:compiled-program-error (err) (format t "~a~%" err))
     (undefined-function (fun) (format t "~a~%" fun))))
 
-(defun common-prefix (items)
-  (let ((lst 0))
-    (loop for n from 1 below (reduce #'min (mapcar #'length items)) do
-      (when (every (lambda (x)
-                      (char= (char (car items) n)
-                             (char x           n)))
-              (cdr items))
-       (setf lst n)))
-   (subseq (car items) 0 (1+ lst))))
-
-(defun starts-with (text)
-  (lambda (sym)
-    (let* ((symstr (string-downcase sym))
-           (cmp (subseq symstr 0 (min (length symstr) (length text)))))
-      (string= text cmp))))
-
-(defun select-completions (text list)
- (let* ((els (remove-if-not (starts-with text)
-                           (mapcar #'string list)))
-        (els (if (cdr els) (cons (common-prefix els) els) els)))
-    (if (string= text (string-downcase text))
-      (mapcar #'string-downcase els)
-      els)))
-
-(defun get-all-symbols ()
-  (let ((lst ()))
-    (do-all-symbols (s lst)
-      (when (or (fboundp s) (boundp s)) (push s lst)))
-    lst))
-
-(defun custom-complete (text start end)
-  (declare (ignore start) (ignore end))
-  (select-completions text (get-all-symbols)))
-
-
 ;; -1 means take the string as one arg
 (defvar *special*
   (alexandria:alist-hash-table
@@ -278,12 +244,122 @@ based on SBCLI")
                        :novelty-check #'novelty-check)))
     (in-package :cieli-user)
     (unless text (end))
-    (if (string= text "") (sbcli "" *prompt*))
+    (if (string= text "")
+        (sbcli "" *prompt*))
     (when *hist-file* (update-hist-file text))
     (handle-input txt text)
     (in-package :sbcli)
     (finish-output nil)
+    (format t "~&")
     (sbcli "" *prompt*)))
+
+(defun get-package-for-search (text)
+  "
+  return a list with:
+  - the text after the colon or double colon
+  - the package name
+  - T if we look for an external symbol, NIL for an internal one."
+  (let ((pos))
+    (cond
+      ((setf pos (search "::" text))
+       (list (subseq text  (+ pos 2))
+             (subseq text 0 pos)
+             nil))
+      ((setf pos (position #\: text))
+       (if (zerop pos)
+           (list text nil t)
+           (list (subseq text (1+ pos))
+                 (subseq text 0 pos)
+                 t)))
+      (t (list text nil  t)))))
+
+(defun list-external-symbols (sym-name pkg-name)
+  "List external symbols of PKG-NAME (a string).
+  (the symbol name is currently ignored)."
+  (declare (ignorable sym-name))
+  (assert (stringp pkg-name))
+  (loop :for sym :being :the :external-symbols :of (find-package pkg-name)
+     :collect (format nil "~(~a:~a~)" pkg-name sym)))
+
+(defun list-internal-symbols (sym-name pkg-name)
+  "List internal symbols of the package named PKG-NAME (a string)."
+  (declare (ignorable sym-name))
+  (assert (stringp pkg-name))
+  (loop :for sym :being :the :symbols :of (find-package pkg-name)
+     :collect (format nil "~(~a::~a~)" pkg-name sym)))
+
+(defun list-symbols-and-packages (sym-name)
+  "Base case, when the user entered a string with no colon that would delimit a package.
+  Return the current packages, symbols of the current package, current keywords.
+  They are filtered afterwards, in SELECT-COMPLETIONS."
+  (declare (ignorable sym-name))
+  (concatenate 'list
+               (loop :for pkg :in (list-all-packages)
+                  :append (loop :for name :in (package-nicknames pkg)
+                             :collect (format nil "~(~a:~)" name))
+                  :collect (format nil "~(~a:~)" (package-name pkg)))
+               (loop :for sym :being :the :symbols :of *package*
+                  :collect (string-downcase sym))
+               (loop :for kw :being :the :symbols :of (find-package "KEYWORD")
+                  :collect (format nil ":~(~a~)" kw))))
+
+(defun select-completions (text items)
+  "TEXT is the string entered at the prompt, ITEMS is a list of
+strings to match candidates against (for example in the form \"package:sym\")."
+  (setf items
+        (loop :for item :in items
+           :when (str:starts-with-p text item)
+           :collect item))
+  (unless (cdr items)
+    (setf rl:*completion-append-character*
+          (if (str:ends-with-p ":" (car items))
+              #\nul
+              #\space))
+    (return-from select-completions items))
+  (cons
+   (subseq (car items) 0
+           (loop :for item :in (cdr items)
+              :minimize (or (mismatch (car items) item) (length item))))
+   items))
+
+#+or(nil)
+(progn
+  (assert (member "str:concat"
+                  (list "str:containsp" "str:concat" "str:constant-case")
+                  :test #'string-equal)))
+
+(defun custom-complete (text &optional start end)
+  "Custom completer function for readline, triggered when we press TAB.
+
+  START and END are required in the lambda list but are not used. We
+  only complete package and function names, they would help to
+  complete arguments."
+  (declare (ignore start end))
+  (when (string-equal text "")
+    (return-from custom-complete nil))
+  (destructuring-bind (sym-name pkg-name external-p)
+      (get-package-for-search (string-upcase text))
+    (when (and pkg-name
+               (not (find-package pkg-name)))
+      (return-from custom-complete nil))
+    (select-completions
+     (str:downcase text)
+     (cond
+       ((zerop (length pkg-name))
+        (list-symbols-and-packages sym-name))
+       (external-p
+        (list-external-symbols sym-name pkg-name))
+       (t
+        (list-internal-symbols sym-name pkg-name))))))
+
+#+or(nil)
+(progn
+  (assert (member "str:suffixp"
+                  (custom-complete "str:suff")
+                  :test #'string-equal))
+  (assert (member "uiop:file-exists-p"
+                  (custom-complete "uiop:file-")
+                  :test #'string-equal)))
 
 (defun repl ()
   (rl:register-function :complete #'custom-complete)
