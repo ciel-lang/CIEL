@@ -107,6 +107,13 @@ TODO: we will distribute ready-to-use core images.
   :z => Resets the session environment
 #+end_src
 
+Note: the documentation is also available by appending a "?" after a
+function name:
+
+#+begin_src txt
+ciel-user> (dict ?
+#+end_src
+
 
 * Libraries
 ** Data structures

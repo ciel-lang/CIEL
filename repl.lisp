@@ -237,25 +237,8 @@ based on SBCLI")
     (handle-special-input text)
     (handle-lisp before text)))
 
-(defun sbcli (txt p)
-  (let ((text
-          (rl:readline :prompt (if (functionp p) (funcall p) p)
-                       :add-history t
-                       :novelty-check #'novelty-check)))
-    (in-package :cieli-user)
-    (unless text (end))
-    (if (string= text "")
-        (sbcli "" *prompt*))
-    (when *hist-file* (update-hist-file text))
-    (handle-input txt text)
-    (in-package :sbcli)
-    (finish-output nil)
-    (format t "~&")
-    (sbcli "" *prompt*)))
-
 (defun get-package-for-search (text)
-  "
-  return a list with:
+  "Return a list with:
   - the text after the colon or double colon
   - the package name
   - T if we look for an external symbol, NIL for an internal one."
@@ -360,6 +343,30 @@ strings to match candidates against (for example in the form \"package:sym\")."
   (assert (member "uiop:file-exists-p"
                   (custom-complete "uiop:file-")
                   :test #'string-equal)))
+
+(defun sbcli (txt p)
+  (let ((text
+          (rl:readline :prompt (if (functionp p) (funcall p) p)
+                       :add-history t
+                       :novelty-check #'novelty-check)))
+    (in-package :cieli-user)
+    (unless text (end))
+    (if (string= text "")
+        (sbcli "" *prompt*))
+    (when *hist-file* (update-hist-file text))
+    (cond
+      ((str:ends-with-p " ?" text)
+       (symbol-documentation (str:trim
+                              ;XXX: could be more robust
+                              (str:replace-using (list "("  ""
+                                                       " ?" "")
+                                                 text))))
+      (t
+       (handle-input txt text)))
+    (in-package :sbcli)
+    (finish-output nil)
+    (format t "~&")
+    (sbcli "" *prompt*)))
 
 (defun repl ()
   (rl:register-function :complete #'custom-complete)
