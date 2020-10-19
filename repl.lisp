@@ -349,10 +349,23 @@ strings to match candidates against (for example in the form \"package:sym\")."
                   (custom-complete "uiop:file-")
                   :test #'string-equal)))
 
-(defun sbcli (txt p)
-  (in-package :ciel-user) ; make a parameter
-  (let ((text
-          (rl:readline :prompt (if (functionp p) (funcall p) p)
+(defun format-prompt (text &key (colored t))
+  (let ((prompt (str:concat text "> ")))
+    (format nil "~a" (if colored
+                         (cl-ansi-text:green prompt)
+                         prompt))))
+
+(defun sbcli (txt prompt)
+  "Read user input and evaluate it.
+  This function must be called from inside the CIEL-USER package."
+  (let* ((prompt-text (if (functionp prompt)
+                          (funcall prompt)
+                          prompt))
+         (cur-pkg-name (package-name *package*))
+         (text
+          (rl:readline :prompt (if (string-equal "CIEL-USER" cur-pkg-name)
+                                   prompt-text
+                                   (sbcli::format-prompt cur-pkg-name))
                        :add-history t
                        :novelty-check #'sbcli::novelty-check)))
     (unless text (sbcli::end))
@@ -363,15 +376,14 @@ strings to match candidates against (for example in the form \"package:sym\")."
       ((str:ends-with-p " ?" text)
        (sbcli::symbol-documentation (str:trim
                                         ;XXX: could be more robust
-                                    (str:replace-using (list "("  ""
-                                                             " ?" "")
-                                                       text))))
+                                     (str:replace-using (list "("  ""
+                                                              " ?" "")
+                                                        text))))
       (t
        (sbcli::handle-input txt text)))
-    (in-package :sbcli)
     (finish-output nil)
     (format t "~&")
-    (sbcli "" *prompt*)))
+    (sbcli::sbcli "" *prompt*)))
 
 (defun repl ()
   (rl:register-function :complete #'custom-complete)
@@ -389,8 +401,9 @@ strings to match candidates against (for example in the form \"package:sym\")."
 
   (when *hist-file* (read-hist-file))
 
-  (handler-case (sbcli "" *prompt*)
-    (sb-sys:interactive-interrupt () (end))))
+  (in-package :ciel-user)
+  (handler-case (sbcli::sbcli "" sbcli::*prompt*)
+    (sb-sys:interactive-interrupt () (sbcli::end))))
 
 ;; When trying it out with --script:
 ;; (repl)
