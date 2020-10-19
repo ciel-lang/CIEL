@@ -52,6 +52,7 @@
                :str
                :trivia ;; pattern matching
                :trivial-arguments
+               :trivial-package-local-nicknames
                :trivial-types
 
                ;; iteration

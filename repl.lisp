@@ -4,10 +4,11 @@
 (let ((*standard-output* (make-broadcast-stream)))
   ;; (progn (load "ciel.asd") (ql:quickload '("swank" "ciel")))
   (ql:quickload "alexandria")
+  (ql:quickload "trivial-package-local-nicknames")
   (ql:quickload "cl-readline"))
 
 (defpackage :sbcli
-  (:use :common-lisp :cffi)
+  (:use :common-lisp :cffi :trivial-package-local-nicknames)
   (:export sbcli help what *repl-version* *repl-name* *prompt* *prompt2* *ret* *config-file*
            *hist-file* *special* *last-result*))
 
@@ -137,7 +138,9 @@ based on SBCLI")
                    when  doc
                    do (format t "~a: ~a~&" doc-type doc)
                    and when (equal doc-type 'function)
-                   do (format t "ARGLIST: ~a~&" (str:downcase (str:unwords (arglist sym)))))
+                   do (format t "ARGLIST: ~a~&" (str:downcase
+                                                 (str:unwords
+                                                  (trivial-arguments:arglist sym)))))
     (error (c) (format *error-output* "Error during documentation lookup: ~a~&" c))))
 
 (defun print-currently-defined ()
@@ -266,6 +269,12 @@ based on SBCLI")
   (loop :for sym :being :the :symbols :of (find-package pkg-name)
      :collect (format nil "~(~a::~a~)" pkg-name sym)))
 
+(defun list-local-nicknames (&optional (package *package*))
+  "Return a list of local nicknames.
+ (downcased strings, with a trailing colon to denote a package)"
+  (loop :for pair in (package-local-nicknames package)
+     :collect (format nil "~a:" (str:downcase (car pair)))))
+
 (defun list-symbols-and-packages (sym-name)
   "Base case, when the user entered a string with no colon that would delimit a package.
   Return the current packages, symbols of the current package, current keywords.
@@ -276,6 +285,7 @@ based on SBCLI")
                   :append (loop :for name :in (package-nicknames pkg)
                              :collect (format nil "~(~a:~)" name))
                   :collect (format nil "~(~a:~)" (package-name pkg)))
+               (list-local-nicknames *package*)
                (loop :for sym :being :the :symbols :of *package*
                   :collect (string-downcase sym))
                (loop :for kw :being :the :symbols :of (find-package "KEYWORD")
@@ -340,15 +350,15 @@ strings to match candidates against (for example in the form \"package:sym\")."
                   :test #'string-equal)))
 
 (defun sbcli (txt p)
+  (in-package :ciel-user) ; make a parameter
   (let ((text
           (rl:readline :prompt (if (functionp p) (funcall p) p)
                        :add-history t
-                       :novelty-check #'novelty-check)))
-    (unless text (end))
+                       :novelty-check #'sbcli::novelty-check)))
+    (unless text (sbcli::end))
     (if (string= text "")
-        (sbcli "" *prompt*))
-    (when *hist-file* (update-hist-file text))
-    (in-package :ciel-user) ; make a parameter
+        (sbcli::sbcli "" *prompt*))
+    (when *hist-file* (sbcli::update-hist-file text))
     (cond
       ((str:ends-with-p " ?" text)
        (sbcli::symbol-documentation (str:trim
