@@ -77,11 +77,12 @@ based on SBCLI")
   (format t "~%Bye!~&")
   (uiop:quit))
 
-(defun reset ()
-  "Resets the session environment"
-  (delete-package 'sbcli)
-  (defpackage :sbcli (:use :common-lisp :ciel))
-  (in-package :sbcli))
+;; (defun reset ()
+;;   "Resets the session environment"
+;;   (delete-package 'sbcli)
+;;   (defpackage :sbcli (:use :common-lisp :ciel))
+;;   ;XXX: ?
+;;   (in-package :sbcli))
 
 (defun novelty-check (str1 str2)
   (string/= (string-trim " " str1)
@@ -184,7 +185,7 @@ based on SBCLI")
      ("d" . (1 . ,#'dump-disasm))
      ("t" . (-1 . ,#'dump-type))
      ("q" . (0 . ,#'end))
-     ("z" . (0 . ,#'reset)))
+     ;; ("z" . (0 . ,#'reset)))
    :test 'equal))
 
 (defun call-special (fundef call args)

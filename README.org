@@ -104,7 +104,6 @@ TODO: we will distribute ready-to-use core images.
   :d => Dumps the disassembly of a symbol <sym>
   :t => Prints the type of a expression <expr>
   :q => Ends the session.
-  :z => Resets the session environment
 #+end_src
 
 Note: the documentation is also available by appending a "?" after a
