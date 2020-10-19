@@ -14,7 +14,7 @@
 
 (in-package :sbcli)
 
-(defvar *repl-version* "0.1.3")
+(defvar *repl-version* "0.1.5") ;XXX: print CIEL version.
 (defvar *banner* "
 
        _..._
@@ -32,8 +32,7 @@
 
 
 ")
-(defvar *repl-name*    "CIEL's REPL for SBCL
-based on SBCLI")
+(defvar *repl-name*    "CIEL's REPL for SBCL")
 (defvar *prompt*       (format nil "~a" (cl-ansi-text:green "ciel-user> ")))
 (defvar *prompt2*       "....> ")
 (defvar *ret*          "=> ")
