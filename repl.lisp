@@ -137,10 +137,9 @@
                                (documentation sym doc-type))
                    when  doc
                    do (format t "~a: ~a~&" doc-type doc)
-                   and when (equal doc-type 'function)
-                   do (format t "ARGLIST: ~a~&" (str:downcase
-                                                 (str:unwords
-                                                  (trivial-arguments:arglist sym)))))
+                   when (equal doc-type 'function)
+                   do (format t "ARGLIST: ~a~&" (format nil "~(~a~)"
+                                                        (trivial-arguments:arglist sym))))
     (error (c) (format *error-output* "Error during documentation lookup: ~a~&" c))))
 
 (defun print-currently-defined ()
