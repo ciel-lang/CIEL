@@ -174,7 +174,7 @@
 ;; -1 means take the string as one arg
 (defvar *special*
   (alexandria:alist-hash-table
-   `(;; ("help" . (0 . ,#'general-help))
+   `( ;; ("help" . (0 . ,#'general-help))
      ("help" . (0 . ,#'help))
      ("doc" . (1 . ,#'symbol-documentation))
      ("?" . (1 . ,#'what))
@@ -184,7 +184,8 @@
      ("d" . (1 . ,#'dump-disasm))
      ("t" . (-1 . ,#'dump-type))
      ("q" . (0 . ,#'end))
-     ;; ("z" . (0 . ,#'reset)))
+     ;; ("z" . (0 . ,#'reset))
+     )
    :test 'equal))
 
 (defun call-special (fundef call args)
