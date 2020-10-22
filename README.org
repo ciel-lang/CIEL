@@ -402,6 +402,85 @@ Imported:
 
 https://lispcookbook.github.io/cl-cookbook/web.html
 
+** Conditions
+
+   From Serapeum, we import [[https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#ignoring-type-body-body][=ignoring=]].
+
+   An improved version of =ignore-errors=. The behavior is the same:
+   if an error occurs in the body, the form returns two values, nil
+   and the condition itself.
+
+   =ignoring= forces you to specify the kind of error you want to ignore:
+
+   #+BEGIN_SRC lisp
+     (ignoring parse-error
+               ...)
+   #+end_src
+
+** Types, type checking, exhaustiveness type checking
+
+   From Serapeum, we import:
+
+   #+begin_src text
+     :etypecase-of
+     :ctypecase-of
+     :typecase-of
+     :case-of
+     :ccase-of
+   #+end_src
+
+   =etypecase-of= allows to do [[https://github.com/ruricolist/serapeum#compile-time-exhaustiveness-checking%0A][compile-time exhaustiveness type checking]].
+
+
+*** Example with enums
+
+We may call a type defined using member an enumeration. Take an enumeration like this:
+
+#+BEGIN_SRC lisp
+(deftype switch-state ()
+  '(member :on :off :stuck :broken))
+#+end_src
+
+Now we can use =ecase-of= to take all the states of the switch into account.
+
+#+BEGIN_SRC lisp
+(defun flick (switch)
+  (ecase-of switch-state (state switch)
+    (:on (switch-off switch))
+    (:off (switch-on switch))))
+=> Warning
+#+end_src
+
+#+BEGIN_SRC lisp
+(defun flick (switch)
+  (ecase-of switch-state (state switch)
+    (:on (switch-off switch))
+    (:off (switch-on switch))
+    ((:stuck :broken) (error "Sorry, can't flick ~a" switch))))
+=> No warning
+#+end_src
+
+*** Example with union types
+
+    #+BEGIN_SRC lisp
+(defun negative-integer? (n)
+  (etypecase-of t n
+    ((not integer) nil)
+    ((integer * -1) t)
+    ((integer 1 *) nil)))
+=> Warning
+
+(defun negative-integer? (n)
+  (etypecase-of t n
+    ((not integer) nil)
+    ((integer * -1) t)
+    ((integer 1 *) nil)
+    ((integer 0) nil)))
+=> No warning
+    #+end_src
+
+   See [[https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#control-flow][Serapeum's reference]].
+
 ** Syntax extensions
 *** Arrow macros
 

@@ -55,15 +55,7 @@
                              :partitions
                              :split-sequence
 
-                             ;; Compile-time exhaustiveness checking
-                             :etypecase-of
-                             :ctypecase-of
-                             :typecase-of
-                             :case-of
-                             :ccase-of
-
                              :count-cpus
-                             :ignoring
 
                              ;; hash-tables
                              :dict
@@ -87,6 +79,17 @@
                              :pairhash
                              ;; to be continued
                              ))
+
+;; Conditions and type helpers.
+(cl-reexport:reexport-from :serapeum
+                           :include
+                           '(:ignoring
+                             ;; Compile-time exhaustiveness checking
+                             :etypecase-of
+                             :ctypecase-of
+                             :typecase-of
+                             :case-of
+                             :ccase-of))
 
 (cl-reexport:reexport-from :trivial-arguments
                            :include '(:arglist))
