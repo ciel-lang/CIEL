@@ -42,6 +42,7 @@ Rules
 - [[#libraries][Libraries]]
   - [[#data-structures][Data structures]]
   - [[#data-formats][Data formats]]
+  - [[#date-and-time][Date and time]]
   - [[#databases][Databases]]
   - [[#pattern-matching][Pattern matching]]
   - [[#numbers][Numbers]]
@@ -296,6 +297,11 @@ You can set this behaviour back with:
 (setf json:*lisp-identifier-name-to-json* #'json:lisp-to-camel-case)
 #+end_src
 
+** Date and time
+
+   The [[https://common-lisp.net/project/local-time/][local-time]] package is available.
+
+   See also [[https://github.com/CodyReichert/awesome-cl#date-and-time][awesome-cl#date-and-time]] and the [[https://lispcookbook.github.io/cl-cookbook/dates_and_times.html][Cookbook]].
 
 ** Databases
 
