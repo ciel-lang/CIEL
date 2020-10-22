@@ -74,7 +74,7 @@ give you a snippet". etc.
 
 ** What is CIEL for?
 
-Please see the project's homepage, and write us if it is not clear enough!
+Please see the project's homepage, and write to us if it is not clear enough!
 
 * About Common Lisp
 

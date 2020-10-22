@@ -1,17 +1,18 @@
-DISCLAIMER: this is an EARLY DRAFT, but it is usable.
+* CIEL Is an Extended Lisp                                         :noexport:
 
-CIEL Is an Extended Lisp
+STATUS: the API WILL change, but it is usable.
 
-* What is this ?
 
-  CIEL is a collection of useful Quicklisp libraries.
+* What is this ?                                                   :noexport:
+
+  CIEL is a collection of useful libraries.
 
   It's Common Lisp, batteries included.
 
   Questions, doubts? See the [[file:FAQ.org][FAQ]].
 
 
-* TODOs
+* TODOs                                                            :noexport:
 
 - settle on libraries that help newcomers
 - automate the documentation
@@ -32,6 +33,28 @@ Rules
 
 - don't install libraries that need a Slime helper to work in the REPL (cl-annot).
 - reader syntax changes may not be enabled by default.
+
+* Table of contents :TOC:
+- [[#install][Install]]
+  - [[#with-quicklisp][With Quicklisp]]
+  - [[#with-a-core-image][With a core image]]
+  - [[#with-a-binary-use-ciels-custom-repl][With a binary. Use CIEL's custom REPL.]]
+- [[#libraries][Libraries]]
+  - [[#data-structures][Data structures]]
+  - [[#data-formats][Data formats]]
+  - [[#databases][Databases]]
+  - [[#pattern-matching][Pattern matching]]
+  - [[#numbers][Numbers]]
+  - [[#regular-expressions][Regular expressions]]
+  - [[#threads-monitoring-scheduling][Threads, monitoring, scheduling]]
+  - [[#http-and-uri-handling][HTTP and URI handling]]
+  - [[#web][Web]]
+  - [[#conditions][Conditions]]
+  - [[#types-type-checking-exhaustiveness-type-checking][Types, type checking, exhaustiveness type checking]]
+  - [[#syntax-extensions][Syntax extensions]]
+  - [[#development][Development]]
+  - [[#generic-cl][generic-cl]]
+- [[#final-words][Final words]]
 
 * Install
 
@@ -114,7 +137,10 @@ ciel-user> (dict ?
 #+end_src
 
 
+# update the TOC with toc-org
+
 * Libraries
+
 ** Data structures
 *** Generic and nested access to datastructures (access)
 
