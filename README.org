@@ -282,63 +282,42 @@ https://lispcookbook.github.io/cl-cookbook/databases.html
 Use Trivia, also available with the =match= local nickname.
 
 ** Numbers
-*** parse-float
-https://github.com/soemraws/parse-float
 
-*** parse-number
-https://github.com/sharplispers/parse-number
+[[https://github.com/soemraws/parse-float][parse-float]]
 
-*** Parsing numbers, floats, decimals
-**** cl-decimals: parse and format decimal numbers
+Similar to PARSE-INTEGER, but parses a floating point value and
+returns the value as the specified TYPE (by default
+=*READ-DEFAULT-FLOAT-FORMAT*=). The DECIMAL-CHARACTER (by default #.)
+specifies the separator between the integer and decimal parts, and the
+EXPONENT-CHARACTER (by default #e, case insensitive) specifies the
+character before the exponent. Note that the exponent is only parsed
+if RADIX is 10.
 
- https://github.com/tlikonen/cl-decimals
+  #+begin_src text
+ARGLIST: (string &key (start 0) (end (length string)) (radix 10) (junk-allowed nil)
+        (decimal-character .) (exponent-character e)
+        (type *read-default-float-format*))
+  #+end_src
 
- The  main  interface  are  the  functions  =parse-decimal-number=  and
- =format-decimal-number=. The former is for parsing strings for decimal
- numbers and the latter for pretty-printing them as strings.
+From [[https://github.com/sharplispers/parse-number][parse-number]], we import:
 
- Reading:
+#+begin_src text
+  :parse-number
+  :parse-positive-real-number
+  :parse-real-number
+#+end_src
 
- #+BEGIN_SRC lisp
- DECIMALS> (parse-decimal-number "0.24")
- 6/25
+#+begin_src text
+PARSE-NUMBER
+  FUNCTION: Given a string, and start, end, and radix parameters,
+  produce a number according to the syntax definitions in the Common
+  Lisp Hyperspec.
+  ARGLIST: (string &key (start 0) (end nil) (radix 10)
+          ((float-format *read-default-float-format*)
+           ,*read-default-float-format*))
+#+end_src
 
-
- DECIMALS> (parse-decimal-number "−12,345"
-                                 :decimal-separator #\,
-                                 :negative-sign #\−)
- -2469/200
- #+end_src
-
- Parsing:
-
- #+BEGIN_SRC lisp
- DECIMALS> (format-decimal-number -100/6 :round-magnitude -3)
- "-16.667"
- ("-" "16" "." "667")
-
- DECIMALS> (loop for e from -5 upto 5
-                 do (print (format-decimal-number
-                            (expt 10 e) :round-magnitude -5
-                            :decimal-separator ","
-                            :integer-minimum-width 7
-                            :integer-group-separator " "
-                            :fractional-minimum-width 7
-                            :fractional-group-separator " ")))
-
- "      0,000 01"
- "      0,000 1 "
- "      0,001   "
- "      0,01    "
- "      0,1     "
- "      1       "
- "     10       "
- "    100       "
- "  1 000       "
- " 10 000       "
- "100 000       "
- NIL
- #+end_src
+See also [[https://github.com/tlikonen/cl-decimals][cl-decimals]] to parse and format decimal numbers.
 
 ** Regular expressions
 

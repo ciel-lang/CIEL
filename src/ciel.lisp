@@ -5,6 +5,11 @@
 (in-package :ciel)
 
 (cl-reexport:reexport-from :parse-float)
+(cl-reexport:reexport-from :parse-number
+                           :include
+                           '(:parse-number
+                             :parse-positive-real-number
+                             :parse-real-number))
 
 (cl-reexport:reexport-from :access
                            :include '(:access
