@@ -119,3 +119,8 @@
 ;; We disable that.
 (setf json:*json-identifier-name-to-lisp* #'identity)
 (setf json:*lisp-identifier-name-to-json* #'identity)
+
+;; Limit the maximum default output.
+(setf *print-lines* 1000)
+(setf *print-level* 20)
+(setf *print-length* 1000)
