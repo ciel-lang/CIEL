@@ -142,6 +142,9 @@ ciel-user> (dict ?
 
 * Libraries
 
+  To see the full list of dependencies, see the =ciel.asd= project
+  definition or this [[file:doc/dependencies.md][dependencies list]].
+
 ** Data structures
 *** Generic and nested access to datastructures (access)
 
