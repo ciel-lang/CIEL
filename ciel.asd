@@ -34,8 +34,6 @@
                ;; web
                :hunchentoot
                :easy-routes ;; better route definition for Hunchentoot.
-               :djula
-               :spinneret
                :quri
                :lquery
 

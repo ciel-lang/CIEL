@@ -411,10 +411,9 @@ Imported:
 
 - Hunchentoot
 - Easy-routes
-- Djula
-- Spinneret
 
 https://lispcookbook.github.io/cl-cookbook/web.html
+
 
 ** Conditions
 

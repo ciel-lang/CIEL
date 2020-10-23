@@ -16,7 +16,6 @@
 - decimals: Decimal number parser and formatter
 - dexador: Yet another HTTP client for Common Lisp
 - dissect: A lib for introspecting the call stack and active restarts.
-- djula: An implementation of Django templates for Common Lisp.
 - easy-routes: Yet another routes handling utility on top of Hunchentoot
 - fiveam: A simple regression testing framework
 - fn: Some macros for lambda brevity
@@ -44,7 +43,6 @@ simple string literal definition that doesn't require escaping characters.
 - quri: Yet another URI library for Common Lisp
 - repl-utilities: Ease common tasks at the REPL.
 - serapeum: Utilities beyond Alexandria.
-- spinneret: Common Lisp HTML5 generator.
 - str: Modern, consistent and terse Common Lisp string manipulation library.
 - sxql: A SQL generator
 - trivia: NON-optimized pattern matcher compatible with OPTIMA, with extensible optimizer interface and clean codebase
