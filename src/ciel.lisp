@@ -50,6 +50,33 @@
                              :trace-package
                              :print-hash))
 
+;; alexandria/sequences/lists
+(cl-reexport:reexport-from :alexandria
+                           :include
+                           '(:iota
+                             :proper-list
+                             :proper-list-p
+                             :proper-sequence
+                             :circular-list
+                             :circular-list-p
+                             :doplist
+                             :ensure-cons
+                             :ensure-list
+                             :flatten
+                             :setp
+
+                             :emptyp
+                             :shuffle
+                             :random-elt
+                             :length=
+                             :last-elt
+                             ))
+;; alexandria/numbers
+(cl-reexport:reexport-from :alexandria
+                           :include
+                           '(:mean :variance :median
+                             :clamp))
+
 (cl-reexport:reexport-from :serapeum
                            :include
                            '(:assort

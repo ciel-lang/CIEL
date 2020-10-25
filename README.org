@@ -191,19 +191,32 @@ https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#hash-tables
 (dict :a 1 :b 2 :c 3)
 #+end_src
 
-*** Sequences utilities (Serapeum)
+*** Sequences utilities (Alexandria, Serapeum)
 
-See https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#sequences
+From [[ https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#sequences][Serapeum]] we import:
 
 #+begin_src txt
 :assort
 :batches
-:iota
 :runs
 :partition
 :partitions
 :split-sequence
 #+end_src
+
+And from [[https://common-lisp.net/project/alexandria/draft/alexandria.html][Alexandria]]:
+
+#+begin_src text
+:iota
+:flatten
+:shuffle
+:random-elt
+:length=
+:last-elt
+:emptyp
+#+end_src
+
+and some more.
 
 *** String manipulation (str)
 

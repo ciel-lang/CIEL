@@ -26,12 +26,12 @@
                :cl-ansi-text
                :cl-csv
                :cl-json
-               :dexador
                :dissect
                :fset
                :generic-cl
 
                ;; web
+               :dexador
                :hunchentoot
                :easy-routes ;; better route definition for Hunchentoot.
                :quri
@@ -41,7 +41,6 @@
                :modf
 
                ;; number parsing
-               :decimals
                :parse-float
                :parse-number
 
