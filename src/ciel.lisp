@@ -67,8 +67,6 @@
                              :do-hash-table ;; see also trivial-do
                              :dict*
                              :dictq  ;; quoted
-                             :href  ;; nested lookup. Also @.
-                             :href-default
                              :pophash
                              :swaphash
                              :hash-fold
