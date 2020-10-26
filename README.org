@@ -46,7 +46,7 @@ Rules
   - [[#databases][Databases]]
   - [[#iteration][Iteration]]
   - [[#pattern-matching][Pattern matching]]
-  - [[#numbers][Numbers]]
+  - [[#numerical-and-scientific][Numerical and scientific]]
   - [[#regular-expressions][Regular expressions]]
   - [[#threads-monitoring-scheduling][Threads, monitoring, scheduling]]
   - [[#http-and-uri-handling][HTTP and URI handling]]
@@ -360,7 +360,7 @@ declarations. Finally the result-form is returned after the iteration completes.
 
 Use Trivia, also available with the =match= local nickname.
 
-** Numbers
+** Numerical and scientific
 
    We import =mean=, =variance=, =median= and =clamp= from Alexandria.
 
@@ -403,11 +403,22 @@ PARSE-NUMBER
 
 See also [[https://github.com/tlikonen/cl-decimals][cl-decimals]] to parse and format decimal numbers.
 
+We don't ship [[Numbers][Numcl]], a Numpy clone in Common Lisp, but we invite you
+to install it right now with Quicklisp:
+
+#+BEGIN_SRC lisp
+(ql:quickload "numcl")
+#+end_src
+
 ** Regular expressions
 
 Use =ppcre=.
 
+See https://digikar99.github.io/common-lisp.readthedocs/cl-ppcre/ and https://lispcookbook.github.io/cl-cookbook/regexp.html
+
 ** Threads, monitoring, scheduling
+
+   We ship:
 
 [[https://common-lisp.net/project/bordeaux-threads/][Bordeaux-Threads]] (=bt= prefix)
 
@@ -423,12 +434,13 @@ spawning threads and being informed when one any of them crash and
 die.
 #+end_quote
 
-[[http://quickdocs.org/cl-cron/api][cl-cron]] (with [[https://github.com/ciel-lang/cl-cron][our fork here]])
+[[http://quickdocs.org/cl-cron/api][cl-cron]] (see the sources on [[https://github.com/ciel-lang/cl-cron][our fork here]])
 
 For example, run a function every minute:
 
 #+BEGIN_SRC lisp
-  (defun say-hi () (print "Hi!"))
+  (defun say-hi ()
+    (print "Hi!"))
   (cl-cron:make-cron-job #'say-hi)
   (cl-cron:start-cron)
 #+end_src
@@ -454,9 +466,13 @@ Stop all jobs with =stop-cron=.
 - Quri
 - Lquery
 
+#+BEGIN_SRC lisp
+(dex:get "http://my.url")
+#+end_src
+
 ** Web
 
-Imported:
+We ship:
 
 - Hunchentoot
 - Easy-routes
@@ -465,6 +481,8 @@ https://lispcookbook.github.io/cl-cookbook/web.html
 
 
 ** Conditions
+
+   See https://lispcookbook.github.io/cl-cookbook/error_handling.html
 
    From Serapeum, we import [[https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#ignoring-type-body-body][=ignoring=]].
 
@@ -492,7 +510,6 @@ https://lispcookbook.github.io/cl-cookbook/web.html
    #+end_src
 
    =etypecase-of= allows to do [[https://github.com/ruricolist/serapeum#compile-time-exhaustiveness-checking%0A][compile-time exhaustiveness type checking]].
-
 
 *** Example with enums
 
@@ -542,6 +559,32 @@ Now we can use =ecase-of= to take all the states of the switch into account.
     #+end_src
 
    See [[https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#control-flow][Serapeum's reference]].
+
+
+*** More type definitions (trivial-types)
+
+   From [[https://github.com/m2ym/trivial-types][trivial-types]], we import
+
+- =association-list-p=
+- =type-expand=
+- =string-designator=
+- =property-list=
+- =tuple=
+- =association-list=
+- =character-designator=
+- =property-list-p=
+- =file-associated-stream-p=
+- =type-specifier-p=
+- =list-designator=
+- =package-designator=
+- =tuplep=
+- =non-nil=
+- =file-associated-stream=
+- =stream-designator=
+- =function-designator=
+- =file-position-designator=
+- =pathname-designator=
+
 
 ** Syntax extensions
 *** Arrow macros

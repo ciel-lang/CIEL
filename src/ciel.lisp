@@ -124,6 +124,31 @@
 (cl-reexport:reexport-from :trivial-arguments
                            :include '(:arglist))
 
+(cl-reexport:reexport-from :trivial-types
+                           :include '(
+                                      :association-list-p
+                                      :type-expand
+                                      :string-designator
+                                      :property-list
+                                      :tuple
+                                      ;; :proper-list ;; in alexandria
+                                      :association-list
+                                      :character-designator
+                                      :property-list-p
+                                      :file-associated-stream-p
+                                      :type-specifier-p
+                                      :list-designator
+                                      :package-designator
+                                      ;; :proper-list-p ;; in alexandria
+                                      :tuplep
+                                      :non-nil
+                                      :file-associated-stream
+                                      :stream-designator
+                                      :function-designator
+                                      :file-position-designator
+                                      :pathname-designator
+                                      ))
+
 (defpackage ciel-user
   (:use :cl :ciel)
   (:local-nicknames (:match :trivia)
