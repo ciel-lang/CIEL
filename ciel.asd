@@ -55,7 +55,7 @@
                ;; iteration
                :iterate
                :for
-               ;; :trivial-do  ;; wait a bit, only in QL oct, 2020
+               :trivial-do
 
                ;; lambda shorthands
                ;; xxx: or rutils

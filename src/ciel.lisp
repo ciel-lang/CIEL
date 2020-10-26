@@ -30,15 +30,15 @@
                                       :some-<>>))
 
 ;XXX: it's only in the latest Quicklisp
-;; (cl-reexport:reexport-from :trivial-do
-;;                            :include
-;;                            '(:doalist ;; key value alist
-;;                              :dohash  ;; key value ht
-;;                              :dolist* ;; position value list
-;;                              :doplist ;; key value plist
-;;                              :doseq   ;; value sequence
-;;                              :doseq*  ;; position value sequence
-;;                              ))
+(cl-reexport:reexport-from :trivial-do
+                           :include
+                           '(:doalist ;; key value alist
+                             :dohash  ;; key value ht
+                             :dolist* ;; position value list
+                             ;; :doplist ;; already from alexandria
+                             :doseq   ;; value sequence
+                             :doseq*  ;; position value sequence
+                             ))
 
 (cl-reexport:reexport-from :repl-utilities
                            :include

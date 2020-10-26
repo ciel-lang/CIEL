@@ -44,6 +44,7 @@ Rules
   - [[#data-formats][Data formats]]
   - [[#date-and-time][Date and time]]
   - [[#databases][Databases]]
+  - [[#iteration][Iteration]]
   - [[#pattern-matching][Pattern matching]]
   - [[#numbers][Numbers]]
   - [[#regular-expressions][Regular expressions]]
@@ -325,11 +326,46 @@ Mito and SxQL are available.
 
 https://lispcookbook.github.io/cl-cookbook/databases.html
 
+** Iteration
+
+   We ship =iterate= and =for= so you can try them, but we don't import
+   their symbols.
+
+   See https://lispcookbook.github.io/cl-cookbook/iteration.html for
+   examples, including about the good old =loop=.
+
+   We import macros from [[https://github.com/yitzchak/trivial-do/][trivial-do]], that provides =dolist=-like macro
+   to iterate over more structures:
+
+- =dohash=: dohash iterates over the elements of an hash table and binds key-var to the key,
+value-var to the associated value and then evaluates body as a tagbody that can include
+declarations. Finally the result-form is returned after the iteration completes.
+- =doplist=: doplist iterates over the elements of an plist and binds key-var to the key, value-var to
+the associated value and then evaluates body as a tagbody that can include declarations.
+Finally the result-form is returned after the iteration completes.
+- =doalist=: doalist iterates over the elements of an alist and binds key-var to the car of each element,
+value-var to the cdr of each element and then evaluates body as a tagbody that can include
+declarations. Finally the result-form is returned after the iteration completes.
+- =doseq*=: doseq* iterates over the elements of an sequence and binds position-var to the index of each
+element, value-var to each element and then evaluates body as a tagbody that can include
+declarations. Finally the result-form is returned after the iteration completes.
+- =doseq=: doseq iterates over the elements of an sequence and binds value-var to successive values
+and then evaluates body as a tagbody that can include declarations. Finally the result-form
+is returned after the iteration completes.
+- =dolist*=: dolist* iterates over the elements of an list and binds position-var to the index of each
+element, value-var to each element and then evaluates body as a tagbody that can include
+declarations. Finally the result-form is returned after the iteration completes.
+
 ** Pattern matching
 
 Use Trivia, also available with the =match= local nickname.
 
 ** Numbers
+
+   We import =mean=, =variance=, =median= and =clamp= from Alexandria.
+
+   We import functions to parse numbers (Common Lisp only has
+   =parse-integer= by default).
 
 [[https://github.com/soemraws/parse-float][parse-float]]
 
