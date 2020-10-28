@@ -37,6 +37,9 @@
                :quri
                :lquery
 
+               ;; GUI
+               :ltk
+
                :local-time
                :modf
 

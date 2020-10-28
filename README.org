@@ -44,6 +44,7 @@ Rules
   - [[#data-formats][Data formats]]
   - [[#date-and-time][Date and time]]
   - [[#databases][Databases]]
+  - [[#gui-ltk][GUI (ltk)]]
   - [[#iteration][Iteration]]
   - [[#pattern-matching][Pattern matching]]
   - [[#numerical-and-scientific][Numerical and scientific]]
@@ -344,6 +345,44 @@ You can set this behaviour back with:
 Mito and SxQL are available.
 
 https://lispcookbook.github.io/cl-cookbook/databases.html
+
+** GUI (ltk)
+
+   We ship [[http://www.peter-herth.de/ltk/ltkdoc/][ltk]].
+
+   The Tk toolkit is nearly ubiquitous and simple to use. It doesn't
+   have a great deal of widgets, but it helps anyways for utility
+   GUIs. Moreover, it doesn't look aweful (as it did back), it has
+   themes to look nearly native on the different platforms.
+
+   You have other GUI options a quickload away (Qt4, Gtk, IUP, Nuklear, not
+   mentioning LispWorks CAPI…):
+   https://lispcookbook.github.io/cl-cookbook/gui.html
+
+   Here's how to start with Ltk:
+
+   - either put yourself in the =ltk-user= package:
+
+   #+BEGIN_SRC lisp
+   (in-package :ltk-user)
+   #+end_src
+
+   - either =use= ltk:
+
+   #+BEGIN_SRC lisp
+   (use-package :ltk)
+   #+end_src
+
+   Use the =with-ltk= macro to define your GUI, use =make-instance= +
+   a widget name to create it, and use the =grid= to position widgets.
+
+   #+BEGIN_SRC lisp
+      (with-ltk ()
+        (let ((button (make-instance 'button :text "hello")))
+          (grid button 0 0)))
+   #+end_src
+
+   Read more: https://lispcookbook.github.io/cl-cookbook/gui.html#tk
 
 ** Iteration
 
