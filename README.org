@@ -520,7 +520,7 @@ Stop all jobs with =stop-cron=.
 
    See:
 
-- Dexador (=dex= nickname)
+- Dexador. Use the =dex= nickname or the =http= local nickname.
 - Quri
 - Lquery
 
