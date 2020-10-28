@@ -82,7 +82,7 @@
                         ((:file "ciel")
                          ))
                (:file "repl")
-               )
+               (:file "utils"))
 
   :build-operation "program-op"
   :build-pathname "ciel-repl"

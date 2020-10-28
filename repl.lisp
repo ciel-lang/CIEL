@@ -374,11 +374,7 @@ strings to match candidates against (for example in the form \"package:sym\")."
     (when *hist-file* (sbcli::update-hist-file text))
     (cond
       ((str:ends-with-p " ?" text)
-       (sbcli::symbol-documentation (str:trim
-                                        ;XXX: could be more robust
-                                     (str:replace-using (list "("  ""
-                                                              " ?" "")
-                                                        text))))
+       (sbcli::symbol-documentation (last-nested-expr text)))
       (t
        (sbcli::handle-input txt text)))
     (finish-output nil)
