@@ -32,11 +32,11 @@ bar:qux
                             (which:which "pygmentize"))))
         (when pygmentize
           (with-input-from-string (s str)
-            (let ((proc (sb-ext:run-program  pygmentize
-                                          *pygmentize-options*
-                                          :input s
-                                          :output :stream)))
-              (read-line (sb-ext:process-output proc) nil "")))))
+            (let ((proc (uiop:launch-program (alexandria:flatten
+                                              (list pygmentize *pygmentize-options*))
+                                             :input s
+                                             :output :stream)))
+              (read-line (uiop:process-info-output proc) nil "")))))
     str))
 
 (defun syntax-hl ()

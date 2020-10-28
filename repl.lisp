@@ -9,7 +9,8 @@
 (defpackage :sbcli
   (:use :common-lisp :cffi :trivial-package-local-nicknames)
   (:export sbcli help what *repl-version* *repl-name* *prompt* *prompt2* *ret* *config-file*
-           *hist-file* *special* *last-result*))
+           *hist-file* *special* *last-result*
+           *syntax-highlighting* *pygmentize* *pygmentize-options*))
 
 (in-package :sbcli)
 
