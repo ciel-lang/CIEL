@@ -41,6 +41,7 @@
 (defvar *hist*         (list))
 (defvar *syntax-highlighting* nil)
 (defvar *pygmentize* nil "(optional) Path to a pygments executable. If not set, we try to find it.")
+(defvar *pygmentize-options* (list "-s" "-l" "lisp"))
 (declaim (special *special*))
 
 (defun print-system-info (&optional (stream t))

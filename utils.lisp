@@ -33,7 +33,7 @@ bar:qux
         (when pygmentize
           (with-input-from-string (s str)
             (let ((proc (sb-ext:run-program  pygmentize
-                                          (list "-s" "-l" "lisp")
+                                          *pygmentize-options*
                                           :input s
                                           :output :stream)))
               (read-line (sb-ext:process-output proc) nil "")))))

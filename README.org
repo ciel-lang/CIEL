@@ -145,7 +145,10 @@ Syntax highlighting is currently off by default. To enable it, install
 #+BEGIN_SRC lisp
 (in-package :sbcli)
 (setf *syntax-highlighting* t)
-;; and optionally, set the path to pygmentize to the *pygmentize* variable.
+
+;; and, optionally:
+;; (setf *pygmentize* "/path/to/pygmentize")
+;; (setf *pygmentize-options* (list "-s" "-l" "lisp"))
 #+end_src
 
 
