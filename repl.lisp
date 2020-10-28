@@ -39,7 +39,8 @@
 (defvar *hist-file*    "~/.ciel_history")
 (defvar *last-result*  nil)
 (defvar *hist*         (list))
-(defvar *pygmentize*   nil)
+(defvar *syntax-highlighting* nil)
+(defvar *pygmentize* nil "(optional) Path to a pygments executable. If not set, we try to find it.")
 (declaim (special *special*))
 
 (defun print-system-info (&optional (stream t))

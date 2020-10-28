@@ -27,8 +27,9 @@ bar:qux
 ;;;; Syntax highlighting if pygments is installed.
 ;;;;
 (defun maybe-highlight (str)
-  (if *pygmentize*
-      (let ((pygmentize (which:which "pygmentize")))
+  (if *syntax-highlighting*
+      (let ((pygmentize (or *pygmentize*
+                            (which:which "pygmentize"))))
         (when pygmentize
           (with-input-from-string (s str)
             (let ((proc (sb-ext:run-program  pygmentize
