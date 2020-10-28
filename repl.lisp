@@ -3,8 +3,7 @@
 
 (let ((*standard-output* (make-broadcast-stream)))
   ;; (progn (load "ciel.asd") (ql:quickload '("swank" "ciel")))
-  (ql:quickload "alexandria")
-  (ql:quickload "trivial-package-local-nicknames")
+  (ql:quickload '("alexandria" "which" "trivial-package-local-nicknames"))
   (ql:quickload "cl-readline"))
 
 (defpackage :sbcli
@@ -40,6 +39,7 @@
 (defvar *hist-file*    "~/.ciel_history")
 (defvar *last-result*  nil)
 (defvar *hist*         (list))
+(defvar *pygmentize*   nil)
 (declaim (special *special*))
 
 (defun print-system-info (&optional (stream t))
@@ -383,6 +383,7 @@ strings to match candidates against (for example in the form \"package:sym\")."
 
 (defun repl ()
   (rl:register-function :complete #'custom-complete)
+  (rl:register-function :redisplay #'syntax-hl)
 
   (if (probe-file *config-file*)
       (load *config-file*))

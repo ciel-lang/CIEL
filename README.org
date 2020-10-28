@@ -112,12 +112,13 @@ TODO: we will distribute ready-to-use core images.
 
    This REPL is more user friendly than the default SBCL one:
 
-- it has readline capabilities, meaning that the arrow keys work (!)
-  and there is a persistent history, like in any shell.
-- it has *multiline input* and reset.
+- it has readline capabilities, meaning that the arrow keys work by
+  default (wouhou!) and there is a persistent history, like in any shell.
+- it has *multiline input*.
 - it has *TAB completion*.
 - it handles errors gracefully: you are not dropped into the debugger
   and its sub-REPL, you simply see the error message.
+- it has optional *syntax highlighting*.
 
   It also defines short helper commands:
 
@@ -136,6 +137,14 @@ function name:
 
 #+begin_src txt
 ciel-user> (dict ?
+#+end_src
+
+Syntax highlighting is currently off by default. To enable it, install
+[[https://pygments.org/][pygments]] and add this in your =~/.cielrc=:
+
+#+BEGIN_SRC lisp
+(in-package :sbcli)
+(setf *pygmentize* t)
 #+end_src
 
 

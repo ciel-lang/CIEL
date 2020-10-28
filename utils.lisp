@@ -22,3 +22,26 @@ bar:qux
                    (last-nested-expr "(baz (qux ?")))
   (assert (string= "sym"
                    (last-nested-expr "sym ?"))))
+
+;;;;
+;;;; Syntax highlighting if pygments is installed.
+;;;;
+(defun maybe-highlight (str)
+  (if *pygmentize*
+      (let ((pygmentize (which:which "pygmentize")))
+        (when pygmentize
+          (with-input-from-string (s str)
+            (let ((proc (sb-ext:run-program  pygmentize
+                                          (list "-s" "-l" "lisp")
+                                          :input s
+                                          :output :stream)))
+              (read-line (sb-ext:process-output proc) nil "")))))
+    str))
+
+(defun syntax-hl ()
+  (rl:redisplay)
+  (let ((res (maybe-highlight rl:*line-buffer*)))
+    (format t "~c[2K~c~a~a~c[~aD" #\esc #\return rl:*display-prompt* res #\esc (- rl:+end+ rl:*point*))
+    (when (= rl:+end+ rl:*point*)
+      (format t "~c[1C" #\esc))
+    (finish-output)))
