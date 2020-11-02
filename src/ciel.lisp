@@ -197,8 +197,9 @@
     (pprint-logical-block (stream nil)
       (format stream "~&")
       (format stream "~vt" *current-pprint-indentation*)
-      (princ "#{" stream)
-      (unless (eq (hash-table-test ht) 'eql)
+      (princ "(dict " stream)
+      (unless (eq (hash-table-test ht) 'equal)
+        (princ #\' stream)
         (princ (hash-table-test ht) stream))
       (incf *current-pprint-indentation*)
       (format stream "~vt" *current-pprint-indentation*)
@@ -223,12 +224,12 @@
       (decf *current-pprint-indentation*)
       (format stream "~vt" *current-pprint-indentation*)
       (format stream "~&")
-      (format stream "~vt} " *current-pprint-indentation*)))
+      (format stream "~vt) " *current-pprint-indentation*)))
   ht)
 
+;; ;; Or:
 ;; (defmethod print-hash-table ((object hash-table) stream)
 ;;   ;; XXX: we can not read this back.
-;;   ;; we don't use rutils's pretty printing because we don't want the #h notaton
 ;;   (format stream "#HASH{~a, ~{~{~a: ~a~}~^, ~}}"
 ;;           (hash-table-test object)
 ;;           (loop for key being the hash-keys of object

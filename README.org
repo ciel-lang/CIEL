@@ -213,22 +213,25 @@ Here's how we can create a hash-table with keys and values:
   ;; create a hash-table:
   (dict :a 1 :b 2 :c 3)
   ;; =>
-   #{EQUAL
-    :A 1
-    :B 2
-    :C 3
-   }
+  (dict
+   :A 1
+   :B 2
+   :C 3
+  )
 #+end_src
 
-As seen above, hash-tables are pretty-printed by default. In default
-Common Lisp, they are printed like so:
+In default Common Lisp, you would do:
 
-    #<HASH-TABLE :TEST EQUAL :COUNT 3 {1006CE5613}>
+#+BEGIN_SRC lisp
+  (let ((ht (make-hash-table :test 'equal)))
+    (setf (gethash :a ht) 1)
+    (setf (gethash :b ht) 2)
+    (setf (gethash :c ht) 3)
+    ht)
+;; #<HASH-TABLE :TEST EQUAL :COUNT 3 {1006CE5613}>
+#+end_src
 
-However, our represetation has an important drawback: we (currently?) can't read
-the hash-table literal back in.
-
-# although rutils does it with the #h notation, which we would like to avoid in favour of dict.
+As seen above, hash-tables are pretty-printed by default.
 
 You can toggle the representation with =toggle-print-hash-table=, or
 by setting
