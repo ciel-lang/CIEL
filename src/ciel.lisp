@@ -184,46 +184,56 @@
 
 (defparameter *pretty-print-hash-tables* t "Pretty-print hash tables by default.")
 
+(defparameter *current-pprint-indentation* 1)
+
 (defun print-hash-table (ht &optional (stream *standard-output*))
   "Pretty print hash-table HT to STREAM.
 
-  CIEL note: copied from RUTILS."
+  CIEL note: copied from RUTILS and adapted to print correctly in the terminal."
+  ;; We use *current-pprint-indentation* instead of the built-in pprint-indent and friends
+  ;; because printing in the terminal prints too many tabs and too many lines in-between elements.
   (let ((*print-pretty* t)
         (i 0))
     (pprint-logical-block (stream nil)
-      (pprint-newline :fill stream)
+      (format stream "~&")
+      (format stream "~vt" *current-pprint-indentation*)
       (princ "#{" stream)
       (unless (eq (hash-table-test ht) 'eql)
         (princ (hash-table-test ht) stream))
-      (pprint-indent :block 2 stream)
+      (incf *current-pprint-indentation*)
+      (format stream "~vt" *current-pprint-indentation*)
       (block nil
         (maphash (lambda (k v)
-                   (pprint-newline :mandatory stream)
+                   (format stream "~&")
                    (when (and *print-length* (> (incf i) *print-length*))
                      (princ "..." stream)
                      (return))
-                   (when (and k (listp k)) (princ #\' stream))
+                   (when (and k (listp k))
+                     (princ #\' stream))
                    (if (typep k 'hash-table)
                        (print-hash-table k stream)
-                       (prin1 k stream))
+                       (format stream "~vt~s" *current-pprint-indentation* k))
                    (princ " " stream)
-                   (when (and v (listp v)) (princ #\' stream))
+                   (when (and v (listp v))
+                     (princ #\' stream))
                    (if (typep v 'hash-table)
                        (print-hash-table v stream)
-                       (prin1 v stream)))
+                       (format stream "~s" v)))
                  ht))
-      (pprint-indent :block 1 stream)
-      (pprint-newline :mandatory stream)
-      (princ "} " stream)))
+      (decf *current-pprint-indentation*)
+      (format stream "~vt" *current-pprint-indentation*)
+      (format stream "~&")
+      (format stream "~vt} " *current-pprint-indentation*)))
   ht)
-(defmethod print-hash-table ((object hash-table) stream)
-  ;; XXX: we can not read this back.
-  ;; we don't use rutils's pretty printing because we don't want the #h notaton
-  (format stream "#HASH{~a, ~{~{~a: ~a~}~^, ~}}"
-          (hash-table-test object)
-          (loop for key being the hash-keys of object
-                using (hash-value value)
-             collect (list key value))))
+
+;; (defmethod print-hash-table ((object hash-table) stream)
+;;   ;; XXX: we can not read this back.
+;;   ;; we don't use rutils's pretty printing because we don't want the #h notaton
+;;   (format stream "#HASH{~a, ~{~{~a: ~a~}~^, ~}}"
+;;           (hash-table-test object)
+;;           (loop for key being the hash-keys of object
+;;              using (hash-value value)
+;;              collect (list key value))))
 
 (let ((default-method (ignore-errors (find-method
                                       #'print-object nil '(hash-table t))))
