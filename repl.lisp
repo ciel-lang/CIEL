@@ -223,7 +223,8 @@
                     (cl-ansi-text:red "Evaluation error: ")
                     condition))))
   (add-res text *last-result*)
-  (if *last-result* (format t "~a~a~%" *ret* *last-result*)))
+  (if *last-result*
+      (format t "~a~s~%" *ret* *last-result*)))
 
 (defun handle-lisp (before text)
   (let* ((new-txt (format nil "~a ~a" before text))
