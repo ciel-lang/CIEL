@@ -182,22 +182,16 @@
 (setf *print-level* 20)
 (setf *print-length* 1000)
 
-;TODO: pretty print hash-tables
-
 ;; Pretty-print hash-tables by default.
 ;; Enable/disable with toggle-print-hash-table
-;; (stolen from rutils)
+;; (adapted from rutils)
 
 (defparameter *pretty-print-hash-tables* t "Pretty-print hash tables by default.")
-
-(defparameter *current-pprint-indentation* 1)
 
 (defun print-hash-table (ht &optional (stream *standard-output*))
   "Pretty print hash-table HT to STREAM.
 
-  CIEL note: copied from RUTILS and adapted to print correctly in the terminal."
-  ;; We use *current-pprint-indentation* instead of the built-in pprint-indent and friends
-  ;; because printing in the terminal prints too many tabs and too many lines in-between elements.
+  Adapted from RUTILS." ;; and ported to Serapeum.
   (let ((*print-pretty* t)
         (i 0))
     (pprint-logical-block (stream nil)
@@ -232,15 +226,6 @@
       (format stream "~&")
       (format stream "~vt) " *current-pprint-indentation*)))
   ht)
-
-;; ;; Or:
-;; (defmethod print-hash-table ((object hash-table) stream)
-;;   ;; XXX: we can not read this back.
-;;   (format stream "#HASH{~a, ~{~{~a: ~a~}~^, ~}}"
-;;           (hash-table-test object)
-;;           (loop for key being the hash-keys of object
-;;              using (hash-value value)
-;;              collect (list key value))))
 
 (let ((default-method (ignore-errors (find-method
                                       #'print-object nil '(hash-table t))))
