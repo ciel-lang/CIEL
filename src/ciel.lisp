@@ -77,6 +77,7 @@
                            '(:mean :variance :median
                              :clamp))
 
+;; serapeum: sequences/hash tables
 (cl-reexport:reexport-from :serapeum
                            :include
                            '(:assort
@@ -110,7 +111,7 @@
                              ;; to be continued
                              ))
 
-;; Conditions and type helpers.
+;; serapeum: conditions and type helpers.
 (cl-reexport:reexport-from :serapeum
                            :include
                            '(:ignoring
@@ -120,6 +121,11 @@
                              :typecase-of
                              :case-of
                              :ccase-of))
+
+;; serapeum: definitions
+(cl-reexport:reexport-from :serapeum
+                           :include
+                           '(:defalias))
 
 (cl-reexport:reexport-from :trivial-arguments
                            :include '(:arglist))
