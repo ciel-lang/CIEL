@@ -122,7 +122,7 @@
     *special*)
   ;; (write-line "Currently defined:")
   ;; (print-currently-defined)
-  (write-line "Press CTRL-C or CTRL-D or type :q to exit"))
+  (write-line "Press CTRL-D or type :q to exit"))
 
 (defun symbol-documentation (symbol)
   "Print the available documentation for this symbol."
@@ -368,11 +368,22 @@ strings to match candidates against (for example in the form \"package:sym\")."
                           prompt))
          (cur-pkg-name (package-name *package*))
          (text
-          (rl:readline :prompt (if (string-equal "CIEL-USER" cur-pkg-name)
-                                   prompt-text
-                                   (sbcli::format-prompt cur-pkg-name))
-                       :add-history t
-                       :novelty-check #'sbcli::novelty-check)))
+          (handler-case
+              (rl:readline :prompt (if (string-equal "CIEL-USER" cur-pkg-name)
+                                       prompt-text
+                                       (sbcli::format-prompt cur-pkg-name))
+                           :add-history t
+                           :novelty-check #'sbcli::novelty-check)
+            ;; Catch a C-c.
+            (#+sbcl sb-sys:interactive-interrupt
+              #+ccl  ccl:interrupt-signal-condition
+              #+clisp system::simple-interrupt-condition
+              #+ecl ext:interactive-interrupt
+              #+allegro excl:interrupt-signal
+              ()
+              (write-char #\linefeed)
+              ""))))
+
     (unless text (sbcli::end))
     (if (string= text "")
         (sbcli::sbcli "" *prompt*))
