@@ -502,7 +502,7 @@ to install it right now with Quicklisp:
 
 Use =ppcre=.
 
-See https://digikar99.github.io/common-lisp.readthedocs/cl-ppcre/ and https://lispcookbook.github.io/cl-cookbook/regexp.html
+See https://common-lisp-libraries.readthedocs.io/cl-ppcre and https://lispcookbook.github.io/cl-cookbook/regexp.html
 
 ** Threads, monitoring, scheduling
 
