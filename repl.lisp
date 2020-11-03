@@ -392,7 +392,7 @@ strings to match candidates against (for example in the form \"package:sym\")."
   (if (probe-file *config-file*)
       (load *config-file*))
 
-  (print *banner*)
+  (princ *banner*)
   (write-line (str:repeat 80 "-"))
   (print-system-info)
   (write-line (str:repeat 80 "-"))
