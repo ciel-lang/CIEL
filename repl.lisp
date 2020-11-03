@@ -235,7 +235,8 @@
     (when parsed (evaluate-lisp text parsed))))
 
 (defun handle-input (before text)
-  (if (and (> (length text) 1) (string= (subseq text 0 1) ":"))
+  (if (and (> (length text) 1)
+           (str:starts-with-p ":" text))
     (handle-special-input text)
     (handle-lisp before text)))
 
