@@ -251,6 +251,7 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
 ;; (adapted from rutils)
 
 (defparameter *pretty-print-hash-tables* t "Pretty-print hash tables by default.")
+(defparameter *current-pprint-indentation* 1)
 
 (defun print-hash-table (ht &optional (stream *standard-output*))
   "Pretty print hash-table HT to STREAM.
