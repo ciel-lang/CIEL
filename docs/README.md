@@ -22,13 +22,13 @@ git clone https://github.com/ciel-lang/CIEL ~/quicklisp/local-projects/CIEL
 
 Then, quickload it:
 
-``` commonlisp
+```lisp
 (ql:quickload "ciel")
 ```
 
 and enter the `ciel-user` package, instead of the default `common-lisp-user` (or `cl-user`):
 
-``` commonlisp
+```lisp
 (in-package :ciel-user)
 ```
 
@@ -92,7 +92,7 @@ ciel-user> (dict ?
 
 Syntax highlighting is currently off by default. To enable it, install [pygments](https://pygments.org/) and add this in your `~/.cielrc`:
 
-``` commonlisp
+```lisp
 (in-package :sbcli)
 (setf *syntax-highlighting* t)
 
@@ -103,7 +103,7 @@ Syntax highlighting is currently off by default. To enable it, install [pygments
 
 You can also switch it on and off from the REPL:
 
-``` commonlisp
+```lisp
 (setf sbcli:*syntax-highlighting* t)
 ```
 
@@ -121,7 +121,7 @@ From [Access](https://github.com/AccelerationNet/access/%0A), we import `access`
 
 It's always
 
-``` commonlisp
+```lisp
 (access my-structure :elt)
 ```
 
@@ -156,7 +156,7 @@ To see their full list with their documentation, see [serapeum](serapeum.md).
 
 Here's how we can create a hash-table with keys and values:
 
-``` commonlisp
+``` lisp
 ;; create a hash-table:
 (dict :a 1 :b 2 :c 3)
 ;; =>
@@ -169,7 +169,7 @@ Here's how we can create a hash-table with keys and values:
 
 In default Common Lisp, you would do:
 
-``` commonlisp
+```lisp
   (let ((ht (make-hash-table :test 'equal)))
     (setf (gethash :a ht) 1)
     (setf (gethash :b ht) 2)
@@ -182,7 +182,7 @@ As seen above, hash-tables are pretty-printed by default.
 
 You can toggle the representation with `toggle-print-hash-table`, or by setting
 
-``` commonlisp
+```lisp
 (setf *pretty-print-hash-tables* nil)
 ```
 
@@ -228,7 +228,7 @@ Data formats
 
 You have [cl-csv](https://github.com/AccelerationNet/cl-csv), under its `cl-csv` package name and the `csv` local nickname.
 
-``` commonlisp
+```lisp
 ;; read a file into a list of lists
 (cl-csv:read-csv #P"file.csv")
 => (("1" "2" "3") ("4" "5" "6"))
@@ -259,7 +259,7 @@ We use [cl-json](https://common-lisp.net/project/cl-json/cl-json.html) ([GitHub]
 
 To encode an object to a string, use `encode-json-to-string`:
 
-``` commonlisp
+```lisp
 (json:encode-json-to-string (list (dict :a 1)))
 ;; "[{\"A\":1}]"
 ```
@@ -273,7 +273,7 @@ To encode or decode objects from a *stream*, use:
 
 as in:
 
-``` commonlisp
+```lisp
 (with-output-to-string (s)
    (json:encode-json (dict :foo (list 1 2 3)) s))
 ;; "{\"FOO\":[1,2,3]}"
@@ -285,7 +285,7 @@ as in:
 
 cl-json can encode and decode from objects. Given a simple class:
 
-``` commonlisp
+```lisp
 (defclass person ()
   ((name :initarg :name)
    (lisper :initform t)))
@@ -293,7 +293,7 @@ cl-json can encode and decode from objects. Given a simple class:
 
 We can encode an instance of it:
 
-``` commonlisp
+```lisp
 (json:encode-json-to-string (make-instance 'person :name "you"))
 ;; "{\"NAME\":\"you\",\"LISPER\":true}"
 ```
@@ -302,7 +302,7 @@ By default, cl-json wants to convert our lisp symbols to camelCase, and the JSON
 
 You can set this behaviour back with:
 
-``` commonlisp
+```lisp
 (setf json:*json-identifier-name-to-lisp* #'json:camel-case-to-lisp)
 (setf json:*lisp-identifier-name-to-json* #'json:lisp-to-camel-case)
 ```
@@ -334,19 +334,19 @@ Here's how to start with Ltk:
 
 -   either put yourself in the `ltk-user` package:
 
-``` commonlisp
+```lisp
 (in-package :ltk-user)
 ```
 
 -   either `use` ltk:
 
-``` commonlisp
+```lisp
 (use-package :ltk)
 ```
 
 Use the `with-ltk` macro to define your GUI, use `make-instance` + a widget name to create it, and use the `grid` to position widgets.
 
-``` commonlisp
+```lisp
 (with-ltk ()
   (let ((button (make-instance 'button :text "hello")))
     (grid button 0 0)))
@@ -431,7 +431,7 @@ See also [cl-decimals](https://github.com/tlikonen/cl-decimals) to parse and for
 
 We don't ship *Numcl*, a Numpy clone in Common Lisp, but we invite you to install it right now with Quicklisp:
 
-``` commonlisp
+```lisp
 (ql:quickload "numcl")
 ```
 
@@ -461,7 +461,7 @@ We ship:
 
 For example, run a function every minute:
 
-``` commonlisp
+```lisp
 (defun say-hi ()
   (print "Hi!"))
 (cl-cron:make-cron-job #'say-hi)
@@ -474,7 +474,7 @@ Stop all jobs with `stop-cron`.
 
 `make-cron`'s keyword arguments are:
 
-``` commonlisp
+```lisp
 (minute :every) (step-min 1) (hour :every) (step-hour 1) (day-of-month :every)
 (step-dom 1) (month :every) (step-month 1) (day-of-week :every)
 (step-dow 1)
@@ -490,7 +490,7 @@ See:
 -   Quri
 -   Lquery
 
-``` commonlisp
+```lisp
 (dex:get "http://my.url")
 ```
 
@@ -515,7 +515,7 @@ An improved version of `ignore-errors`. The behavior is the same: if an error oc
 
 `ignoring` forces you to specify the kind of error you want to ignore:
 
-``` commonlisp
+```lisp
 (ignoring parse-error
           ...)
 ```
@@ -539,14 +539,14 @@ From Serapeum, we import:
 
 We may call a type defined using member an enumeration. Take an enumeration like this:
 
-``` commonlisp
+```lisp
 (deftype switch-state ()
   '(member :on :off :stuck :broken))
 ```
 
 Now we can use `ecase-of` to take all the states of the switch into account.
 
-``` commonlisp
+```lisp
 (defun flick (switch)
   (ecase-of switch-state (state switch)
     (:on (switch-off switch))
@@ -554,7 +554,7 @@ Now we can use `ecase-of` to take all the states of the switch into account.
 => Warning
 ```
 
-``` commonlisp
+```lisp
 (defun flick (switch)
   (ecase-of switch-state (state switch)
     (:on (switch-off switch))
@@ -565,7 +565,7 @@ Now we can use `ecase-of` to take all the states of the switch into account.
 
 ### Example with union types
 
-``` commonlisp
+```lisp
 (defun negative-integer? (n)
   (etypecase-of t n
     ((not integer) nil)
@@ -615,7 +615,7 @@ Syntax extensions
 
 We provide the Clojure-like arrow macros and "diamond wands" from the [arrow-macros](https://github.com/hipeta/arrow-macros) library.
 
-``` commonlisp
+```lisp
 ;; -> inserts the previous value as its first argument:
 (-> "  hello macros   "
   str:upcase
@@ -656,7 +656,7 @@ And there is more. All the available macros are:
 
 We can use triple quotes for docstrings, and double quotes within them.
 
-``` commonlisp
+```lisp
 (defun foo ()
   """foo "bar"."""
   t)
@@ -672,7 +672,7 @@ You have to enable cl-punch's syntax yourself.
 (cl-punch:enable-punch-syntax)
 ```
 
-``` commonlisp
+```lisp
 ;; ^() is converted into (lambda ...) .
 ;; Each underscore is converted into a lambda argument.
 
@@ -708,7 +708,7 @@ The [FiveAM](https://common-lisp.net/project/fiveam/docs/) test framework is ava
 
 Below we create a package to contain our tests and we define the most simple one:
 
-``` commonlisp
+```lisp
 (defpackage ciel-5am
   (:use :cl :5am))
 
@@ -803,7 +803,7 @@ Learn more with:
 
 [printv](https://github.com/danlentz/printv)
 
-``` commonlisp
+```lisp
  (:printv
   (defvar *y*)
   (defparameter *x* 2)
@@ -823,7 +823,7 @@ Learn more with:
 
 <https://github.com/Shinmera/trivial-arguments>
 
-``` commonlisp
+```lisp
 (defun foo (a b c &optional d) nil)
 (arglist #'foo)
 ;; (a b c &optional d)
@@ -842,7 +842,7 @@ generic-ciel
 
 Example:
 
-``` commonlisp
+```lisp
 ;; with a struct or class "point":
 (defmethod equalp ((p1 point) (p2 point))
    (…))
