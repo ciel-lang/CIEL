@@ -328,6 +328,10 @@ We ship [ltk](http://www.peter-herth.de/ltk/ltkdoc/).
 
 The Tk toolkit is nearly ubiquitous and simple to use. It doesn't have a great deal of widgets, but it helps anyways for utility GUIs. Moreover, it doesn't look aweful (as it did back), it has themes to look nearly native on the different platforms.
 
+Here's how it looks like on Mac:
+
+![](https://lispcookbook.github.io/cl-cookbook/assets/gui/ltk-on-macos.png)
+
 You have other GUI options a quickload away (Qt4, Gtk, IUP, Nuklear, not mentioning LispWorks CAPI…): <https://lispcookbook.github.io/cl-cookbook/gui.html>
 
 Here's how to start with Ltk:
