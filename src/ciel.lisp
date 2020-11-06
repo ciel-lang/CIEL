@@ -4,6 +4,11 @@
 
 (in-package :ciel)
 
+(defparameter *doc-pages* '()
+  "We want to track the symbols that we import from other libraries, and re-display their documentation automatically on their own page.
+
+We currently only try this with serapeum. See *deps/serapeum/sequences-hashtables* and how the docs/serapeum.md page is generated with `generate-dependencies-page-reference'.")
+
 (cl-reexport:reexport-from :parse-float)
 (cl-reexport:reexport-from :parse-number
                            :include
@@ -78,38 +83,47 @@
                              :clamp))
 
 ;; serapeum: sequences/hash tables
+(defparameter *deps/serapeum/sequences-hashtables*
+  '(:assort
+    :batches
+    :iota
+    :runs
+    :partition
+    :partitions
+    :split-sequence
+
+    :count-cpus
+
+    ;; hash-tables
+    :dict
+    :do-hash-table ;; see also trivial-do
+    :dict*
+    :dictq ;; quoted
+    :pophash
+    :swaphash
+    :hash-fold
+    :maphash-return
+    :merge-tables
+    :flip-hash-table
+    :set-hash-table
+    :hash-table-set
+    :hash-table-predicate
+    :hash-table-function
+    :make-hash-table-function
+    :delete-from-hash-table
+    :pairhash
+    ;; to be continued
+    ))
+
+(push (list "docs/serapeum.md"
+            :serapeum
+            *deps/serapeum/sequences-hashtables*)
+      *doc-pages*)
+
 (cl-reexport:reexport-from :serapeum
                            :include
-                           '(:assort
-                             :batches
-                             :iota
-                             :runs
-                             :partition
-                             :partitions
-                             :split-sequence
+                           *deps/serapeum/sequences-hashtables*)
 
-                             :count-cpus
-
-                             ;; hash-tables
-                             :dict
-                             :do-hash-table ;; see also trivial-do
-                             :dict*
-                             :dictq  ;; quoted
-                             :pophash
-                             :swaphash
-                             :hash-fold
-                             :maphash-return
-                             :merge-tables
-                             :flip-hash-table
-                             :set-hash-table
-                             :hash-table-set
-                             :hash-table-predicate
-                             :hash-table-function
-                             :make-hash-table-function
-                             :delete-from-hash-table
-                             :pairhash
-                             ;; to be continued
-                             ))
 
 ;; serapeum: conditions and type helpers.
 (cl-reexport:reexport-from :serapeum
@@ -154,6 +168,56 @@
                                       :file-position-designator
                                       :pathname-designator
                                       ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun symbol-documentation (symbol &key (stream t))
+  "Print the available documentation for this symbol."
+  ;; Normally, the documentation function takes as second argument the
+  ;; type designator. We loop over each type and print the available
+  ;; documentation.
+  ;; XXX: copied and adapted from repl.lisp :S
+  ;; - print arglist first, inside backquotes
+  ;; - enforce newlines
+  ;; - doc -> docstring for conflict with repl-utilities
+  (handler-case (loop for doc-type in '(variable function structure type setf)
+                   with sym = (if (stringp symbol)
+                                  ;; used from the readline REPL
+                                  (read-from-string symbol)
+                                  ;; used from Slime
+                                  symbol)
+                   for docstring = (unless (consp sym) ;; when a function is quoted: :doc 'defun
+                                     ;; instead of :doc defun
+                                     (documentation sym doc-type))
+                   when (and (equal doc-type 'function)
+                             (fboundp sym))
+                   do (format stream "~%ARGLIST: `~a`~%"
+                              (format nil "~(~a~)"
+                                      (trivial-arguments:arglist sym)))
+                   when  docstring
+                   do (format stream "~%~a: ~a~&" doc-type docstring))
+    (error (c) (format *error-output* "Error during documentation lookup: ~a~&" c))))
+
+(defun generate-dependencies-page-reference ()
+  (loop for doc-spec in *doc-pages*
+     do
+       (with-open-file (f (first doc-spec)
+                          :direction :output
+                          :if-does-not-exist :create
+                          :if-exists :supersede)
+         (format f "# Symbols imported from ~a~&~%" (second doc-spec))
+         (loop for elt in (third doc-spec)
+            for sym = (uiop:find-symbol* elt (second doc-spec))
+            do
+              (format f "## ~a ~%~%~a~&"
+                      elt
+                      (with-output-to-string (s)
+                        (symbol-documentation sym :stream s)))))))
+
+#+only-with-a-C-c-C-c
+(generate-dependencies-page-reference)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defpackage ciel-user
   (:use :cl :ciel)

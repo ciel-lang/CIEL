@@ -131,6 +131,7 @@ for an alist, a hash-table, a struct, an object… Use `accesses` for nested acc
 
 We import functions from Serapeum. <https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#hash-tables>
 
+To see their full list with their documentation, see [serapeum](serapeum.md).
 ``` txt
 :dict
 :do-hash-table ;; see also trivial-do
