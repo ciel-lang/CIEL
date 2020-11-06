@@ -905,8 +905,8 @@ Learn more with:
 
 That was your life in CL:
 
-#+html: <p align="center"><img src="before.jpeg" /></p>
+#+html: <p align="center"><img src="docs/before.jpeg" /></p>
 
 and now:
 
-#+html: <p align="center"><img src="after-plus.jpeg" /></p>
+#+html: <p align="center"><img src="docs/after-plus.jpeg" /></p>
