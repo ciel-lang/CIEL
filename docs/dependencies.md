@@ -1,5 +1,4 @@
-- access: A library providing functions that unify data-structure access for Common Lisp:
-      access and (setf access)
+- access: A library providing functions that unify data-structure access for Common Lisp: access and (setf access)
 - alexandria: Alexandria is a collection of portable public domain utilities.
 - arrow-macros: arrow-macros provides clojure-like arrow macros and diamond wands.
 - bordeaux-threads: Bordeaux Threads makes writing portable multi-threaded apps simple.
