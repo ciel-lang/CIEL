@@ -6,11 +6,9 @@ It's Common Lisp, batteries included.
 
 Questions, doubts? See the [FAQ](FAQ.md).
 
-Install
-=======
+# Install
 
-With Quicklisp
---------------
+## With Quicklisp
 
 You need a Lisp implementation and Quicklisp installed.
 
@@ -32,8 +30,7 @@ and enter the `ciel-user` package, instead of the default `common-lisp-user` (or
 (in-package :ciel-user)
 ```
 
-With a core image
------------------
+## With a core image
 
 You need a Lisp implementation, but you don't need Quicklisp.
 
@@ -51,8 +48,7 @@ sbcl --core ciel --eval '(in-package :ciel-user)'
 
 TODO: we will distribute ready-to-use core images.
 
-With a binary. Use CIEL's custom REPL.
---------------------------------------
+## With a binary
 
 You don't need anything, just download the CIEL executable and run its REPL.
 
@@ -62,17 +58,19 @@ To build it, clone this repository and run `make build`.
 
 Start it with `./ciel-repl`.
 
-You are dropped into a custom Lisp REPL, freely based on [sbcli](https://github.com/hellerve/sbcli).
+You are dropped into a custom Lisp REPL, adapted from [sbcli](https://github.com/hellerve/sbcli).
+
+# CIEL's custom REPL
 
 This REPL is more user friendly than the default SBCL one:
 
--   it has readline capabilities, meaning that the arrow keys work by default (wouhou!) and there is a persistent history, like in any shell.
--   it has **multiline input**.
--   it has **TAB completion**.
--   it handles errors gracefully: you are not dropped into the debugger and its sub-REPL, you simply see the error message.
--   it has optional **syntax highlighting**.
+-  it has readline capabilities, meaning that the arrow keys work by default (wouhou!) and there is a persistent history, like in any shell.
+-  it has **multiline input**.
+-  it has **TAB completion**.
+-  it handles errors gracefully: you are not dropped into the debugger and its sub-REPL, you simply see the error message.
+-  it has optional **syntax highlighting**.
 
-    It also defines short helper commands:
+-  it defines short **helper commands**:
 
 ``` txt
 :help => Prints this general help message
@@ -81,16 +79,24 @@ This REPL is more user friendly than the default SBCL one:
 :w => Writes the current session to a file <filename>
 :d => Dumps the disassembly of a symbol <sym>
 :t => Prints the type of a expression <expr>
+:lisp-critic => Toggles the lisp-critic
 :q => Ends the session.
 ```
 
-Note: the documentation is also available by appending a "?" after a function name:
+## Quick documentation lookup
 
-``` txt
+The documentation fo a symbol is available with `:doc` and also by
+appending a "?" after a function name:
+
+```
+ciel-user> :doc dict
+;; or:
 ciel-user> (dict ?
 ```
 
-Syntax highlighting is currently off by default. To enable it, install [pygments](https://pygments.org/) and add this in your `~/.cielrc`:
+## Syntax highlighting
+
+Syntax highlighting is off by default. To enable it, install [pygments](https://pygments.org/) and add this in your `~/.cielrc`:
 
 ```lisp
 (in-package :sbcli)
@@ -107,13 +113,50 @@ You can also switch it on and off from the REPL:
 (setf sbcli:*syntax-highlighting* t)
 ```
 
-Libraries
-=========
+## Friendly lisp-critic
+
+The `:lisp-critic` helper command toggles on and off the
+[lisp-critic](https://github.com/g000001/lisp-critic). The Lisp Critic
+scans your code for instances of bad Lisp programming practice. For
+example, when it sees the following function:
+
+
+~~~lisp
+(critique
+   (defun count-a (lst)
+     (setq n 0)
+     (dolist (x lst)
+       (if (equal x 'a)
+         (setq n (+ n 1))))
+     n))
+~~~
+
+the lisp-critic gives you these advices:
+
+```
+----------------------------------------------------------------------
+
+SETS-GLOBALS: GLOBALS!! Don't use global variables, i.e., N
+----------------------------------------------------------------------
+
+DOLIST-SETF: Don't use SETQ inside DOLIST to accumulate values for N.
+Use DO. Make N a DO variable and don't use SETQ etc at all.
+----------------------------------------------------------------------
+
+USE-EQL: Unless something special is going on, use EQL, not EQUAL.
+----------------------------------------------------------------------
+
+X-PLUS-1: Don't use (+ N 1), use (1+ N) for its value or (INCF N) to
+change N, whichever is appropriate here.
+----------------------------------------------------------------------
+```
+
+
+# Libraries
 
 To see the full list of dependencies, see the `ciel.asd` project definition or this [dependencies list](dependencies.md).
 
-Data structures
----------------
+## Data structures
 
 ### Generic and nested access to datastructures (access)
 
@@ -852,13 +895,11 @@ Example:
    (…))
 ```
 
-FAQ
-===
+# FAQ
 
 See it here: [FAQ](FAQ.md).
 
-Final words
-===========
+# Final words
 
 That was your life in CL:
 

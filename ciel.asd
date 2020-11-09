@@ -81,6 +81,9 @@
                :log4cl
                :printv
                :repl-utilities ;; see readme, summary, doc, package-apropos, trace-package etc
+
+               ;; user helpers
+               :lisp-critic
                )
   :components ((:module "src"
                         :components

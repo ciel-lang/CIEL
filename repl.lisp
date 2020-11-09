@@ -43,6 +43,7 @@
 (defvar *syntax-highlighting* nil)
 (defvar *pygmentize* nil "(optional) Path to a pygments executable. If not set, we try to find it.")
 (defvar *pygmentize-options* (list "-s" "-l" "lisp"))
+(defparameter *lisp-critic* nil "If non-nil, give feedback on the code you type using lisp-critic.")
 (declaim (special *special*))
 
 (defun print-system-info (&optional (stream t))
@@ -174,6 +175,10 @@
     (sb-int:compiled-program-error (err) (format t "~a~%" err))
     (undefined-function (fun) (format t "~a~%" fun))))
 
+(defun toggle-lisp-critic ()
+  (setf *lisp-critic* (not *lisp-critic*))
+  (format t "The lisp-critic is ~a.~&" (if *lisp-critic* "enabled" "disabled")))
+
 ;; -1 means take the string as one arg
 (defvar *special*
   (alexandria:alist-hash-table
@@ -188,8 +193,10 @@
      ("t" . (-1 . ,#'dump-type))
      ("q" . (0 . ,#'end))
      ;; ("z" . (0 . ,#'reset))
+     ("lisp-critic" . (0 . ,#'toggle-lisp-critic))
      )
-   :test 'equal))
+   :test 'equal)
+  "All special commands starting with :")
 
 (defun call-special (fundef call args)
   (let ((l (car fundef))
@@ -227,13 +234,23 @@
   (if *last-result*
       (format t "~a~s~%" *ret* *last-result*)))
 
+(defun lisp-critic-applicalbe (txt)
+  "TXT is code that should start with a parenthesis. Don't critique global variables."
+  (str:starts-with? "(" (str:trim txt)))
+
 (defun handle-lisp (before text)
   (let* ((new-txt (format nil "~a ~a" before text))
-         (parsed (handler-case (read-from-string new-txt)
-                   (end-of-file () (sbcli new-txt *prompt2*))
+         (txt (if (and *lisp-critic*
+                       (lisp-critic-applicalbe new-txt))
+                  (format nil "(LISP-CRITIC:CRITIQUE ~a)" new-txt)
+                  new-txt))
+         (parsed (handler-case (read-from-string txt)
+                   (end-of-file () (sbcli txt *prompt2*))
                    (error (condition)
-                    (format *error-output* "Parser error: ~a~%" condition)))))
-    (when parsed (evaluate-lisp text parsed))))
+                     (format *error-output* "Parser error: ~a~%" condition)))))
+
+    (when parsed
+      (evaluate-lisp text parsed))))
 
 (defun handle-input (before text)
   (if (and (> (length text) 1)

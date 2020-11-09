@@ -131,36 +131,11 @@ TODO: we will distribute ready-to-use core images.
   :w => Writes the current session to a file <filename>
   :d => Dumps the disassembly of a symbol <sym>
   :t => Prints the type of a expression <expr>
+  :lisp-critic => Toggles the lisp-critic
   :q => Ends the session.
 #+end_src
 
-Note: the documentation is also available by appending a "?" after a
-function name:
-
-#+begin_src txt
-ciel-user> (dict ?
-#+end_src
-
-Syntax highlighting is currently off by default. To enable it, install
-[[https://pygments.org/][pygments]] and add this in your =~/.cielrc=:
-
-#+BEGIN_SRC lisp
-(in-package :sbcli)
-(setf *syntax-highlighting* t)
-
-;; and, optionally:
-;; (setf *pygmentize* "/path/to/pygmentize")
-;; (setf *pygmentize-options* (list "-s" "-l" "lisp"))
-#+end_src
-
-You can also switch it on and off from the REPL:
-
-#+BEGIN_SRC lisp
-(setf sbcli:*syntax-highlighting* t)
-#+end_src
-
-
-# update the TOC with toc-org
+See the documentation.
 
 * Libraries
 
