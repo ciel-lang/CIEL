@@ -149,6 +149,17 @@ USE-EQL: Unless something special is going on, use EQL, not EQUAL.
 X-PLUS-1: Don't use (+ N 1), use (1+ N) for its value or (INCF N) to
 change N, whichever is appropriate here.
 ----------------------------------------------------------------------
+; in: DEFUN COUNT-A
+;     (SETQ CIEL-USER::N 0)
+;
+; caught WARNING:
+;   undefined variable: N
+;
+; compilation unit finished
+;   Undefined variable:
+;     N
+;   caught 1 WARNING condition
+=> COUNT-A
 ```
 
 

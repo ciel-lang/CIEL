@@ -240,15 +240,26 @@
 
 (defun handle-lisp (before text)
   (let* ((new-txt (format nil "~a ~a" before text))
-         (txt (if (and *lisp-critic*
-                       (lisp-critic-applicalbe new-txt))
-                  (format nil "(LISP-CRITIC:CRITIQUE ~a)" new-txt)
-                  new-txt))
-         (parsed (handler-case (read-from-string txt)
-                   (end-of-file () (sbcli txt *prompt2*))
+         (to-critic (when (and *lisp-critic*
+                               (lisp-critic-applicalbe new-txt))
+                      (format nil "(LISP-CRITIC:CRITIQUE ~a)" new-txt)))
+         (parsed (handler-case (read-from-string new-txt)
+                   (end-of-file () (sbcli new-txt *prompt2*))
                    (error (condition)
-                     (format *error-output* "Parser error: ~a~%" condition)))))
+                     (format *error-output* "Parser error: ~a~%" condition))))
+         (to-critic-parsed (when (and to-critic
+                                      parsed)
+                             (handler-case (read-from-string to-critic)
+                               (end-of-file () (sbcli to-critic *prompt2*))
+                               (error (condition)
+                                 (format *error-output* "Critic parser error: ~a~%" condition))))))
 
+    (when to-critic-parsed
+      ;; The call to lisp-critic doesn't evaluate the lisp code,
+      ;; it only scans it and prints feedback.
+      (evaluate-lisp text to-critic-parsed))
+    ;; But even if the lisp-critic is enabled,
+    ;; we want the code we type to be eval'ed.
     (when parsed
       (evaluate-lisp text parsed))))
 
