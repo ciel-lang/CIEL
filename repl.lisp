@@ -234,30 +234,25 @@
   (if *last-result*
       (format t "~a~s~%" *ret* *last-result*)))
 
-(defun lisp-critic-applicalbe (txt)
+(defun lisp-critic-applicable (txt)
   "TXT is code that should start with a parenthesis. Don't critique global variables."
   (str:starts-with? "(" (str:trim txt)))
 
 (defun handle-lisp (before text)
   (let* ((new-txt (format nil "~a ~a" before text))
-         (to-critic (when (and *lisp-critic*
-                               (lisp-critic-applicalbe new-txt))
-                      (format nil "(LISP-CRITIC:CRITIQUE ~a)" new-txt)))
          (parsed (handler-case (read-from-string new-txt)
                    (end-of-file () (sbcli new-txt *prompt2*))
                    (error (condition)
                      (format *error-output* "Parser error: ~a~%" condition))))
-         (to-critic-parsed (when (and to-critic
-                                      parsed)
-                             (handler-case (read-from-string to-critic)
-                               (end-of-file () (sbcli to-critic *prompt2*))
-                               (error (condition)
-                                 (format *error-output* "Critic parser error: ~a~%" condition))))))
+         (to-critic (when (and *lisp-critic*
+                               (lisp-critic-applicable new-txt)
+                               parsed)
+                      `(lisp-critic:critique ,parsed))))
 
-    (when to-critic-parsed
+    (when to-critic
       ;; The call to lisp-critic doesn't evaluate the lisp code,
       ;; it only scans it and prints feedback.
-      (evaluate-lisp text to-critic-parsed))
+      (evaluate-lisp text to-critic))
     ;; But even if the lisp-critic is enabled,
     ;; we want the code we type to be eval'ed.
     (when parsed
