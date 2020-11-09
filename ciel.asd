@@ -75,6 +75,8 @@
                ;; tests
                :fiveam
 
+               :which
+
                ;; debugging, developer utilities
                :log4cl
                :printv
