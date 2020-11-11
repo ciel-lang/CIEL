@@ -32,7 +32,7 @@
 
 
 ")
-(defvar *repl-name*    "CIEL's REPL for SBCL")
+(defvar *repl-name*    "CIEL's REPL")
 (defvar *prompt*       (format nil "~a" (cl-ansi-text:green "ciel-user> ")))
 (defvar *prompt2*       "....> ")
 (defvar *ret*          "=> ")
@@ -423,6 +423,18 @@ strings to match candidates against (for example in the form \"package:sym\")."
     (sbcli::sbcli "" *prompt*)))
 
 (defun repl ()
+
+  (let ((argv (uiop:command-line-arguments)))
+    (when (or (member "-h" argv :test #'string-equal)
+              (member "--help" argv :test #'string-equal))
+      (format t "~a version ~a~%" *repl-name* *repl-version*)
+      (format t "Contribute on: https://github.com/ciel-lang/CIEL~&")
+      (print-system-info)
+      (format t "CIEL Is an Extended Lisp. It's Common Lisp, batteries included.~&~
+        It comes in the form of a Quicklisp library that you can use as any other one in your favourite editor, ~
+        as an SBCL core image and as a readline REPL, with developer goodies.~&")
+      (uiop:quit)))
+
   (rl:register-function :complete #'custom-complete)
   (rl:register-function :redisplay #'syntax-hl)
 

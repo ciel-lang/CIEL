@@ -58,7 +58,7 @@ To build it, clone this repository and run `make build`.
 
 Start it with `./ciel-repl`.
 
-You are dropped into a custom Lisp REPL, adapted from [sbcli](https://github.com/hellerve/sbcli).
+You are dropped into a custom Lisp REPL.
 
 # CIEL's custom REPL
 
@@ -84,6 +84,8 @@ This REPL is more user friendly than the default SBCL one:
 ```
 
 - it has a **shell pass-through**: try `!ls`.
+
+Our REPL is adapted from [sbcli](https://github.com/hellerve/sbcli). See also [cl-repl](https://github.com/koji-kojiro/cl-repl/), that has an interactive debugger.
 
 ## Quick documentation lookup
 
