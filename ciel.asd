@@ -84,6 +84,8 @@
 
                ;; user helpers
                :lisp-critic
+               :named-readtables
+               :clesh
                )
   :components ((:module "src"
                         :components

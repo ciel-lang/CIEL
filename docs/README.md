@@ -83,6 +83,8 @@ This REPL is more user friendly than the default SBCL one:
 :q => Ends the session.
 ```
 
+- it has a **shell pass-through**: try `!ls`.
+
 ## Quick documentation lookup
 
 The documentation fo a symbol is available with `:doc` and also by
@@ -93,6 +95,38 @@ ciel-user> :doc dict
 ;; or:
 ciel-user> (dict ?
 ```
+
+# Shell pass-through
+
+Use `!` to send a shell command:
+
+```
+!ls
+Makefile
+README.org
+repl.lisp
+repl-utils.lisp
+src
+...
+
+!pwd
+/home/vindarel/projets/ciel
+```
+
+Use square brackets `[...]` to write a shell script, and use `$` inside it to escape to lisp:
+
+```lisp
+(dotimes (i 7) (princ [echo ?i]))
+```
+
+The result is concatenated into a string and printed on stdout.
+
+This feature is only available in CIEL's REPL, not on the CIEL-USER package.
+
+We use the [Clesh](https://github.com/Neronus/clesh) library.
+
+See also [SHCL](https://github.com/bradleyjensen/shcl) for a more unholy union of posix-shell and Common Lisp.
+
 
 ## Syntax highlighting
 

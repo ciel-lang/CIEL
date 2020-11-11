@@ -135,6 +135,8 @@ TODO: we will distribute ready-to-use core images.
   :q => Ends the session.
 #+end_src
 
+- it has a *shell pass-through*: try =!ls=.
+
 See the documentation.
 
 * Libraries

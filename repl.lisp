@@ -176,6 +176,7 @@
     (undefined-function (fun) (format t "~a~%" fun))))
 
 (defun toggle-lisp-critic ()
+  "Enable or disable the lisp critic. He critizes the code you type before compiling it."
   (setf *lisp-critic* (not *lisp-critic*))
   (format t "The lisp-critic is ~a.~&" (if *lisp-critic* "enabled" "disabled")))
 
@@ -439,6 +440,16 @@ strings to match candidates against (for example in the form \"package:sym\")."
   (when *hist-file* (read-hist-file))
 
   (in-package :ciel-user)
+
+  ;; Enable Clesh, only for the readline REPL,
+  ;; part because we don't want to clutter the ciel-user package,
+  ;; part because Clesh is buggy for us on Slime (!! and [...]).
+  ;; We get the ! pass-through shell:
+  ;; !ls
+  ;; as well as [ ... ] on multilines.
+  ;; Beware: the double bang !! doesn't work. See issues.
+  (named-readtables:in-readtable clesh:syntax)
+
   (handler-case (sbcli::sbcli "" sbcli::*prompt*)
     (sb-sys:interactive-interrupt () (sbcli::end))))
 
