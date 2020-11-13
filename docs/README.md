@@ -270,7 +270,7 @@ In default Common Lisp, you would do:
 
 As seen above, hash-tables are pretty-printed by default.
 
-You can toggle the representation with `toggle-print-hash-table`, or by setting
+You can toggle the representation with `toggle-pretty-print-hash-table`, or by setting
 
 ```lisp
 (setf *pretty-print-hash-tables* nil)

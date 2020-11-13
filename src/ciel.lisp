@@ -247,13 +247,14 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
 (setf *print-length* 1000)
 
 ;; Pretty-print hash-tables by default.
-;; Enable/disable with toggle-print-hash-table
+;; Enable/disable with toggle-pretty-print-hash-table
 ;; (adapted from rutils)
 
 (defparameter *pretty-print-hash-tables* t "Pretty-print hash tables by default.")
-(defparameter *current-pprint-indentation* 1)
+(defparameter *current-pprint-indentation* 1
+  "We use custom indentation instead of the pretty printer, because it doesn't print correctly in the shell (indentations are way too large).")
 
-(defun print-hash-table (ht &optional (stream *standard-output*))
+(defun pretty-print-hash-table (ht &optional (stream *standard-output*))
   "Pretty print hash-table HT to STREAM.
 
   Adapted from RUTILS." ;; and ported to Serapeum.
@@ -277,13 +278,13 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
                    (when (and k (listp k))
                      (princ #\' stream))
                    (if (typep k 'hash-table)
-                       (print-hash-table k stream)
+                       (pretty-print-hash-table k stream)
                        (format stream "~vt~s" *current-pprint-indentation* k))
                    (princ " " stream)
                    (when (and v (listp v))
                      (princ #\' stream))
                    (if (typep v 'hash-table)
-                       (print-hash-table v stream)
+                       (pretty-print-hash-table v stream)
                        (format stream "~s" v)))
                  ht))
       (decf *current-pprint-indentation*)
@@ -293,7 +294,7 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
   ht)
 
 (let (toggled)
-  (defun toggle-print-hash-table (&optional (on nil explicit))
+  (defun toggle-pretty-print-hash-table (&optional (on nil explicit))
     "Toggles printing hash-tables with PRINT-HASH-TABLE or with default method.
      If ON is set explicitly will turn on literal printing (T) or default (NIL).
 
@@ -302,11 +303,11 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
     (let ((off (if explicit on (not toggled))))
       (if off
           (progn
-            (set-pprint-dispatch 'hash-table (serapeum:flip #'print-hash-table))
+            (set-pprint-dispatch 'hash-table (serapeum:flip #'pretty-print-hash-table))
             (setf toggled t))
           (progn
             (set-pprint-dispatch 'hash-table nil)
             (setf toggled nil))))))
 
 (when *pretty-print-hash-tables*
-  (toggle-print-hash-table t))
+  (toggle-pretty-print-hash-table t))
