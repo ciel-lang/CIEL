@@ -292,25 +292,21 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
       (format stream "~vt) " *current-pprint-indentation*)))
   ht)
 
-(let ((default-method (ignore-errors (find-method
-                                      #'print-object nil '(hash-table t))))
-      toggled)
+(let (toggled)
   (defun toggle-print-hash-table (&optional (on nil explicit))
     "Toggles printing hash-tables with PRINT-HASH-TABLE or with default method.
      If ON is set explicitly will turn on literal printing (T) or default (NIL).
 
      CIEL note: this function comes from RUTILS (which is not installed by default)."
+    ;XXX: merged in Serapeum November, 2020
     (let ((off (if explicit on (not toggled))))
       (if off
           (progn
-            (defmethod print-object ((obj hash-table) stream)
-              (print-hash-table obj stream))
+            (set-pprint-dispatch 'hash-table (serapeum:flip #'print-hash-table))
             (setf toggled t))
-          (progn (remove-method #'print-object
-                                (find-method #'print-object nil '(hash-table t)))
-                 (unless (null default-method)
-                   (add-method #'print-object default-method))
-                 (setf toggled nil))))))
+          (progn
+            (set-pprint-dispatch 'hash-table nil)
+            (setf toggled nil))))))
 
 (when *pretty-print-hash-tables*
   (toggle-print-hash-table t))
