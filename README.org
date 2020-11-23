@@ -9,7 +9,7 @@ STATUS: the API WILL change, but it is usable.
 
   It's Common Lisp, batteries included.
 
-  Questions, doubts? See the [[file:FAQ.org][FAQ]].
+  Questions, doubts? See the [[file:docs/FAQ.md][FAQ]].
 
 
 * TODOs                                                            :noexport:
