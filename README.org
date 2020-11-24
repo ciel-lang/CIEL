@@ -11,6 +11,44 @@ STATUS: the API WILL change, but it is usable.
 
   Questions, doubts? See the [[file:docs/FAQ.md][FAQ]].
 
+** Examples
+
+Libraries to handle JSON and CSV are readily available, as well as
+many more for all sort of mundane tasks: string manipulation, pattern
+matching, regular expressions, threads and jobs scheduling, HTTP and
+URI handling, and so on, and so on.
+
+Create hash-tables with =dict=:
+
+#+begin_src
+(dict :a 1 :b 2 :c 3)
+;; =>
+(dict
+ :A 1
+ :B 2
+ :C 3
+)
+#+end_src
+
+It is easier to grok and type than the following, isn't it?
+
+#+BEGIN_SRC lisp
+  (let ((ht (make-hash-table :test 'equal)))
+    (setf (gethash :a ht) 1)
+    (setf (gethash :b ht) 2)
+    (setf (gethash :c ht) 3)
+    ht)
+;; #<HASH-TABLE :TEST EQUAL :COUNT 3 {1006CE5613}>
+#+end_src
+
+Create simple GUIs with Ltk.
+
+If you use CIEL's readline REPL, it is also full of features (see
+below).
+
+And the list goes on. We include many utilities from other libraries.
+
+See [[docs/README.md][the documentation]].
 
 * TODOs                                                            :noexport:
 
@@ -104,8 +142,17 @@ TODO: we will distribute ready-to-use core images.
 - it handles errors gracefully: you are not dropped into the debugger
   and its sub-REPL, you simply see the error message.
 - it has optional *syntax highlighting*.
+- it has an optional *lisp critic* that scans the code you enter at
+  the REPL for instances of bad practices.
+- it has a *shell pass-through*: try =!ls=.
 
-  It also defines short helper commands:
+- it has *documentation lookup* shorthands: use =:doc symbol= or =?=
+  after a symbol to get its documentation: =ciel-user> (dict ?=.
+
+- it has *developer friendly* macros: use =(printv code)= for an
+  annotated trace output.
+
+- and it defines more helper commands:
 
 #+begin_src txt
   :help => Prints this general help message
@@ -118,9 +165,7 @@ TODO: we will distribute ready-to-use core images.
   :q => Ends the session.
 #+end_src
 
-- it has a *shell pass-through*: try =!ls=.
-
-See the documentation.
+See more in [[docs/README.md][the documentation]].
 
 * Libraries
 
