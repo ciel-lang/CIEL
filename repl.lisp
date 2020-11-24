@@ -2,14 +2,15 @@
 (load "~/quicklisp/setup")
 
 (let ((*standard-output* (make-broadcast-stream)))
-  ;; (progn (load "ciel.asd") (ql:quickload '("swank" "ciel")))
-  (ql:quickload '("alexandria" "which" "trivial-package-local-nicknames"))
+  ;; (load "ciel.asd") (ql:quickload '("swank" "ciel"))
+  ;; (ql:quickload '("alexandria" "which" "trivial-package-local-nicknames"
+  ;; "cl-ansi-text" "lisp-critic"))
   (ql:quickload "cl-readline"))
 
 (defpackage :sbcli
   (:use :common-lisp :cffi :trivial-package-local-nicknames)
   (:export sbcli help what *repl-version* *repl-name* *prompt* *prompt2* *result-indicator* *config-file*
-           *hist-file* *special* *last-result*
+           *hist-file* *special*
            *syntax-highlighting* *pygmentize* *pygmentize-options*))
 
 (in-package :sbcli)
@@ -38,7 +39,6 @@
 (defvar *result-indicator*          "=> ")
 (defvar *config-file*  "~/.cielrc")
 (defvar *hist-file*    "~/.ciel_history")
-(defvar *last-result*  nil)
 (defvar *hist*         (list))
 (defvar *syntax-highlighting* nil)
 (defvar *pygmentize* nil "(optional) Path to a pygments executable. If not set, we try to find it.")
@@ -220,20 +220,57 @@
       (format *error-output* "Unknown special command: ~a~%" k))))
 
 (defun evaluate-lisp (text parsed)
-  (setf *last-result*
-        (handler-case (eval parsed)
-          (unbound-variable (var) (format *error-output* "~a~%" var))
-          (undefined-function (fun) (format *error-output* "~a~%" fun))
-          (sb-int:compiled-program-error ()
-            (format *error-output* "~a"
-                    (cl-ansi-text:red "Compiler error.~%")))
-          (error (condition)
-            (format *error-output* "~a~a~%"
-                    (cl-ansi-text:red "Evaluation error: ")
-                    condition))))
-  (history-add text *last-result*)
-  (if *last-result*
-      (format t "~a~s~%" *result-indicator* *last-result*)))
+  "Evaluate (EVAL) the user input.
+  In case of evaluation error, print it.
+  Then print the result. Print its multiple values.
+  Save the input history.
+  Handle the special *, + et all REPL history variables."
+  (let ((result-list
+         (multiple-value-list
+          (handler-case (eval parsed)
+            (unbound-variable (var)
+              (format *error-output* "~a~%" var))
+            (undefined-function (fun)
+              (format *error-output* "~a~%" fun))
+            (sb-int:compiled-program-error ()
+              (format *error-output* "~a"
+                      (cl-ansi-text:red "Compiler error.~%")))
+            (error (condition)
+              (format *error-output* "~a~a~%"
+                      (cl-ansi-text:red "Evaluation error: ")
+                      condition))))))
+    (history-add text (car result-list))
+    (when result-list
+      (setf +++ ++
+            /// //
+            *** (car ///)
+            ++ +
+            // /
+            ** (car //)
+            + parsed
+            / result-list
+            * (car result-list))
+      ;; Print the result, and all multple values. They are printed like so:
+      ;; (not the best with =>)
+      ;; ciel-user> (values 1 2 3)
+      ;; => 1
+      ;; 2
+      ;; 3
+      (format t "~a~{~s~&~}~%" *result-indicator* result-list))))
+
+#+(or nil)
+(let* ((input "(values :one :two)")
+       (result (with-output-to-string (*standard-output*)
+                 (evaluate-lisp "whatever" (read-from-string input)))))
+  (assert (and (str:containsp ":one"
+                              result
+                              :ignore-case t)
+               (str:containsp ":two"
+                              result
+                              :ignore-case t)))
+  (assert (equal '(:ONE :TWO)
+                 /)))
+
 
 (defun lisp-critic-applicable (txt)
   "TXT is code that should start with a parenthesis. Don't critique global variables."
