@@ -91,7 +91,7 @@
   (string/= (string-trim " " str1)
             (string-trim " " str2)))
 
-(defun add-res (txt res)
+(defun history-add (txt res)
   (setq *hist* (cons (list txt res) *hist*)))
 
 (defun format-output (&rest args)
@@ -231,7 +231,7 @@
             (format *error-output* "~a~a~%"
                     (cl-ansi-text:red "Evaluation error: ")
                     condition))))
-  (add-res text *last-result*)
+  (history-add text *last-result*)
   (if *last-result*
       (format t "~a~s~%" *ret* *last-result*)))
 
