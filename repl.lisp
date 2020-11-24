@@ -8,7 +8,7 @@
 
 (defpackage :sbcli
   (:use :common-lisp :cffi :trivial-package-local-nicknames)
-  (:export sbcli help what *repl-version* *repl-name* *prompt* *prompt2* *ret* *config-file*
+  (:export sbcli help what *repl-version* *repl-name* *prompt* *prompt2* *result-indicator* *config-file*
            *hist-file* *special* *last-result*
            *syntax-highlighting* *pygmentize* *pygmentize-options*))
 
@@ -35,7 +35,7 @@
 (defvar *repl-name*    "CIEL's REPL")
 (defvar *prompt*       (format nil "~a" (cl-ansi-text:green "ciel-user> ")))
 (defvar *prompt2*       "....> ")
-(defvar *ret*          "=> ")
+(defvar *result-indicator*          "=> ")
 (defvar *config-file*  "~/.cielrc")
 (defvar *hist-file*    "~/.ciel_history")
 (defvar *last-result*  nil)
@@ -233,7 +233,7 @@
                     condition))))
   (history-add text *last-result*)
   (if *last-result*
-      (format t "~a~s~%" *ret* *last-result*)))
+      (format t "~a~s~%" *result-indicator* *last-result*)))
 
 (defun lisp-critic-applicable (txt)
   "TXT is code that should start with a parenthesis. Don't critique global variables."
