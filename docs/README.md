@@ -98,7 +98,7 @@ ciel-user> :doc dict
 ciel-user> (dict ?
 ```
 
-# Shell pass-through
+## Shell pass-through
 
 Use `!` to send a shell command:
 
