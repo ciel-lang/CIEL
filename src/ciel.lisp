@@ -56,31 +56,40 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
                              :print-hash))
 
 ;; alexandria/sequences/lists
+(defparameter *deps/alexandria/sequences-lists*
+  '(:iota
+    :proper-list
+    :proper-list-p
+    :proper-sequence
+    :circular-list
+    :circular-list-p
+    :doplist
+    :ensure-cons
+    :ensure-list
+    :flatten
+    :setp
+
+    :emptyp
+    :shuffle
+    :random-elt
+    :length=
+    :last-elt
+    ))
+
 (cl-reexport:reexport-from :alexandria
                            :include
-                           '(:iota
-                             :proper-list
-                             :proper-list-p
-                             :proper-sequence
-                             :circular-list
-                             :circular-list-p
-                             :doplist
-                             :ensure-cons
-                             :ensure-list
-                             :flatten
-                             :setp
-
-                             :emptyp
-                             :shuffle
-                             :random-elt
-                             :length=
-                             :last-elt
-                             ))
+                           *deps/alexandria/sequences-lists*)
 ;; alexandria/numbers
 (cl-reexport:reexport-from :alexandria
                            :include
                            '(:mean :variance :median
                              :clamp))
+
+(push (list "docs/alexandria.md"
+            :alexandria
+            *deps/alexandria/sequences-lists*
+            "Symbols imported from ALEXANDRIA for sequences and lists")
+      *doc-pages*)
 
 ;; serapeum: sequences/hash tables
 (defparameter *deps/serapeum/sequences-hashtables*
@@ -144,31 +153,37 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
 (cl-reexport:reexport-from :trivial-arguments
                            :include '(:arglist))
 
-(cl-reexport:reexport-from :trivial-types
-                           :include '(
-                                      :association-list-p
-                                      :type-expand
-                                      :string-designator
-                                      :property-list
-                                      :tuple
-                                      ;; :proper-list ;; in alexandria
-                                      :association-list
-                                      :character-designator
-                                      :property-list-p
-                                      :file-associated-stream-p
-                                      :type-specifier-p
-                                      :list-designator
-                                      :package-designator
-                                      ;; :proper-list-p ;; in alexandria
-                                      :tuplep
-                                      :non-nil
-                                      :file-associated-stream
-                                      :stream-designator
-                                      :function-designator
-                                      :file-position-designator
-                                      :pathname-designator
-                                      ))
+(defparameter *deps/trivial-types*
+  '(
+    :association-list-p
+    :type-expand
+    :string-designator
+    :property-list
+    :tuple
+    ;; :proper-list ;; in alexandria
+    :association-list
+    :character-designator
+    :property-list-p
+    :file-associated-stream-p
+    :type-specifier-p
+    :list-designator
+    :package-designator
+    ;; :proper-list-p ;; in alexandria
+    :tuplep
+    :non-nil
+    :file-associated-stream
+    :stream-designator
+    :function-designator
+    :file-position-designator
+    :pathname-designator
+    ))
 
+(cl-reexport:reexport-from :trivial-types
+                           :include *deps/trivial-types*)
+(push (list "docs/trivial-types.md"
+            :trivial-types
+            *deps/trivial-types*)
+      *doc-pages*)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun symbol-documentation (symbol &key (stream t))
@@ -205,7 +220,9 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
                           :direction :output
                           :if-does-not-exist :create
                           :if-exists :supersede)
-         (format f "# Symbols imported from ~a~&~%" (second doc-spec))
+         (if (fourth doc-spec)
+             (format f "# ~a~&~%" (fourth doc-spec))
+             (format f "# Symbols imported from ~a~&~%" (second doc-spec)))
          (loop for elt in (third doc-spec)
             for sym = (uiop:find-symbol* elt (second doc-spec))
             do

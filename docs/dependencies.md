@@ -48,4 +48,4 @@ simple string literal definition that doesn't require escaping characters.
 - trivial-arguments: A simple library to retrieve the lambda-list of a function.
 - trivial-monitored-thread: Trivial Monitored Thread offers a very simple (aka trivial) way of spawning threads and being informed when one any of them crash and die.
 - trivial-package-local-nicknames: Portability library for package-local nicknames
-- trivial-types: Trivial type definitions
+- [trivial-types](trivial-types.md): Trivial type definitions

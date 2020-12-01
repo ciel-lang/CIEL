@@ -14,3 +14,6 @@ build:
 	     --eval '(ql:quickload :ciel)' \
 	     --eval '(asdf:make :ciel)' \
 	     --eval '(quit)'
+
+serve-docs:
+	docsify serve docs/
