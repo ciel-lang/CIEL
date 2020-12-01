@@ -11,18 +11,30 @@ STATUS: the API WILL change, but it is usable.
 
   Questions, doubts? See the [[file:docs/FAQ.md][FAQ]].
 
-** Examples
+** Rationale
 
-Libraries to handle JSON and CSV are readily available, as well as
-many more for all sort of mundane tasks: string manipulation, pattern
-matching, regular expressions, threads and jobs scheduling, HTTP and
-URI handling, and so on, and so on.
+One of our goals is to make Common Lisp useful out of the box for
+mundane tasks -by today standards. As such, we ship libraries to
+handle JSON and CSV, as well as others to ease string manipulation, to
+do pattern matching, to bring regular expressions, for threads and
+jobs scheduling, for HTTP and URI handling, to create simple GUIs with
+Ltk, and so on. You can of course do all this without CIEL, but
+then you have to install the library manager first and load these libraries
+into your Lisp image every time you start it. Now, you have them at
+your fingertips whenever you start CIEL.
 
-Create hash-tables with =dict=:
+We also aim to soften the irritating parts of standard Common Lisp.
+A famous one, puzzling for beginners and non-optimal for seasoned
+lispers, is the creaton of hash-tables. We include the =dict= function
+from the Serapeum library (which we enhanced further with a pull request):
 
 #+begin_src
-(dict :a 1 :b 2 :c 3)
-;; =>
+CIEL-USER> (dict :a 1 :b 2 :c 3)
+#+end_src
+
+which prints:
+
+#+begin_src txt
 (dict
  :A 1
  :B 2
@@ -30,7 +42,7 @@ Create hash-tables with =dict=:
 )
 #+end_src
 
-It is easier to grok and type than the following, isn't it?
+In standard Common Lisp, the equivalent is more convoluted:
 
 #+BEGIN_SRC lisp
   (let ((ht (make-hash-table :test 'equal)))
@@ -39,14 +51,11 @@ It is easier to grok and type than the following, isn't it?
     (setf (gethash :c ht) 3)
     ht)
 ;; #<HASH-TABLE :TEST EQUAL :COUNT 3 {1006CE5613}>
+;; (and we don't get a readable representation, so our example is not even equivalent)
 #+end_src
 
-Create simple GUIs with Ltk.
-
-If you use CIEL's readline REPL, it is also full of features (see
-below).
-
-And the list goes on. We include many utilities from other libraries.
+Moreover, we want to bring a **full featured REPL on the terminal**
+(see more below).
 
 See [[docs/README.md][the documentation]].
 
