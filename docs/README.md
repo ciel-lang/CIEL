@@ -411,6 +411,50 @@ Mito and SxQL are available.
 
 <https://lispcookbook.github.io/cl-cookbook/databases.html>
 
+Numerical and scientific
+------------------------
+
+### Plotting
+
+We import the [vgplot](https://github.com/volkers/vgplot) plotting library, an interface to `gnuplot`.
+
+It has a very good demo: just call
+
+    (vgplot:demo)
+
+![](assets/vgplot.png)
+
+Here's a simple example to create a new plot:
+
+~~~lisp
+ (vgplot:plot #(1 2 3) #(0 -2 -17) "silly example")
+ (vgplot:title "Simple curve")
+ (vgplot:text 1.2 -14 "Plot vectors with legend and add a title")
+~~~
+
+This will open a gnuplot window, which you can interfere with by
+entering more vgplot commands.
+
+`format-plot` allows direct commands to the running gnuplot process:
+
+~~~lisp
+(vgplot:format-plot t "set size square 0.5,0.5~%")
+(vgplot:replot)
+~~~
+
+You can open other plots in parallel with `new-plot`, and create subplots in the same window with `subplot`.
+
+You can graph data from files:
+
+~~~lisp
+(vgplot:plot (first (vgplot:load-data-file "data.csv")))
+~~~
+
+Close plots with `close-plot` or `close-all-plots`.
+
+Explore the demo [here](https://github.com/volkers/vgplot/blob/master/demo.lisp).
+
+
 GUI (ltk)
 ---------
 

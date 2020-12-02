@@ -69,6 +69,9 @@
                :mito
                :sxql
 
+               ;; numerical
+               :vgplot
+
                ;; :rutils ;; yes?
                :serapeum
 
