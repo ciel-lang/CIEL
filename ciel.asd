@@ -47,24 +47,6 @@
                :parse-float
                :parse-number
 
-               :cl-ppcre
-               :pythonic-string-reader
-               :str
-               :trivia ;; pattern matching
-               :trivial-arguments
-               :trivial-package-local-nicknames
-               :trivial-types
-
-               ;; iteration
-               :iterate
-               :for
-               :trivial-do
-
-               ;; lambda shorthands
-               ;; xxx: or rutils
-               :fn
-               :cl-punch
-
                ;; database
                :mito
                :sxql
@@ -72,7 +54,36 @@
                ;; numerical
                :vgplot
 
-               ;; :rutils ;; yes?
+               ;; regexp
+               :cl-ppcre
+
+               ;; string manipulation
+               :str
+
+               ;;;
+               ;;; Language extensions.
+               ;;;
+               ;; triple quotes
+               :pythonic-string-reader
+
+               ;; pattern matching
+               :trivia
+               :trivial-arguments
+               :trivial-package-local-nicknames
+               :trivial-types
+
+               ;; extended let
+               :metabang-bind
+
+               ;; iteration
+               :iterate
+               :for
+               :trivial-do
+
+               ;; lambda shorthands
+               :fn
+               :cl-punch
+
                :serapeum
 
                ;; tests
@@ -80,12 +91,16 @@
 
                :which
 
-               ;; debugging, developer utilities
+               ;;;
+               ;;; Debugging, developer utilities.
+               ;;;
                :log4cl
                :printv
                :repl-utilities ;; see readme, summary, doc, package-apropos, trace-package etc
 
-               ;; user helpers
+               ;;;
+               ;;; User helpers.
+               ;;;
                :lisp-critic
                :named-readtables
                :clesh

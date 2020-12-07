@@ -184,6 +184,7 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
             :trivial-types
             *deps/trivial-types*)
       *doc-pages*)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun symbol-documentation (symbol &key (stream t))
@@ -238,6 +239,8 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
 
 (defpackage ciel-user
   (:use :cl :ciel)
+  (:import-from :metabang-bind
+                :bind)
   (:local-nicknames (:match :trivia)
                     (:csv :cl-csv)
                     (:http :dexador)))
