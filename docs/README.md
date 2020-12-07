@@ -61,6 +61,11 @@ with bells and whistles useful to the developer and people living in a
 terminal window. For example, our [repl for the terminal](repl.md) has readline support, multi-line editing, optional syntax highlighting, a shell passthrough, and more goodies.
 
 
+*We are only started. You can sponsor us [on GitHub sponsors](https://github.com/sponsors/vindarel/)*
+
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/K3K828W0V)
+
+
 # Install
 
 Let's get started. See the [installation instructions](install.md).
