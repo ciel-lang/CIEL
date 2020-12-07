@@ -49,6 +49,16 @@ You can test and discover new libraries.
 
 You can show CIEL to your non-lispers friends and colleagues, without saying embarrassing things like: "Just install rlwrap". "To join strings, use format's ~{ @ : }". "Yeah, there's parse-integer but not parse-float, just install it". "To see what's in a hash-table, I'll give you a snippet". etc.
 
+CIEL is bloated. How can I build a lighter one?
+-----------------------------------------------
+
+First and foremost, if you think there is room for a lighter CIEL
+package, come discuss in the Github issues. We can maybe create and
+independent package with lighter dependencies.
+
+Otherwise, you can have a look to this [core-dumper](https://gitlab.com/ambrevar/lisp-repl-core-dumper) tool.
+
+
 What is CIEL for?
 -----------------
 
