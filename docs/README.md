@@ -8,57 +8,7 @@ Questions, doubts? See the [FAQ](FAQ.md).
 
 # Install
 
-## With Quicklisp
-
-You need a Lisp implementation and Quicklisp installed.
-
-CIEL is not yet on Quicklisp (but it is on [Ultralisp](https://ultralisp.org)), so clone this repository and load the .asd (with `load` or `C-c C-k` in Slime).
-
-``` example
-git clone https://github.com/ciel-lang/CIEL ~/quicklisp/local-projects/CIEL
-```
-
-Then, quickload it:
-
-```lisp
-(ql:quickload "ciel")
-```
-
-and enter the `ciel-user` package, instead of the default `common-lisp-user` (or `cl-user`):
-
-```lisp
-(in-package :ciel-user)
-```
-
-## With a core image
-
-You need a Lisp implementation, but you don't need Quicklisp.
-
-Build a *core image* for your lisp with all CIEL's dependencies:
-
-``` example
-sbcl --load build-image.lisp
-```
-
-and use it:
-
-``` example
-sbcl --core ciel --eval '(in-package :ciel-user)'
-```
-
-TODO: we will distribute ready-to-use core images.
-
-## With a binary
-
-You don't need anything, just download the CIEL executable and run its REPL.
-
-TODO: build it on CI for different platforms.
-
-To build it, clone this repository and run `make build`.
-
-Start it with `./ciel-repl`.
-
-You are dropped into a custom Lisp REPL.
+See the [installation instructions](install.md).
 
 # CIEL's custom REPL
 
@@ -985,10 +935,6 @@ Example:
 (defmethod equalp ((p1 point) (p2 point))
    (…))
 ```
-
-# FAQ
-
-See it here: [FAQ](FAQ.md).
 
 # Final words
 
