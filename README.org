@@ -25,7 +25,7 @@ your fingertips whenever you start CIEL.
 
 We also aim to soften the irritating parts of standard Common Lisp.
 A famous one, puzzling for beginners and non-optimal for seasoned
-lispers, is the creaton of hash-tables. We include the =dict= function
+lispers, is the creation of hash-tables. We include the =dict= function
 from the Serapeum library (which we enhanced further with a pull request):
 
 #+begin_src
