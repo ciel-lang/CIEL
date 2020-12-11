@@ -1,6 +1,9 @@
 ## Arrow macros
 
 We provide the Clojure-like arrow macros and "diamond wands" from the [arrow-macros](https://github.com/hipeta/arrow-macros) library.
+<!-- tabs:start -->
+
+#### **CIEL**
 
 ```lisp
 ;; -> inserts the previous value as its first argument:
@@ -20,6 +23,18 @@ We provide the Clojure-like arrow macros and "diamond wands" from the [arrow-mac
   (1+ x)
   (+ x x)) ; => 10
 ```
+
+#### **CL**
+
+```lisp
+;; In pure CL, just use let* and intermediate variables:
+(let* ((var "hello macros")
+       (upcased (str:upcase var))
+       (words (str:words upcased)))
+  words)
+```
+
+<!-- tabs:end -->
 
 And there is more. All the available macros are:
 
