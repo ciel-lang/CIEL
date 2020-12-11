@@ -41,7 +41,22 @@
         // To avoid search index collision
         // between multiple websites under the same domain
         namespace: 'ciel-lang.org',
-      }
+      },
+
+      plugins: [
+        function(hook) {
+          var footer = [
+            '<hr/>',
+            '<footer style="text-align: right;">',
+            '<span>CIEL developers 2020. <a href="https://github.com/sponsors/vindarel/">Become a sponsor!</a></span>',
+            '</footer>'
+          ].join('');
+
+          hook.afterEach(function(html) {
+            return html + footer;
+          });
+    }
+  ]
     }
   </script>
   <!-- <script src="//unpkg.com/docsify/lib/docsify.min.js"></script> -->
