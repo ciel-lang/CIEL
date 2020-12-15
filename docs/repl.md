@@ -8,7 +8,10 @@ CIEL's REPL is more user friendly than the default SBCL one. In particular:
 -  it handles errors gracefully: you are not dropped into the debugger and its sub-REPL, you simply see the error message.
 -  it has optional **syntax highlighting**.
 
--  it defines short **helper commands**:
+- it has a **shell pass-through**: try `!ls` (available in the `ciel-user` package)
+- it has a quick **edit and load file** command: calling `:edit file.lisp` will open the file with the editor of the EDITOR environment variable. When you close it, the file is loaded and evaluated.
+
+-  it defines more **helper commands**:
 
 ``` txt
 :help => Prints this general help message
@@ -16,12 +19,9 @@ CIEL's REPL is more user friendly than the default SBCL one. In particular:
 :? => Gets help on a symbol <sym>: :? str
 :w => Writes the current session to a file <filename>
 :d => Dumps the disassembly of a symbol <sym>
-:t => Prints the type of a expression <expr>
-:lisp-critic => Toggles the lisp-critic
+:t => Prints the type of an expression <expr>
 :q => Ends the session.
 ```
-
-- it has a **shell pass-through**: try `!ls` (available in the `ciel-user` package)
 
 Our REPL is adapted from [sbcli](https://github.com/hellerve/sbcli). See also [cl-repl](https://github.com/koji-kojiro/cl-repl/), that has an interactive debugger.
 
@@ -137,3 +137,19 @@ change N, whichever is appropriate here.
 ;   caught 1 WARNING condition
 => COUNT-A
 ```
+
+## Quick edit & load a file
+
+Use `:edit file.lisp`.
+
+This will open the file with the editor of the EDITOR environment variable. When you
+close it, the file is loaded and evaluated. If you defined functions, you can try them in the REPL.
+
+It is a quick way to write lisp code and have fast feedback. It's nice
+to use to tinker with code, to write small throw-away
+programs. However, this doesn't replace a true editor setup!
+
+We use [magic-ed](https://github.com/sanel/magic-ed). You can also call it manually with `(magic-ed "file.lisp")`, and give it a couple arguments:
+
+- `:eval nil`: don't evaluate the file when you close it.
+- `:output :string`: output the file content as a string.

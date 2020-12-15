@@ -104,6 +104,7 @@
                :lisp-critic
                :named-readtables
                :clesh
+               :magic-ed
                )
   :components ((:module "src"
                         :components

@@ -269,6 +269,7 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
 ;; Pretty-print hash-tables by default.
 ;; Enable/disable with toggle-pretty-print-hash-table
 ;; (adapted from rutils)
+;; PR accepted upstream, November 2020. Pretty-printing is only off by default.
 
 (defparameter *pretty-print-hash-tables* t "Pretty-print hash tables by default.")
 (defparameter *current-pprint-indentation* 1

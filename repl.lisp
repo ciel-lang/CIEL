@@ -9,6 +9,8 @@
 
 (defpackage :sbcli
   (:use :common-lisp :cffi :trivial-package-local-nicknames)
+  (:import-from :magic-ed
+                :magic-ed)
   (:export sbcli help what *repl-version* *repl-name* *prompt* *prompt2* *result-indicator* *config-file*
            *hist-file* *special*
            *syntax-highlighting* *pygmentize* *pygmentize-options*))
@@ -175,6 +177,10 @@
     (sb-int:compiled-program-error (err) (format t "~a~%" err))
     (undefined-function (fun) (format t "~a~%" fun))))
 
+(defun edit-and-load-file (file)
+  "Edit a file with EDITOR and evaluate it."
+  (magic-ed file))
+
 (defun toggle-lisp-critic ()
   "Enable or disable the lisp critic. He critizes the code you type before compiling it."
   (setf *lisp-critic* (not *lisp-critic*))
@@ -195,6 +201,7 @@
      ("q" . (0 . ,#'end))
      ;; ("z" . (0 . ,#'reset))
      ("lisp-critic" . (0 . ,#'toggle-lisp-critic))
+     ("edit" . (1 . ,#'edit-and-load-file))
      )
    :test 'equal)
   "All special commands starting with :")
@@ -500,7 +507,14 @@ strings to match candidates against (for example in the form \"package:sym\")."
   (named-readtables:in-readtable clesh:syntax)
 
   (handler-case (sbcli::sbcli "" sbcli::*prompt*)
-    (sb-sys:interactive-interrupt () (sbcli::end))))
+    (error (c)
+      ;; Normally lisp code is evaled and protected from errors in evaluate-lisp.
+      ;; We need this for magic-ed.
+      ;; As a special command it doesn't use evaluate-lisp.
+      (format *error-output* "~&Error: ~a~&" c)
+      (sbcli::sbcli "" sbcli::*prompt*))
+    (sb-sys:interactive-interrupt ()
+      (sbcli::end))))
 
 ;; When trying it out with --script:
 ;; (repl)
