@@ -65,6 +65,16 @@ The result is concatenated into a string and printed on stdout.
 
 This feature is only available in CIEL's REPL, not on the CIEL-USER package.
 
+Some programs are **visual** / interactive / ncurses-based, and need
+to be run in their own terminal window. CIEL recognizes a few (`vim`,
+`htop`, `man`…) and runs them in the first terminal emulator found on
+the system of `terminator`, `xterm`, `gnome-terminal`). See the
+`*visual-commands*` variable.
+
+> Note: this feature is experimental.
+
+> Note: we encourage our users to use Emacs rather than a terminal!
+
 We use the [Clesh](https://github.com/Neronus/clesh) library.
 
 See also [SHCL](https://github.com/bradleyjensen/shcl) for a more unholy union of posix-shell and Common Lisp.

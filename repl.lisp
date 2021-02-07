@@ -458,8 +458,15 @@ strings to match candidates against (for example in the form \"package:sym\")."
         (sbcli::sbcli "" *prompt*))
     (when *hist-file* (sbcli::update-hist-file text))
     (cond
+      ;; Handle documentation lookup.
       ((str:ends-with-p " ?" text)
        (sbcli::symbol-documentation (last-nested-expr text)))
+
+      ;; Handle visual commands: run in their own terminal window.
+      ((visual-command-p text)
+       (run-visual-command text))
+
+      ;; Default: run the lisp command (with the lisp-critic and other add-ons).
       (t
        (sbcli::handle-input txt text)))
     (finish-output nil)
