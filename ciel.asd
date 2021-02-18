@@ -84,6 +84,7 @@
                :fn
                :cl-punch
 
+               :cmd
                :serapeum
                :shlex
 

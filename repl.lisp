@@ -466,7 +466,14 @@ strings to match candidates against (for example in the form \"package:sym\")."
       ((visual-command-p text)
        (run-visual-command text))
 
-      ;; Default: run the lisp command (with the lisp-critic and other add-ons).
+      ;; Handle shell commands: everything that doesn't start with a lisp special
+      ;; symbol is considered a shell command
+      ((and (not (str:starts-with-p "!" text)) ;; that's clesh syntax.
+            (not (lisp-command-p text)))
+       (run-shell-command text))
+
+      ;; Default: run the lisp command (with the lisp-critic, the shell passthrough
+      ;; and other add-ons).
       (t
        (sbcli::handle-input txt text)))
     (finish-output nil)

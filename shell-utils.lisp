@@ -19,6 +19,7 @@
     "screen" "tmux"
     "lynx" "links" "mutt" "pine" "tin" "elm" "ncftp" "ncdu"
     "ranger"
+    "ipython" "irb" "iex"               ;; TBC
     ;; last but not least
     "ciel-repl")
   "List of visual/interactive/ncurses-based programs that will be run in their own terminal window.")
@@ -101,11 +102,66 @@ not in `*command-wrappers*'."
             *visual-commands*
             :test #'string=))))
 
+(defparameter *lisp-symbol-identifiers* (list #\( #\* #\# #\: #\-))
+
+(defun lisp-command-p (text)
+  "Is considered a lisp command if it starts with a *lisp-symbol-identifiers* character.
+  If it starts with a parenthesis, it is sure a lisp command."
+  (let ((tokens (shlex:split text)))
+    (cond
+      ;; Starts with a ( => lisp, definitely.
+      ((str:starts-with-p "(" text)
+       t)
+      ;; Starts with a special character: lisp.
+      ((some (lambda (char)
+               (str:starts-with-p (string char) text))
+             *lisp-symbol-identifiers*)
+       t)
+
+      ;; We have one token that contains a ":": lisp symbol.
+      ((and (= 1 (length tokens))
+            (str:contains? ":" text))
+       t)
+
+      ;; We have space-separated tokens, but the command doesn't start with a paren: NOT lisp.
+      ;; Exple:
+      ;; uiop featurep
+      ;; is not (uiop:featurep) and is a shell command.
+      ((and (not (str:starts-with-p "(" text))
+            (< 1 (length tokens)))
+       nil)
+
+      ;; If we didn't recognize lisp here: it's a shell command.
+      (t
+       ;; (format t "default: shell command!~&")
+       nil))))
+
+#+(or)
+(progn
+  (assert (lisp-command-p "(uiop:featurep"))
+  (assert (lisp-command-p "uiop:*foo*"))
+  (assert (lisp-command-p "*foo"))
+  (assert (lisp-command-p "#foo"))
+  (assert (lisp-command-p "-foo"))
+  (assert (not (lisp-command-p "uiop featurep")))
+  (assert (not (lisp-command-p "ls")))
+  (assert (not (lisp-command-p "ls -l")))
+  (assert (not (lisp-command-p "foo --arg=1:1"))))
+
+(defun run-shell-command (text)
+  "Run this shell command."
+  ;; XXX: not with Clesh = difference in behaviours coming.
+  (ignore-errors
+    (cmd:cmd text)))
+
 (defun run-visual-command (text)
   "Run this command (string) in another terminal window."
   (let* ((cmd (string-left-trim "!" text))
          (terminal (find-terminal)))
-    (if terminal
+    (if (str:emptyp terminal)
+        (format *error-output* "Could not find a terminal emulator amongst the list ~a: ~s"
+                '*visual-terminal-emulator-choices*
+                *visual-terminal-emulator-choices*)
         (cond
           ((stringp terminal)
            (uiop:launch-program `(,terminal
@@ -115,12 +171,13 @@ not in `*command-wrappers*'."
           ((functionp terminal)
            (uiop:launch-program (funcall terminal cmd)))
           (t
-           (format *error-output* "We cannot use a terminal designator of type ~a. Please use a string (\"xterm\") or a function that returns a string." (type-of terminal))))
-        ;; else no terminal found.
-        (format *error-output* "Could not find a terminal emulator amongst the list ~a: ~s"
-                '*visual-terminal-emulator-choices*
-                *visual-terminal-emulator-choices*))))
+           (format *error-output* "We cannot use a terminal designator of type ~a. Please use a string (\"xterm\") or a function that returns a string." (type-of terminal)))))))
 
 #+(or)
 (assert (string-equal "htop"
                       (visual-command-p "env rst=ldv sudo htop")))
+
+(defun maybe-run-visual-command (cmd)
+  (if (visual-command-p cmd)
+      (run-visual-command cmd)
+      (run-shell-command cmd)))
