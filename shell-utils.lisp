@@ -19,6 +19,7 @@
     "screen" "tmux"
     "lynx" "links" "mutt" "pine" "tin" "elm" "ncftp" "ncdu"
     "ranger"
+    "mpv" "mplayer"
     "ipython" "irb" "iex"               ;; TBC
     ;; last but not least
     "ciel-repl")
