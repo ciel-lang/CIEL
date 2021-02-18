@@ -63,19 +63,31 @@ Use square brackets `[...]` to write a shell script, and use `$` inside it to es
 
 The result is concatenated into a string and printed on stdout.
 
-This feature is only available in CIEL's REPL, not on the CIEL-USER package.
+This feature is only available by default in CIEL's REPL, not on the
+CIEL-USER package. To enable it yourself, do:
 
-Some programs are **visual** / interactive / ncurses-based, and need
+      (ciel:enable-shell-passthrough)
+
+But, some programs are **visual**, or interactive, because they have an ncurses or similar interface. They need
 to be run in their own terminal window. CIEL recognizes a few (`vim`,
-`htop`, `man`…) and runs them in the first terminal emulator found on
-the system of `terminator`, `xterm`, `gnome-terminal`). See the
-`*visual-commands*` variable.
+`htop`, `man`… see `*visual-commands*`) and runs them in the first terminal emulator found on
+the system: `terminator`, `xterm`, `gnome-terminal`, Emacs' `vterm` (with emacsclient) or your own.
+
+So, you can run a command similar to this one:
+
+    ENV=env sudo htop
+
+and it will open in a new terminal (hint: a visual command doesn't require the `!` prefix).
+
+To use your terminal emulator of choice, do:
+
+    (push "myterminal" *visual-terminal-emulator-choices*)
 
 > Note: this feature is experimental.
 
 > Note: we encourage our users to use Emacs rather than a terminal!
 
-We use the [Clesh](https://github.com/Neronus/clesh) library.
+We use the [Clesh](https://github.com/Neronus/clesh) library for the `!` shell passthrough.
 
 See also [SHCL](https://github.com/bradleyjensen/shcl) for a more unholy union of posix-shell and Common Lisp.
 

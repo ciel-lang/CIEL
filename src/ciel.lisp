@@ -1,6 +1,8 @@
+
 (in-package :cl-user)
 (defpackage ciel
-  (:use :cl))
+  (:use :cl)
+  (:export :enable-shell-passthrough))
 
 (in-package :ciel)
 
@@ -332,3 +334,7 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
 
 (when *pretty-print-hash-tables*
   (toggle-pretty-print-hash-table t))
+
+(defun enable-shell-passthrough ()
+  "Enable the shell passthrough with \"!\". Enable Clesh's readtable."
+  (named-readtables:in-readtable clesh:syntax))

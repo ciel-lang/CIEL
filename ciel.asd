@@ -85,6 +85,7 @@
                :cl-punch
 
                :serapeum
+               :shlex
 
                ;; tests
                :fiveam
@@ -111,6 +112,7 @@
                         ((:file "ciel")
                          ))
                (:file "repl")
+               (:file "shell-utils")
                (:file "repl-utils"))
 
   :build-operation "program-op"
