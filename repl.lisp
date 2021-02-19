@@ -121,7 +121,7 @@
   (write-line "Read more on packages with readme or summary. For example: (summary :str)")
   (write-line "Special commands:")
   (maphash
-    (lambda (k v) (format t "  :~a => ~a~%" k (documentation (cdr v) t)))
+    (lambda (k v) (format t "  %~a => ~a~%" k (documentation (cdr v) t)))
     *special*)
   ;; (write-line "Currently defined:")
   ;; (print-currently-defined)
@@ -205,6 +205,20 @@
      )
    :test 'equal)
   "All special commands starting with :")
+
+(defun special-command-p (text)
+  "A *special* command starts with %."
+  (str:starts-with-p "%" text))
+
+;; both functions are required to get completion on %
+(defun list-special-commands ()
+  (loop for k being the hash-key of *special*
+     collect (format nil "%~a" k)))
+(defun intern-special-commands ()
+  (loop for k being the hash-key of *special*
+     for symname = (format nil "%~a" k)
+     do (intern symname :sbcli)))
+(intern-special-commands)
 
 (defun call-special (fundef call args)
   (let ((l (car fundef))
@@ -305,7 +319,7 @@
 
 (defun handle-input (before text)
   (if (and (> (length text) 1)
-           (str:starts-with-p ":" text))
+           (special-command-p text))
     (handle-special-input text)
     (handle-lisp before text)))
 
@@ -355,6 +369,7 @@
   They are filtered afterwards, in SELECT-COMPLETIONS."
   (declare (ignorable sym-name))
   (concatenate 'list
+               (list-special-commands)
                (loop :for pkg :in (list-all-packages)
                   :append (loop :for name :in (package-nicknames pkg)
                              :collect (format nil "~(~a:~)" name))
@@ -384,7 +399,7 @@ strings to match candidates against (for example in the form \"package:sym\")."
               :minimize (or (mismatch (car items) item) (length item))))
    items))
 
-#+or(nil)
+#+(or)
 (progn
   (assert (member "str:concat"
                   (select-completions "str:con" (list "str:containsp" "str:concat" "str:constant-case"))
@@ -414,7 +429,7 @@ strings to match candidates against (for example in the form \"package:sym\")."
        (t
         (list-internal-symbols sym-name pkg-name))))))
 
-#+or(nil)
+#+(or)
 (progn
   (assert (member "str:suffixp"
                   (custom-complete "str:suff")
@@ -469,6 +484,7 @@ strings to match candidates against (for example in the form \"package:sym\")."
       ;; Handle shell commands: everything that doesn't start with a lisp special
       ;; symbol is considered a shell command
       ((and (not (str:starts-with-p "!" text)) ;; that's clesh syntax.
+            (not (special-command-p text))     ;; starts with %
             (not (lisp-command-p text)))
        (run-shell-command text))
 

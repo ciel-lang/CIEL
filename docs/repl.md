@@ -9,18 +9,18 @@ CIEL's REPL is more user friendly than the default SBCL one. In particular:
 -  it has optional **syntax highlighting**.
 
 - it has a **shell pass-through**: try `!ls` (available in the `ciel-user` package)
-- it has a quick **edit and load file** command: calling `:edit file.lisp` will open the file with the editor of the EDITOR environment variable. When you close it, the file is loaded and evaluated.
+- it has a quick **edit and load file** command: calling `%edit file.lisp` will open the file with the editor of the EDITOR environment variable. When you close it, the file is loaded and evaluated.
 
 -  it defines more **helper commands**:
 
 ``` txt
-:help => Prints this general help message
-:doc => Prints the available documentation for this symbol
-:? => Gets help on a symbol <sym>: :? str
-:w => Writes the current session to a file <filename>
-:d => Dumps the disassembly of a symbol <sym>
-:t => Prints the type of an expression <expr>
-:q => Ends the session.
+%help => Prints this general help message
+%doc => Prints the available documentation for this symbol
+%? => Gets help on a symbol <sym>: :? str
+%w => Writes the current session to a file <filename>
+%d => Dumps the disassembly of a symbol <sym>
+%t => Prints the type of an expression <expr>
+%q => Ends the session.
 ```
 
 Our REPL is adapted from [sbcli](https://github.com/hellerve/sbcli). See also [cl-repl](https://github.com/koji-kojiro/cl-repl/), that has an interactive debugger.
@@ -29,11 +29,11 @@ Our REPL is adapted from [sbcli](https://github.com/hellerve/sbcli). See also [c
 
 ## Quick documentation lookup
 
-The documentation for a symbol is available with `:doc` and also by
+The documentation for a symbol is available with `%doc` and also by
 appending a "?" after a function name:
 
 ```
-ciel-user> :doc dict
+ciel-user> %doc dict
 ;; or:
 ciel-user> (dict ?
 ```
@@ -113,7 +113,7 @@ You can also switch it on and off from the REPL:
 
 ## Friendly lisp-critic
 
-The `:lisp-critic` helper command toggles on and off the
+The `%lisp-critic` helper command toggles on and off the
 [lisp-critic](https://github.com/g000001/lisp-critic). The Lisp Critic
 scans your code for instances of bad Lisp programming practice. For
 example, when it sees the following function:
@@ -162,7 +162,7 @@ change N, whichever is appropriate here.
 
 ## Quick edit & load a file
 
-Use `:edit file.lisp`.
+Use `%edit file.lisp`.
 
 This will open the file with the editor of the EDITOR environment variable. When you
 close it, the file is loaded and evaluated. If you defined functions, you can try them in the REPL.
