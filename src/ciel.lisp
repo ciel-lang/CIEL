@@ -243,8 +243,10 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
   (:use :cl :ciel)
   (:import-from :metabang-bind
                 :bind)
-  (:local-nicknames (:match :trivia)
-                    (:csv :cl-csv)
+  (:import-from :trivia
+                :match
+                :guard)
+  (:local-nicknames (:csv :cl-csv)
                     (:http :dexador)))
 
 ;TODO: a conflict between Serapeum and generic-cl

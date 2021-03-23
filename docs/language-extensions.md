@@ -74,6 +74,8 @@ We import the `bind` macro. However, the package has more external
 symbols that we don't import, such as its error type (`bind-erro`) and
 its extension mechanism.
 
+> Note: if you like object destructuring in general, you'll like [pattern matching](/language-extensions?id=pattern-matching).
+
 
 ### Bind is a replacement for `let` and `let*`.
 
@@ -152,10 +154,6 @@ You can use usual lambda parameters for more destructuring:
 
 It's all well explained [in the documentation](https://common-lisp.net/project/metabang-bind/user-guide.html)!
 
-### See also: Trivia pattern matching
-
-If you like object destructuring in general, you'll like pattern matching with [Trivia](https://github.com/guicho271828/trivia/) (also available in CIEL).
-
 
 Conditions
 ----------
@@ -225,7 +223,94 @@ You have to enable cl-punch's syntax yourself.
 Pattern matching
 ----------------
 
-Use Trivia, also available with the `match` local nickname.
+We use [Trivia](https://github.com/guicho271828/trivia/) (see
+[its wiki](https://github.com/guicho271828/trivia/wiki/What-is-pattern-matching%3F-Benefits%3F)), from which we import `match`.
+
+You can start typing "match", followed by the object to match against, and the clauses, which are similar to a `cond`. Here's an example to match a list:
+
+~~~lisp
+(match '(1 2)
+  ((list x y)  ;; <-- pattern
+   (print x)
+   (print y))
+  (_           ;; <-- failover clause
+    :else))
+;; 1
+;; 2
+~~~
+
+On the above example, `(list x y)` is the pattern. It binds `x` to 1 and `y` to 2. Pay attention that the `list` pattern is "strict": it has two subpatterns (x and y) and it will thus match against an object of length 2.
+
+If you wanted `y` to match the rest of the list, use `list*`:
+
+~~~lisp
+(match '(1 2 3)
+  ((list* x y)
+   (print x)
+   (print y))
+  (_ :else))
+;; 1
+;; (2 3)
+~~~
+
+This could also be achieved with the `cons` pattern:
+
+~~~lisp
+(match '(1 2 3)
+   ((cons x y)
+    (print x)
+    (print y))
+   (_ :else))
+;; 1
+;; (2 3)
+~~~
+
+You can of course use `_` placeholders:
+
+~~~lisp
+(match '(1 2 3)
+  ((list* x _)
+   (print x))
+  (_ :else))
+;; 1
+~~~
+
+As we saw with `list` and `cons`, Trivia has patterns to match against types (vectors, alists, plists, arrays), including classes and structures.
+
+You can use [numeric patterns](https://github.com/guicho271828/trivia/wiki/Numeric-Patterns) (`=`, `<` and friends, that behave as you expect):
+
+~~~lisp
+(let ((x 5))
+   (match x
+     ((< 10)
+      :lower)))
+;; :LOWER
+~~~
+
+Then, you can combine them with [logic based patterns and guards](https://github.com/guicho271828/trivia/wiki/Logic-Based-Patterns). For example:
+
+~~~lisp
+(match x
+  ((or (list 1 a)
+       (cons a 3))
+   a))
+~~~
+
+guards allow to check the matches against a predicate. For example:
+
+~~~lisp
+(match (list 2 5)
+  ((guard (list x y)     ; subpattern1
+          (= 10 (* x y))) ; test-form
+   t))
+~~~
+
+Above we use the `list` pattern, and we verify a predicate.
+
+Trivia has more tricks in its sleeve. See the [special patterns](https://github.com/guicho271828/trivia/wiki/Special-Patterns) (access and change objects), the [ppcre contrib](https://github.com/guicho271828/trivia/wiki/Contrib-packages), etc.
+
+You migth also be interested in exhaustiveness type checking explained just below.
+
 
 Types, type checking, exhaustiveness type checking
 --------------------------------------------------
