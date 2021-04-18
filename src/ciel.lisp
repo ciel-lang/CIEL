@@ -11,6 +11,17 @@
 
 We currently only try this with serapeum. See *deps/serapeum/sequences-hashtables* and how the docs/serapeum.md page is generated with `generate-dependencies-page-reference'.")
 
+;; Pattern matching.
+(cl-reexport:reexport-from :trivia
+                           :include
+                           '(:match
+                             :guard))
+
+;; "let" with more destructuring.
+(cl-reexport:reexport-from :metabang-bind
+                           :include
+                           '(:bind))
+
 (cl-reexport:reexport-from :parse-float)
 (cl-reexport:reexport-from :parse-number
                            :include
@@ -241,11 +252,6 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
 
 (defpackage ciel-user
   (:use :cl :ciel)
-  (:import-from :metabang-bind
-                :bind)
-  (:import-from :trivia
-                :match
-                :guard)
   (:local-nicknames (:csv :cl-csv)
                     (:http :dexador)))
 
