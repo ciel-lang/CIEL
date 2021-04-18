@@ -2,7 +2,10 @@
 (in-package :cl-user)
 (defpackage ciel
   (:use :cl)
-  (:export :enable-shell-passthrough))
+  (:export :enable-shell-passthrough
+           :enable-pythonic-string-syntax
+           :enable-punch-syntax))
+
 
 (in-package :ciel)
 
