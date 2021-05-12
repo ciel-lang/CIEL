@@ -99,7 +99,16 @@ Once installed, create a package and =:use= =ciel= in addition of =cl=:
     (:use :cl :ciel))
 #+end_src
 
-/NB: this is likely to change in the future./
+You can also use =generic-ciel=, based on [[https://github.com/alex-gutev/generic-cl/][generic-cl]]:
+
+#+begin_src
+  (defpackage yourpackage
+    (:use :cl :generic-ciel))
+#+end_src
+
+generic-cl allows us to define our =+= or =equalp= methods for our
+own objects (and more).
+
 
 ** With Quicklisp
 

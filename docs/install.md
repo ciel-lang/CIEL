@@ -1,6 +1,8 @@
 
 # Install
 
+Once you have it installed, see the next section on how to create your package definition with `CIEL`.
+
 ## With Quicklisp
 
 You need a Lisp implementation and Quicklisp installed.
@@ -96,3 +98,24 @@ You can also switch it on and off from the REPL:
 ``` commonlisp
 (setf sbcli:*syntax-highlighting* t)
 ```
+
+# Use in the REPL and in new packages
+
+On the REPL, enter the `ciel-user` package instead of `cl-user` (`,in-package RET ciel-user`).
+
+Use CIEL in your own packages by `use`-ing it in addition of `cl`:
+
+~~~lisp
+(defpackage yourpackage
+  (:use :cl :ciel))
+~~~
+
+You can also use `generic-ciel`, based on [generic-cl](https://github.com/alex-gutev/generic-cl/):
+
+~~~lisp
+(defpackage yourpackage
+  (:use :cl :generic-ciel))
+~~~
+
+`generic-cl` allows us to define our `+` or `equalp` methods for our
+own objects (and more).

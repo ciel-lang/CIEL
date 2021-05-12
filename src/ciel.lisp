@@ -6,6 +6,30 @@
            :enable-pythonic-string-syntax
            :enable-punch-syntax))
 
+#|
+Currently, usage is to "use" ciel along with cl:
+
+(defpackage mypackage
+  (:use :cl :ciel))
+
+How we build this package
+=========================
+
+A note on symbol conflicts.
+
+We like very much Alexandria, Serapeum and Generic-cl. However we
+can't "use" them all at once, some symbols conflict. And some are very
+different things, especially with generic-cl. For example:
+SERAPEUM:HASH-TABLE-SET and GENERIC-CL:HASH-TABLE-SET.
+
+We think that providing the user with Serapeum's symbol on CIEL-USER
+on one hand, and with Generic-cl's one on GENERIC-CIEL on the other
+hand is the thing not to do. So we don't import these symbols by
+default in CIEL. They are present in GENERIC-CIEL (since we "use"
+generic-cl).
+
+|#
+
 
 (in-package :ciel)
 
@@ -57,8 +81,8 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
                              :dohash  ;; key value ht
                              :dolist* ;; position value list
                              ;; :doplist ;; already from alexandria
-                             :doseq   ;; value sequence
-                             :doseq*  ;; position value sequence
+                             ;; :doseq   ;; value sequence  ;; conflicts with generic-cl
+                             ;; :doseq*  ;; position value sequence
                              ))
 
 (cl-reexport:reexport-from :repl-utilities
@@ -85,7 +109,7 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
     :flatten
     :setp
 
-    :emptyp
+    ;; :emptyp ;; conflicts with generic-cl
     :shuffle
     :random-elt
     :length=
@@ -131,7 +155,7 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
     :merge-tables
     :flip-hash-table
     :set-hash-table
-    :hash-table-set
+    ;; :hash-table-set ;; conflicts with generic-cl. They are different things.
     :hash-table-predicate
     :hash-table-function
     :make-hash-table-function
@@ -248,6 +272,9 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
                       (with-output-to-string (s)
                         (symbol-documentation sym :stream s)))))))
 
+;;
+;; Generate documentation.
+;;
 #+only-with-a-C-c-C-c
 (generate-dependencies-page-reference)
 
@@ -259,9 +286,9 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
                     (:http :dexador)))
 
 ;TODO: a conflict between Serapeum and generic-cl
-;; (defpackage generic-ciel
-  ;; (:use :generic-cl
-        ;; :ciel))
+(defpackage generic-ciel
+  (:use :generic-cl
+        :ciel))
 
 (in-package :ciel-user)
 

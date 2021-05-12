@@ -81,13 +81,6 @@ ARGLIST: `(object &key (test #'eql) (key #'identity))`
 
 FUNCTION: Returns true if OBJECT is a list that denotes a set, NIL otherwise. A list
 denotes a set if each element of the list is unique under KEY and TEST.
-## EMPTYP 
-
-
-ARGLIST: `(sequence)`
-
-FUNCTION: Returns T if SEQUENCE is an empty sequence and NIL
-   otherwise. Signals an error if SEQUENCE is not a sequence.
 ## SHUFFLE 
 
 

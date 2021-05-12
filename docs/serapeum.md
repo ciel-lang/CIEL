@@ -269,15 +269,6 @@ STRICT determines whether to check that the list actually is a set.
 The resulting hash table has the elements of SET for both its keys and
 values. That is, each element of SET is stored as if by
      (setf (gethash (key element) table) element)
-## HASH-TABLE-SET 
-
-
-ARGLIST: `(table &key (strict t) (test #'eql) (key #'identity))`
-
-FUNCTION: Return the set denoted by TABLE.
-Given STRICT, check that the table actually denotes a set.
-
-Without STRICT, equivalent to `hash-table-values'.
 ## HASH-TABLE-PREDICATE 
 
 
