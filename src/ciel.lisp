@@ -4,7 +4,9 @@
   (:use :cl)
   (:export :enable-shell-passthrough
            :enable-pythonic-string-syntax
-           :enable-punch-syntax))
+           :enable-punch-syntax)
+  (:local-nicknames (:csv :cl-csv)
+                    (:http :dexador)))
 
 #|
 Currently, usage is to "use" ciel along with cl:
@@ -288,7 +290,10 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
 ;TODO: a conflict between Serapeum and generic-cl
 (defpackage generic-ciel
   (:use :generic-cl
-        :ciel))
+        :ciel)
+  ;XXX: local nicknames are duplicated in each package declaration.
+  (:local-nicknames (:csv :cl-csv)
+                    (:http :dexador)))
 
 (in-package :ciel-user)
 
