@@ -6,6 +6,8 @@ It's Common Lisp, batteries included.
 
 Questions, doubts? See the [FAQ](FAQ.md).
 
+Status: it's very much a work in progress, but it should always be usable from master.
+
 ## Rationale
 
 One of our goals is to make Common Lisp useful out of the box for

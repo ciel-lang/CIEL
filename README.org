@@ -182,14 +182,14 @@ TODO: we will distribute ready-to-use core images.
 - and it defines more helper commands:
 
 #+begin_src txt
-  :help => Prints this general help message
-  :doc => Prints the available documentation for this symbol
-  :? => Gets help on a symbol <sym>: :? str
-  :w => Writes the current session to a file <filename>
-  :d => Dumps the disassembly of a symbol <sym>
-  :t => Prints the type of a expression <expr>
-  :lisp-critic => Toggles the lisp-critic
-  :q => Ends the session.
+  %help => Prints this general help message
+  %doc => Prints the available documentation for this symbol
+  %? => Gets help on a symbol <sym>: :? str
+  %w => Writes the current session to a file <filename>
+  %d => Dumps the disassembly of a symbol <sym>
+  %t => Prints the type of a expression <expr>
+  %lisp-critic => Toggles the lisp-critic
+  %q => Ends the session.
 #+end_src
 
 See more in [[docs/README.md][the documentation]].

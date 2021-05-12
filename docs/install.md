@@ -67,13 +67,13 @@ This REPL is more user friendly than the default SBCL one:
 
 ``` txt
 
-:help => Prints this general help message
-:doc => Prints the available documentation for this symbol
-:? => Gets help on a symbol <sym>: :? str
-:w => Writes the current session to a file <filename>
-:d => Dumps the disassembly of a symbol <sym>
-:t => Prints the type of a expression <expr>
-:q => Ends the session.
+%help => Prints this general help message
+%doc => Prints the available documentation for this symbol
+%? => Gets help on a symbol <sym>: :? str
+%w => Writes the current session to a file <filename>
+%d => Dumps the disassembly of a symbol <sym>
+%t => Prints the type of a expression <expr>
+%q => Ends the session.
 ```
 
 Note: the documentation is also available by appending a "?" after a function name:
