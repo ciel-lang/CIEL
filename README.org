@@ -1,6 +1,6 @@
 * CIEL Is an Extended Lisp                                         :noexport:
 
-STATUS: the API WILL change, but it is usable.
+STATUS: highly WIP, the API WILL change, but it is usable.
 
 
 * What is this ?                                                   :noexport:
@@ -91,6 +91,15 @@ Rules
 - [[#how-to-generate-the-documentation][How to generate the documentation]]
 
 * Install
+
+Once installed, create a package and =:use= =ciel= in addition of =cl=:
+
+#+BEGIN_SRC lisp
+  (defpackage yourpackage
+    (:use :cl :ciel))
+#+end_src
+
+/NB: this is likely to change in the future./
 
 ** With Quicklisp
 
