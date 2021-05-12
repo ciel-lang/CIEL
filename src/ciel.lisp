@@ -168,7 +168,8 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
 
 (push (list "docs/serapeum.md"
             :serapeum
-            *deps/serapeum/sequences-hashtables*)
+            *deps/serapeum/sequences-hashtables*
+            "Symbols imported from SERAPEUM for sequences and hashtables")
       *doc-pages*)
 
 (cl-reexport:reexport-from :serapeum
