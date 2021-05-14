@@ -2,9 +2,7 @@
 (in-package :cl-user)
 (defpackage ciel
   (:use :cl)
-  (:export :enable-shell-passthrough
-           :enable-pythonic-string-syntax
-           :enable-punch-syntax)
+  (:export :enable-shell-passthrough)
   (:local-nicknames (:csv :cl-csv)
                     (:http :dexador)))
 
@@ -39,6 +37,17 @@ generic-cl).
   "We want to track the symbols that we import from other libraries, and re-display their documentation automatically on their own page.
 
 We currently only try this with serapeum. See *deps/serapeum/sequences-hashtables* and how the docs/serapeum.md page is generated with `generate-dependencies-page-reference'.")
+
+;; Syntax.
+(cl-reexport:reexport-from :pythonic-string-reader
+                           :include
+                           '(:enable-pythonic-string-syntax
+                             :disable-pythonic-string-syntax))
+(cl-reexport:reexport-from :cl-punch
+                           :include
+                           '(:enable-punch-syntax
+                             ;; no disable
+                             ))
 
 ;; Pattern matching.
 (cl-reexport:reexport-from :trivia

@@ -173,24 +173,47 @@ An improved version of `ignore-errors`. The behavior is the same: if an error oc
 
 ## Pythonic triple quotes docstring
 
-<https://github.com/smithzvk/pythonic-string-reader>
+We can use triple quotes for docstrings, and double quotes within them:
 
-We can use triple quotes for docstrings, and double quotes within them.
+<!-- tabs:start -->
 
+#### **CIEL**
 ```lisp
 (defun foo ()
   """foo "bar"."""
   t)
 ```
 
+#### **CL**
+
+~~~lisp
+;; Single quotes must be escaped.
+(defun foo ()
+   "foo \"bar\"."
+   t)
+~~~
+<!-- tabs:end -->
+
+To disable this syntax, do:
+
+~~~lisp
+(ciel:disable-pythonic-string-syntax)
+~~~
+
+We use [pythonic-string-reader](https://github.com/smithzvk/pythonic-string-reader).
+
+!> This syntax conflicts with libraries that use cl-syntax to use triple quotes
+too, even only internally. It happens with the Jonathan library.
+
+
 ## Lambda shortcuts
 
 You have to enable cl-punch's syntax yourself.
 
-<https://github.com/windymelt/cl-punch/> - Scala-like anonymous lambda literal.
+We use [cl-punch](https://github.com/windymelt/cl-punch/) - Scala-like anonymous lambda literal.
 
 ``` example
-(cl-punch:enable-punch-syntax)
+(ciel:enable-punch-syntax)
 ```
 
 ```lisp
