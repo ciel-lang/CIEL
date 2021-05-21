@@ -335,12 +335,144 @@ Trivia has more tricks in its sleeve. See the [special patterns](https://github.
 You migth also be interested in exhaustiveness type checking explained just below.
 
 
-Types, type checking, exhaustiveness type checking
---------------------------------------------------
+Type declarations
+-----------------
+
+Use `defun*`, `defgeneric*`, `defmethod*`, `defparameter*` and `defvar*` to add type declarations directly in the lambda list:
+
+<!-- tabs:start -->
+
+#### **CIEL**
+
+```lisp
+(defun* foo ((a integer))
+  (:returns integer)
+  (* 10 a))
+```
+
+#### **CL**
+
+```lisp
+;; In pure CL, type the functions at its boundaries with ftype.
+;; It is a bit verbose, but it has the advantage, being not tied to defun,
+;; that we can easily refine types during development.
+(declaim (ftype (function (integer) integer)             foo))
+;;                        ^^ inputs ^^ output [optional] ^^ function name
+
+;; defstar adds the internal "declare" and "the…".
+;; "the" is a promise made to the compiler, that will optimize things out.
+(defun foo (a)
+  (declare (type integer a))
+  (the integer (* 10 a)))
+
+```
+<!-- tabs:end -->
+
+<!-- tabs:start -->
+
+#### **CIEL**
+
+```lisp
+(defparameter* (*file-position* (integer 0)) 0)
+```
+
+#### **CL**
+
+```lisp
+
+;; Normal defparameter:
+(defparameter *file-position* 0)
+
+;; Assigning a bad value works:
+(setf *file-position* "8")
+;; "8"
+
+;; We add a type declaration:
+(declaim (type (integer 0) *file-position*))
+
+;; and now:
+(setf *file-position* "8")
+;;
+;; Value of #1="8" in (THE INTEGER "8") is #1#, not a INTEGER.
+;;   [Condition of type SIMPLE-TYPE-ERROR]
+;;
+;; we get a type error.
+```
+<!-- tabs:end -->
+
+We can use any type specifier:
+
+~~~lisp
+(deftype natural () '(real 0))
+(defun* sum  ((a natural) (b natural))
+  (:returns natural)
+  (+ a b))
+~~~
+
+Now, we get compile-time type errors:
+
+~~~lisp
+(foo "3")
+;; =>
+The value
+  "3"
+is not of type
+  INTEGER
+when binding A
+   [Condition of type TYPE-ERROR]
+
+Restarts: […]
+
+Backtrace:
+  0: (FOO "3") [external]
+  1: (SB-INT:SIMPLE-EVAL-IN-LEXENV (FOO "a") #<NULL-LEXENV>)
+  2: (EVAL (FOO "3"))
+~~~
+
+and we get compile-time warnings on type mismatches (but to be honest on simple cases like this SBCL is already quite good):
+
+~~~lisp
+(defun* bad-foo ((a integer))
+  (:returns integer)
+  (format t "~a" (* 10 a)))
+;
+; in: DEFUN* BAD-FOO
+;     (THE INTEGER (FORMAT T "~a" (* 10 CIEL::A)))
+;
+; caught WARNING:
+;   Constant NIL conflicts with its asserted type INTEGER.
+;   See also:
+;     The SBCL Manual, Node "Handling of Types"
+;
+; compilation unit finished
+;   caught 1 WARNING condition
+BAD-FOO
+~~~
+
+We could add extra protection and a `check-type`, evaluated at runtime.
+Defstar can add them automatically if `defstar:*check-argument-types-explicitly?*` is non-nil.
+
+In theory, such declarations don't guarantee that Lisp will do type checking but in practice the implementations, and in particular SBCL, perform type checking.
+
+We use the [defstar](https://github.com/lisp-maintainers/defstar) library. Its README has many more examples, more features (adding assertions, `:pre` and `:post` clauses) and an alternative notation (`(defun* (foo -> integer) …)`).
+
+> Note: we are not talking thorough ML-like type checking here (maybe the [Coalton](https://github.com/stylewarning/coalton) library will bring it to Common Lisp). But in practice, the compiler warnings and errors are helpful during development, "good enough", and SBCL keeps improving in that regard.
+
+See also:
+
+- https://lispcookbook.github.io/cl-cookbook/type.html
+- the article [Static type checking in SBCL](https://medium.com/@MartinCracauer/static-type-checking-in-the-programmable-programming-language-lisp-79bb79eb068a), by Martin Cracauer
+- the article [Typed List, a Primer](https://alhassy.github.io/TypedLisp) - let's explore Lisp's fine-grained type hierarchy! with a shallow comparison to Haskell.
+
+
+Type checking: exhaustiveness type checking
+-------------------------------------------
+
+Write a "case" and get a compile-time warning if you don't cover all cases.
 
 From Serapeum, we import:
 
-``` text
+```lisp
 :etypecase-of
 :ctypecase-of
 :typecase-of
@@ -399,7 +531,7 @@ Now we can use `ecase-of` to take all the states of the switch into account.
 
 See [Serapeum's reference](https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#control-flow).
 
-### More type definitions (trivial-types)
+## trivial-types: more type definitions
 
 From [trivial-types](https://github.com/m2ym/trivial-types), we import
 

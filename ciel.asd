@@ -8,7 +8,7 @@
   :license "MIT"
   :depends-on (
                :cl-reexport ;; for us
-               :cl-readline    ;; for the binary
+               :cl-readline    ;; for the REPL
                :cl-ansi-text
 
                :access
@@ -74,6 +74,9 @@
 
                ;; extended let
                :metabang-bind
+
+               ;; type declarations
+               :defstar
 
                ;; iteration
                :iterate

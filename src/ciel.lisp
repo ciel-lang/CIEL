@@ -237,6 +237,15 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
             *deps/trivial-types*)
       *doc-pages*)
 
+
+(cl-reexport:reexport-from :defstar
+                           :include '(:defun*
+                                      :defmethod*
+                                      :defgeneric*
+                                      :defparameter*
+                                      :defvar*))
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun symbol-documentation (symbol &key (stream t))
