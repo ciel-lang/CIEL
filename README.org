@@ -86,28 +86,13 @@ Rules
   - [[#with-quicklisp][With Quicklisp]]
   - [[#with-a-core-image][With a core image]]
   - [[#with-a-binary-use-ciels-custom-repl][With a binary. Use CIEL's custom REPL.]]
+- [[#usage][Usage]]
 - [[#libraries][Libraries]]
+- [[#language-extensions][Language extensions]]
 - [[#final-words][Final words]]
 - [[#how-to-generate-the-documentation][How to generate the documentation]]
 
 * Install
-
-Once installed, create a package and =:use= =ciel= in addition of =cl=:
-
-#+BEGIN_SRC lisp
-  (defpackage yourpackage
-    (:use :cl :ciel))
-#+end_src
-
-You can also use =generic-ciel=, based on [[https://github.com/alex-gutev/generic-cl/][generic-cl]]:
-
-#+begin_src
-  (defpackage yourpackage
-    (:use :cl :generic-ciel))
-#+end_src
-
-generic-cl allows us to define our =+= or =equalp= methods for our
-own objects (and more).
 
 
 ** With Quicklisp
@@ -194,6 +179,26 @@ TODO: we will distribute ready-to-use core images.
 
 See more in [[docs/README.md][the documentation]].
 
+* Usage
+
+Create a package and "use" =ciel= in addition of =cl=:
+
+#+BEGIN_SRC lisp
+  (defpackage yourpackage
+    (:use :cl :ciel))
+#+end_src
+
+You can also use =generic-ciel=, based on [[https://github.com/alex-gutev/generic-cl/][generic-cl]]:
+
+#+begin_src
+  (defpackage yourpackage
+    (:use :cl :generic-ciel))
+#+end_src
+
+generic-cl allows us to define our =+= or =equalp= methods for our
+own objects (and more).
+
+
 * Libraries
 
   We import, use and document libraries to fill various use cases:
@@ -207,6 +212,13 @@ See more in [[docs/README.md][the documentation]].
   To see the full list of dependencies, see the =ciel.asd= project
   definition or this [[file:doc/dependencies.md][dependencies list]].
 
+* Language extensions
+
+  We provide arrow macros, easy type declaratons in the function
+  lambda list, macros for exhaustiveness type checking, pattern
+  matching, etc.
+
+  See [[https://ciel-lang.github.io/CIEL/#/language-extensions][the documentation]].
 
 * Final words
 
