@@ -2,7 +2,8 @@
 (in-package :cl-user)
 (defpackage ciel
   (:use :cl)
-  (:export :enable-shell-passthrough)
+  (:export #:enable-shell-passthrough
+           #:-->)
   (:local-nicknames (:csv :cl-csv)
                     (:http :dexador)))
 
@@ -244,6 +245,30 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
                                       :defgeneric*
                                       :defparameter*
                                       :defvar*))
+
+;; Conveniently add type declarations.
+;; Straight from Serapeum, only it is -> thus it conflicts with our arrow-macro.
+(deftype --> (args values)
+  "The type of a function from ARGS to VALUES.
+
+  From SERAPEUM (where it is -> and thus conflicts with our -> arrow-macro)."
+  `(function ,args ,values))
+
+(defmacro --> (function args values)
+  "Declaim the ftype of FUNCTION from ARGS to VALUES.
+
+     (--> mod-fixnum+ (fixnum fixnum) fixnum)
+     (defun mod-fixnum+ (x y) ...)
+
+  In pure CL, it would be:
+
+  (declaim (ftype (function (fixnum fixnum) fixnum) mod-fixnum+))
+  (defun mod-fixnum+ (x y) ...)
+
+  In CIEL, you can also use `defun*'.
+
+  From SERAPEUM (where it is -> and thus conflicts with our -> arrow-macro)."
+  `(declaim (ftype (--> ,args ,values) ,function)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

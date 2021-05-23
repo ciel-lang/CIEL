@@ -340,6 +340,8 @@ Type declarations
 
 Use `defun*`, `defgeneric*`, `defmethod*`, `defparameter*` and `defvar*` to add type declarations directly in the lambda list:
 
+We also add the `-->` alternative notation, a convenience macro around `(declaim (ftype …))`, see below.
+
 <!-- tabs:start -->
 
 #### **CIEL**
@@ -451,6 +453,28 @@ BAD-FOO
 
 We could add extra protection and a `check-type`, evaluated at runtime.
 Defstar can add them automatically if `defstar:*check-argument-types-explicitly?*` is non-nil.
+
+We also add an alternative syntax to "(declaim (ftype…))", `-->`. It is not strictly equivalent to `defun*`.
+
+<!-- tabs:start -->
+
+#### **CIEL**
+
+```lisp
+(--> mod-fixnum+ (fixnum fixnum) fixnum)
+(defun mod-fixnum+ (x y) ...)
+
+;; --> comes straight from serapeum:->
+```
+
+#### **CL**
+
+```lisp
+(declaim (ftype (function (fixnum fixnum) fixnum) mod-fixnum+))
+(defun mod-fixnum+ (x y) ...)
+```
+<!-- tabs:end -->
+
 
 In theory, such declarations don't guarantee that Lisp will do type checking but in practice the implementations, and in particular SBCL, perform type checking.
 
