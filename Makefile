@@ -9,10 +9,12 @@ image:
 	$(LISP) --load build-image.lisp
 
 build:
-	$(LISP) --load ciel.asd \
+	$(LISP) --non-interactive \
+		--load ciel.asd \
 		--eval '(ql:quickload :swank)' \
 	     --eval '(ql:quickload :ciel)' \
-	     --eval '(asdf:make :ciel)' \
+	     --eval '(ql:quickload :ciel/repl)' \
+	     --eval '(asdf:make :ciel/repl)' \
 	     --eval '(quit)'
 
 serve-docs:

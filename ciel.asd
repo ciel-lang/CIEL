@@ -8,7 +8,6 @@
   :license "MIT"
   :depends-on (
                :cl-reexport ;; for us
-               :cl-readline    ;; for the REPL
                :cl-ansi-text
 
                :access
@@ -106,16 +105,23 @@
                ;;;
                ;;; User helpers.
                ;;;
-               :lisp-critic
                :named-readtables
-               :clesh
-               :magic-ed
+               :clesh  ;; shell pass-through
                )
   :components ((:module "src"
                         :components
-                        ((:file "ciel")
-                         ))
-               (:file "repl")
+                        ((:file "ciel"))))
+
+  :description "CIEL Is an Extended Lisp.")
+
+(asdf:defsystem "ciel/repl"
+  :depends-on (:ciel
+               ;; deps
+               :cl-readline
+               :lisp-critic  ;; it would be nice to integrate it with Slime.
+               :magic-ed
+               )
+  :components ((:file "repl")
                (:file "shell-utils")
                (:file "repl-utils"))
 
@@ -123,4 +129,4 @@
   :build-pathname "ciel-repl"
   :entry-point "sbcli::repl"
 
-  :description "CIEL Is an Extended Lisp.")
+  :description "readline REPL for CIEL.")
