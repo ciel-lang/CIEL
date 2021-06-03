@@ -341,9 +341,10 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
 
 (in-package :ciel-user)
 
-;; Enable triple quotes for the functions docstring.
-;; (in-readtable pythonic-string-reader:pythonic-string-syntax)
-(pythonic-string-reader:enable-pythonic-string-syntax)
+;; We would like triple quotes for the functions docstring by default,
+;; but this conflicts with other packages using a reader macro on the double quote
+;; by using cl-syntax (Jonathan, Djula).
+;; (pythonic-string-reader:enable-pythonic-string-syntax)
 
 ;; cl-json wants to convert our lisp symbols to camelCase, and the JSON ones to lisp-case.
 ;; We disable that.

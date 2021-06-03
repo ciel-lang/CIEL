@@ -173,12 +173,14 @@ An improved version of `ignore-errors`. The behavior is the same: if an error oc
 
 ## Pythonic triple quotes docstring
 
-We can use triple quotes for docstrings, and double quotes within them:
+We can enable the syntax to use triple quotes for docstrings, and double quotes within them:
 
 <!-- tabs:start -->
 
 #### **CIEL**
 ```lisp
+(ciel:enable-pythonic-string-syntax)
+
 (defun foo ()
   """foo "bar"."""
   t)
@@ -187,10 +189,13 @@ We can use triple quotes for docstrings, and double quotes within them:
 #### **CL**
 
 ~~~lisp
-;; Single quotes must be escaped.
+;; Normally single quotes must be escaped.
 (defun foo ()
    "foo \"bar\"."
    t)
+
+;; use:
+(pythonic-string-reader:enable-pythonic-string-syntax)
 ~~~
 <!-- tabs:end -->
 
