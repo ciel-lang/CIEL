@@ -2,6 +2,8 @@
 
 STATUS: highly WIP, the API WILL change, but it is usable.
 
+I am dogfooding it.
+
 
 * What is this ?                                                   :noexport:
 
