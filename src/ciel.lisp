@@ -97,16 +97,6 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
                              ;; :doseq*  ;; position value sequence
                              ))
 
-(cl-reexport:reexport-from :repl-utilities
-                           :include
-                           '(:repl-utilities
-                             :readme
-                             :doc
-                             :summary
-                             :package-apropos
-                             :trace-package
-                             :print-hash))
-
 ;; alexandria/sequences/lists
 (defparameter *deps/alexandria/sequences-lists*
   '(:iota

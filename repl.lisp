@@ -17,6 +17,18 @@
 
 (in-package :sbcli)
 
+;; repl-utilities: nice to have, but don't clutter the CIEL package by exporting them.
+;; For instance, "summary" is too common a word to be exported.
+(cl-reexport:reexport-from :repl-utilities
+                           :include
+                           '(:repl-utilities
+                             :readme
+                             ;; :doc  ;; conflicts with our little %doc helper.
+                             :summary
+                             :package-apropos
+                             :trace-package
+                             :print-hash))
+
 (defvar *repl-version* "0.1.5") ;XXX: print CIEL version.
 (defvar *banner* "
 

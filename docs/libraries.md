@@ -528,12 +528,12 @@ You can ask 5am to open the interactive debugger on an error:
 
 ### Discoverability of documentation (repl-utilities' readme, summary,…)
 
-We use `readme` and `summary` from [repl-utilities](http://quickdocs.org/repl-utilities/).
+We make [repl-utilities](http://quickdocs.org/repl-utilities/) available, which provides `readme` and `summary`:
 
 Learn more with:
 
 ``` example
-(readme repl-utilities)
+(repl-utilities:readme repl-utilities)
 ```
 
 ### printv
