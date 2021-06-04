@@ -236,8 +236,10 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
                                       :defparameter*
                                       :defvar*))
 
-;; Conveniently add type declarations.
-;; Straight from Serapeum, only it is -> thus it conflicts with our arrow-macro.
+;;;
+;;; Conveniently add type declarations.
+;;; Straight from Serapeum, only it is -> thus it conflicts with our arrow-macro.
+;;;
 (deftype --> (args values)
   "The type of a function from ARGS to VALUES.
 

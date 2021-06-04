@@ -118,6 +118,7 @@
   :depends-on (:ciel
                ;; deps
                :cl-readline
+               :cffi  ;; "tmp", for cl-readline add history
                :lisp-critic  ;; it would be nice to integrate it with Slime.
                :magic-ed
                )

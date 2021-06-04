@@ -2,13 +2,10 @@
 (load "~/quicklisp/setup")
 
 (let ((*standard-output* (make-broadcast-stream)))
-  ;; (load "ciel.asd") (ql:quickload '("swank" "ciel"))
-  ;; (ql:quickload '("alexandria" "which" "trivial-package-local-nicknames"
-  ;; "cl-ansi-text" "lisp-critic"))
   (ql:quickload "cl-readline"))
 
 (defpackage :sbcli
-  (:use :common-lisp :cffi :trivial-package-local-nicknames)
+  (:use :common-lisp :trivial-package-local-nicknames)
   (:import-from :magic-ed
                 :magic-ed)
   (:export sbcli help what *repl-version* *repl-name* *prompt* *prompt2* *result-indicator* *config-file*
@@ -77,7 +74,8 @@
   (with-open-file (in *hist-file* :if-does-not-exist :create)
     (loop for line = (read-line in nil nil)
       while line
-      ; hack because cl-readline has no function for this. sorry. ;INFO: it does now.
+      ;; hack because cl-readline has no function for this.
+      ;; TODO: it has it now.
       do (cffi:foreign-funcall "add_history"
                                :string line
                                :void))))
