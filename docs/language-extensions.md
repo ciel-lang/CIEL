@@ -27,7 +27,10 @@ We provide the Clojure-like arrow macros and "diamond wands" from the [arrow-mac
 #### **CL**
 
 ```lisp
-;; In pure CL, just use let* and intermediate variables:
+;; In pure CL, just wrap function calls…
+(mapcar #'length (str:words (str:upcase "  hello world ")))
+
+;; … or use let* and intermediate variables:
 (let* ((var "hello macros")
        (upcased (str:upcase var))
        (words (str:words upcased)))
