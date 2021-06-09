@@ -346,9 +346,34 @@ You migth also be interested in exhaustiveness type checking explained just belo
 Type declarations
 -----------------
 
-Use `defun*`, `defgeneric*`, `defmethod*`, `defparameter*` and `defvar*` to add type declarations directly in the lambda list:
+Use the `-->` macro to gradually add type declarations.
 
-We also add the `-->` alternative notation, a convenience macro around `(declaim (ftype …))`, see below.
+Alternatively, use `defun*`, `defgeneric*`, `defmethod*`, `defparameter*` and `defvar*` to add type declarations directly in the lambda list.
+
+These notations are not strictly equivalent though.
+
+`-->` comes from [Serapeum](https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#types). It is a shortcut for `(declaim (ftype my-function (… input types …) … return type …))`
+
+<!-- tabs:start -->
+
+#### **CIEL**
+
+```lisp
+(--> mod-fixnum+ (fixnum fixnum) fixnum)
+(defun mod-fixnum+ (x y) ...)
+
+;; --> comes straight from serapeum:->
+```
+
+#### **CL**
+
+```lisp
+(declaim (ftype (function (fixnum fixnum) fixnum) mod-fixnum+))
+(defun mod-fixnum+ (x y) ...)
+```
+<!-- tabs:end -->
+
+Now `defun*` and friends allow to add type declarations directly in the lambda list. They add the `(declaim (ftype` as above, and additionnaly `declare` types inside the function body:
 
 <!-- tabs:start -->
 
@@ -377,6 +402,8 @@ We also add the `-->` alternative notation, a convenience macro around `(declaim
 
 ```
 <!-- tabs:end -->
+
+A type declaration for a parameter:
 
 <!-- tabs:start -->
 
@@ -419,7 +446,7 @@ We can use any type specifier:
   (+ a b))
 ~~~
 
-Now, we get compile-time type errors:
+Now, we get type errors at compile time:
 
 ~~~lisp
 (foo "3")
@@ -462,36 +489,17 @@ BAD-FOO
 We could add extra protection and a `check-type`, evaluated at runtime.
 Defstar can add them automatically if `defstar:*check-argument-types-explicitly?*` is non-nil.
 
-We also add an alternative syntax to "(declaim (ftype…))", `-->`. It is not strictly equivalent to `defun*`.
-
-<!-- tabs:start -->
-
-#### **CIEL**
-
-```lisp
-(--> mod-fixnum+ (fixnum fixnum) fixnum)
-(defun mod-fixnum+ (x y) ...)
-
-;; --> comes straight from serapeum:->
-```
-
-#### **CL**
-
-```lisp
-(declaim (ftype (function (fixnum fixnum) fixnum) mod-fixnum+))
-(defun mod-fixnum+ (x y) ...)
-```
-<!-- tabs:end -->
-
-
 In theory, such declarations don't guarantee that Lisp will do type checking but in practice the implementations, and in particular SBCL, perform type checking.
 
-We use the [defstar](https://github.com/lisp-maintainers/defstar) library. Its README has many more examples, more features (adding assertions, `:pre` and `:post` clauses) and an alternative notation (`(defun* (foo -> integer) …)`).
+We use the [defstar](https://github.com/lisp-maintainers/defstar) library. Its README has many more examples, more features (adding assertions, `:pre` and `:post` clauses) and even an alternative notation (`(defun* (foo -> integer) …)`).
 
 > Note: we are not talking thorough ML-like type checking here (maybe the [Coalton](https://github.com/stylewarning/coalton) library will bring it to Common Lisp). But in practice, the compiler warnings and errors are helpful during development, "good enough", and SBCL keeps improving in that regard.
 
+> Note: there is no "undeclaim" form :] You can unintern a symbol and re-define it.
+
 See also:
 
+- [declarations](http://clhs.lisp.se/Body/03_c.htm) in the Common Lisp Hyper Spec.
 - https://lispcookbook.github.io/cl-cookbook/type.html
 - the article [Static type checking in SBCL](https://medium.com/@MartinCracauer/static-type-checking-in-the-programmable-programming-language-lisp-79bb79eb068a), by Martin Cracauer
 - the article [Typed List, a Primer](https://alhassy.github.io/TypedLisp) - let's explore Lisp's fine-grained type hierarchy! with a shallow comparison to Haskell.
