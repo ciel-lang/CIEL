@@ -190,6 +190,15 @@ Create a package and "use" =ciel= in addition of =cl=:
     (:use :cl :ciel))
 #+end_src
 
+You can use the =CIEL-USER= package when you start your Lisp
+image. Add this in your =~/.sbclrc=:
+
+#+BEGIN_SRC lisp
+(ql:quickload "ciel")
+(in-package :ciel-user)
+(ciel-user-help)
+#+end_src
+
 You can also use =generic-ciel=, based on [[https://github.com/alex-gutev/generic-cl/][generic-cl]]:
 
 #+begin_src

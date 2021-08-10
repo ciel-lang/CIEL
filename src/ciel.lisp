@@ -418,3 +418,8 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
 (defun enable-shell-passthrough ()
   "Enable the shell passthrough with \"!\". Enable Clesh's readtable."
   (named-readtables:in-readtable clesh:syntax))
+
+(defun ciel-user-help ()
+  "Print a short welcome and help message."
+  (format t "CIEL version ~a~&" (asdf:system-version (asdf:find-system "ciel")))
+  (format t "Documentation: https://ciel-lang.github.io/CIEL/~&"))
