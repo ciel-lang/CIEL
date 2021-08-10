@@ -211,6 +211,70 @@ Mito and SxQL are available.
 <https://lispcookbook.github.io/cl-cookbook/databases.html>
 
 
+Files and directories
+---------------------
+
+CL has built-in functions to deal with files and directories and UIOP provides more. See [https://lispcookbook.github.io/cl-cookbook/files.html](https://lispcookbook.github.io/cl-cookbook/files.html).
+
+We include the [FOF (File-object finder)](https://gitlab.com/ambrevar/fof/) library, which is very useful to:
+
+- search for files, recursively or not, and filter with our predicates,
+- inspect the file objects with the regular `inspect` or `describe`
+  tools and see at a glance metadata such as permissions, last access
+  time, etc,
+- change metada: the class slots have setters that write to disk,
+- manipulate paths and avoid common pitfalls from the built-in and UIOP functions.
+
+In practice, it mostly supersedes:
+
+- Common Lisp pathnames (at least for existing files).
+- Many Unix tools:
+  - `find` for recursive and programmable file search. Unlike `find`, `finder`'s predicates are extensible.
+  - `ls`
+  - `stat`
+  - `chown`
+  - `chmod`
+  - `du`
+  - `touch`
+
+*(when you want to reach to these tools, you can also use CIEL's shell passthrough)*
+
+Note that FOF is not meant to manipulate arbitrary paths of non-existing files.
+Consider using [ppath](https://github.com/fourier/ppath) instead.
+
+Quick examples:
+
+~~~lisp
+;; List all files in the current directory, recursively.
+CIEL-USER> (fof:finder)
+(#F"~/projets/ciel/.git/" #F"~/projets/ciel/.github/" #F"~/projets/ciel/docs/" ...)
+
+CIEL-USER> (fof:finder* :root (fof:file "src/"))
+(#F"~/projets/ciel/src/ciel.fasl" #F"~/projets/ciel/src/ciel.lisp"
+ #F"~/projets/ciel/src/cl-cron.log" #F"~/projets/ciel/src/test-5am.lisp"
+ #F"~/projets/ciel/src/utils.lisp")
+
+CIEL-USER> (fof:file "ciel.asd")
+#F"~/projets/ciel/ciel.asd"
+
+CIEL-USER> (inspect *)
+
+The object is a STANDARD-OBJECT of type FOF/FILE:FILE.
+0. PATH: "/home/vince/projets/ciel/ciel.asd"
+1. INODE: 5287804
+2. LINK-COUNT: 1
+3. KIND: :REGULAR-FILE
+4. SIZE: 3135
+5. DISK-USAGE: 12288
+6. USER-ID: 1000
+7. GROUP-ID: 1000
+8. CREATION-DATE: @2021-08-10T14:39:36.000000+02:00
+9. MODIFICATION-DATE: @2021-08-10T14:39:36.000000+02:00
+10. ACCESS-DATE: @2021-08-10T14:47:24.000000+02:00
+11. PERMISSIONS: (:USER-READ :USER-WRITE :GROUP-READ :GROUP-WRITE :OTHER-READ)
+>
+~~~
+
 GUI (ltk)
 ---------
 
@@ -222,7 +286,7 @@ Here's how it looks like on Mac:
 
 ![](https://lispcookbook.github.io/cl-cookbook/assets/gui/ltk-on-macos.png)
 
-You have other GUI options a quickload away (Qt4, Gtk, IUP, Nuklear, not mentioning LispWorks CAPI…): <https://lispcookbook.github.io/cl-cookbook/gui.html>
+You have other GUI options a quickload away (Qt4, Gtk, IUP, not mentioning LispWorks CAPI…): <https://lispcookbook.github.io/cl-cookbook/gui.html>
 
 Here's how to start with Ltk:
 

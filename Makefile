@@ -17,5 +17,8 @@ build:
 	     --eval '(asdf:make :ciel/repl)' \
 	     --eval '(quit)'
 
+gen-dependencies-list:
+	./find-dependencies.lisp > docs/dependencies.md
+
 serve-docs:
 	docsify serve docs/

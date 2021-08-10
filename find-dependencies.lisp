@@ -3,7 +3,9 @@
 #|
 Show CIEL's dependencies.
 
-Redirect the script output to doc/dependencies.md
+Run as a script.
+
+Redirect the script output to docs/dependencies.md (see Makefile).
 |#
 
 (require 'asdf)
@@ -22,10 +24,12 @@ Redirect the script output to doc/dependencies.md
 ;; where's a project URL?
 
 (defun print-dependencies (deps/str)
+  ;XXX: doesn't find dependencies from package-inferred-systems (like fof).
   (let ((systems (mapcar #'asdf/find-system:find-system
                          (system-dependencies deps/str))))
     (loop for system in systems
          do (format t "- ~a: ~a~&" (asdf:primary-system-name system)
                     (str:shorten 200 (asdf:system-description system))))))
 
+(format t "<!-- list generated automatically. -->~&")
 (print-dependencies "ciel")

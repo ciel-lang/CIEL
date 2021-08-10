@@ -6,6 +6,7 @@
   :version "0.1"
   :author "vindarel"
   :license "MIT"
+  :homepage "https://github.com/ciel-lang/CIEL/"
   :depends-on (
                :cl-reexport ;; for us
                :cl-ansi-text
@@ -13,6 +14,7 @@
                :access
                :alexandria
                :arrow-macros
+               :fof  ;; file-object-finder
 
                ;; threads
                :bordeaux-threads
