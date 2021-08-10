@@ -89,6 +89,7 @@ Rules
   - [[#with-a-core-image][With a core image]]
   - [[#with-a-binary-use-ciels-custom-repl][With a binary. Use CIEL's custom REPL.]]
 - [[#usage][Usage]]
+  - [[#use-ciel-at-startup][Use CIEL at startup]]
 - [[#libraries][Libraries]]
 - [[#language-extensions][Language extensions]]
 - [[#final-words][Final words]]
@@ -190,15 +191,6 @@ Create a package and "use" =ciel= in addition of =cl=:
     (:use :cl :ciel))
 #+end_src
 
-You can use the =CIEL-USER= package when you start your Lisp
-image. Add this in your =~/.sbclrc=:
-
-#+BEGIN_SRC lisp
-(ql:quickload "ciel")
-(in-package :ciel-user)
-(ciel-user-help)
-#+end_src
-
 You can also use =generic-ciel=, based on [[https://github.com/alex-gutev/generic-cl/][generic-cl]]:
 
 #+begin_src
@@ -209,6 +201,40 @@ You can also use =generic-ciel=, based on [[https://github.com/alex-gutev/generi
 generic-cl allows us to define our =+= or =equalp= methods for our
 own objects (and more).
 
+** Use CIEL at startup
+
+You can enter the =CIEL-USER= package when you start your Lisp image
+from your editor.
+
+A working, but naive and slow-ish approach is to add this in your =~/.sbclrc=:
+
+#+BEGIN_SRC lisp
+(ql:quickload "ciel")
+(in-package :ciel-user)
+(ciel-user-help)
+#+end_src
+
+A faster way is to use CIEL's core and to use SLIME's or your editor's
+feature to [[https://common-lisp.net/project/slime/doc/html/Multiple-Lisps.html#Multiple-Lisps][configure multiple Lisps]].
+
+You need to:
+
+- build CIEL's core for your machine (=make image=),
+- add this to your Emacs init file:
+
+#+BEGIN_SRC lisp
+  (setq slime-lisp-implementations
+        `((sbcl    ("/usr/bin/sbcl" "--dynamic-space-size" "2000"))  ;; default. Adapt if needed.
+          (ciel-sbcl  ("/usr/bin/sbcl" "--core" "/path/to/ciel/ciel"))))
+  (setq slime-default-lisp 'ciel-sbcl)
+#+end_src
+
+- and start a new Lisp process.
+- optional: if you didn't set it as default with =slime-default-lisp=,
+  then start a new Lisp process with =M-- M-x slime= (alt-minus prefix),
+  and choose ciel-sbcl. You can start more than one Lisp process from SLIME.
+
+The Lisp process should start as fast as the default SBCL.
 
 * Libraries
 
