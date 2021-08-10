@@ -221,7 +221,7 @@ own objects (and more).
   See [[docs/README.md][the documentation]].
 
   To see the full list of dependencies, see the =ciel.asd= project
-  definition or this [[file:doc/dependencies.md][dependencies list]].
+  definition or this [[file:docs/dependencies.md][dependencies list]].
 
 * Language extensions
 
