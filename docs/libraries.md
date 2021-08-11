@@ -102,13 +102,21 @@ And from [Alexandria](https://common-lisp.net/project/alexandria/draft/alexandri
 :emptyp
 ```
 
+From `alexandria-2` we import:
+
+```text
+:subseq*  (the end argument can be larger than the sequence's length)
+```
+
 and some more.
 
 ### String manipulation (str)
 
 Available with the `str` prefix.
 
-<https://github.com/vindarel/cl-str/>
+It provides functions such as: `trim`, `join`, `concat`, `split`, `repeat`, `pad`, `substring`, `replace-all`, `emptyp`, `blankp`, `alphanump`, `upcase`, `upcasep`, `remove-punctuation`, `from-file`, `to-file`…
+
+See <https://github.com/vindarel/cl-str/> and https://lispcookbook.github.io/cl-cookbook/strings.html
 
 Data formats
 ------------

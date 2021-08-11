@@ -121,6 +121,16 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
 (cl-reexport:reexport-from :alexandria
                            :include
                            *deps/alexandria/sequences-lists*)
+
+;; alexandria-2/sequences
+;; That one is quite well hidden, it is not even in the manual. Why so?
+(defparameter *deps/alexandria-2/sequences*
+  '(:subseq*))
+
+(cl-reexport:reexport-from :alexandria-2
+                           :include
+                           *deps/alexandria-2/sequences*)
+
 ;; alexandria/numbers
 (cl-reexport:reexport-from :alexandria
                            :include
