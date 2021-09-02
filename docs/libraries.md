@@ -323,35 +323,23 @@ Read more: <https://lispcookbook.github.io/cl-cookbook/gui.html#tk>
 Iteration
 ---------
 
-We ship `iterate` and `for` so you can try them, but we don't import their symbols.
-
 See <https://lispcookbook.github.io/cl-cookbook/iteration.html> for examples, including about the good old `loop`.
 
 We import macros from [trivial-do](https://github.com/yitzchak/trivial-do/), that provides `dolist`-like macro to iterate over more structures:
 
--   `dohash`: dohash iterates over the elements of an hash table and binds key-var to the key,
+- `dohash`: dohash iterates over the elements of an hash table and binds key-var to the key, value-var to the associated value and then evaluates body as a tagbody that can include declarations. Finally the result-form is returned after the iteration completes.
 
-value-var to the associated value and then evaluates body as a tagbody that can include declarations. Finally the result-form is returned after the iteration completes.
+- `doplist`: doplist iterates over the elements of an plist and binds key-var to the key, value-var to the associated value and then evaluates body as a tagbody that can include declarations. Finally the result-form is returned after the iteration completes.
 
--   `doplist`: doplist iterates over the elements of an plist and binds key-var to the key, value-var to
+- `doalist`: doalist iterates over the elements of an alist and binds key-var to the car of each element, value-var to the cdr of each element and then evaluates body as a tagbody that can include declarations. Finally the result-form is returned after the iteration completes.
 
-the associated value and then evaluates body as a tagbody that can include declarations. Finally the result-form is returned after the iteration completes.
+- `doseq*`: doseq\* iterates over the elements of an sequence and binds position-var to the index of each element, value-var to each element and then evaluates body as a tagbody that can include declarations. Finally the result-form is returned after the iteration completes.
 
--   `doalist`: doalist iterates over the elements of an alist and binds key-var to the car of each element,
+- `doseq`: doseq iterates over the elements of an sequence and binds value-var to successive values and then evaluates body as a tagbody that can include declarations. Finally the result-form is returned after the iteration completes.
 
-value-var to the cdr of each element and then evaluates body as a tagbody that can include declarations. Finally the result-form is returned after the iteration completes.
+- `dolist*`: dolist\* iterates over the elements of an list and binds position-var to the index of each element, value-var to each element and then evaluates body as a tagbody that can include declarations. Finally the result-form is returned after the iteration completes.
 
--   `doseq*`: doseq\* iterates over the elements of an sequence and binds position-var to the index of each
-
-element, value-var to each element and then evaluates body as a tagbody that can include declarations. Finally the result-form is returned after the iteration completes.
-
--   `doseq`: doseq iterates over the elements of an sequence and binds value-var to successive values
-
-and then evaluates body as a tagbody that can include declarations. Finally the result-form is returned after the iteration completes.
-
--   `dolist*`: dolist\* iterates over the elements of an list and binds position-var to the index of each
-
-element, value-var to each element and then evaluates body as a tagbody that can include declarations. Finally the result-form is returned after the iteration completes.
+We ship `for` so you can try it, but we don't import its symbols.
 
 
 Numerical and scientific

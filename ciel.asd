@@ -80,7 +80,6 @@
                :defstar
 
                ;; iteration
-               :iterate
                :for
                :trivial-do
 
