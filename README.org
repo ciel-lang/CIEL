@@ -133,21 +133,8 @@ and use it:
 
 : sbcl --core ciel --eval '(in-package :ciel-user)'
 
-Then you can configure Slime to have the choice of the Lisp image to start:
-
-#+BEGIN_SRC lisp
-(setq slime-lisp-implementations
-  ;; Your system SBCL:
-  `((sbcl    ("sbcl" "--dynamic-space-size" "2000"))
-  ;; Our CIEL image:
-  (ciel  ("sbcl" "--core" "/home/YOU/lisp/ciel/ciel" "--eval" "(in-package :ciel-user)"))))
-
-;; Choose the default image:
-(setq slime-default-lisp 'ciel)
-#+end_src
-
-Now, use =M-- M-x slime= (alt minus) and choose the Lisp image to start. You can
-have more than one running in parallel.
+Then you can configure Slime to have the choice of the Lisp image to
+start. See below in [[*Use CIEL at startup]]
 
 TODO: we will distribute ready-to-use core images.
 
@@ -188,7 +175,7 @@ TODO: we will distribute ready-to-use core images.
 #+begin_src txt
   %help => Prints this general help message
   %doc => Prints the available documentation for this symbol
-  %? => Gets help on a symbol <sym>: :? str
+  %? => Inspect a symbol: %? str
   %w => Writes the current session to a file <filename>
   %d => Dumps the disassembly of a symbol <sym>
   %t => Prints the type of a expression <expr>
@@ -240,8 +227,8 @@ You need to:
 
 #+BEGIN_SRC lisp
   (setq slime-lisp-implementations
-        `((sbcl    ("/usr/bin/sbcl" "--dynamic-space-size" "2000"))  ;; default. Adapt if needed.
-          (ciel-sbcl  ("/usr/bin/sbcl" "--core" "/path/to/ciel/ciel"))))
+        `((sbcl    ("sbcl" "--dynamic-space-size" "2000"))  ;; default. Adapt if needed.
+          (ciel-sbcl  ("sbcl" "--core" "/path/to/ciel/ciel" "--eval" "(in-package :ciel-user)"))))
   (setq slime-default-lisp 'ciel-sbcl)
 #+end_src
 
