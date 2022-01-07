@@ -243,11 +243,11 @@
       (t (apply fun (subseq args 0 l))))))
 
 (defun handle-special-input (text)
-  (let* ((splt (str:words text))
-         (k (subseq (car splt) 1 (length (car splt))))
+  (let* ((words (str:words text))
+         (k (subseq (car words) 1 (length (car words))))
          (v (gethash k *special*)))
     (if v
-      (call-special v (car splt) (cdr splt))
+      (call-special v (car words) (cdr words))
       (format *error-output* "Unknown special command: ~a~%" k))))
 
 (defun evaluate-lisp (text parsed)

@@ -105,9 +105,11 @@
 
                ;;;
                ;;; User helpers.
+               ;;; ;TODO: we don't want these dependencies when we build a binary.
                ;;;
                :named-readtables
                :clesh  ;; shell pass-through
+               :quicksearch  ;; search on GitHub, Cliki, Quickdocs.
                )
   :components ((:module "src"
                         :components

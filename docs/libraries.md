@@ -625,3 +625,31 @@ Learn more with:
 (arglist #'foo)
 ;; (a b c &optional d)
 ```
+
+### Searching for libraries on GitHub, Quickdocs and Cliki (quicksearch)
+
+We include
+[Quicksearch](https://github.com/lisp-maintainers/quicksearch), a
+simple search utility for Common Lisp libraries:
+
+    (qs:? "ciel" :u)
+
+this will search on GitHub, Quickdocs and Cliki for "ciel", and it
+will print the URL of search results.
+
+```
+SEARCH-RESULTS: "ciel"
+======================
+
+ Cliki
+ -----
+  cl-cron
+      http://www.cliki.net/cl-cron
+
+ GitHub
+ ------
+  CIEL
+      https://github.com/ciel-lang/CIEL
+  cl-cron
+      https://github.com/lisp-mirror/cl-cron
+```

@@ -55,10 +55,13 @@
      else if (functionp program) return program))
 
 (defun basename (arg)
-  (when arg
-    (namestring (pathname-name arg))))
+  ;; ARG can be any string. This fails with "(qs:?" (note the "?").
+  (ignore-errors
+    (when arg
+      (namestring (pathname-name arg)))))
 
 (defun shell-command-wrapper-p (command)
+  "Is this command (string) a shell wrapper?"
   (find (basename command)
         *command-wrappers*
         :test #'string-equal))
