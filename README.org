@@ -133,6 +133,22 @@ and use it:
 
 : sbcl --core ciel --eval '(in-package :ciel-user)'
 
+Then you can configure Slime to have the choice of the Lisp image to start:
+
+#+BEGIN_SRC lisp
+(setq slime-lisp-implementations
+  ;; Your system SBCL:
+  `((sbcl    ("sbcl" "--dynamic-space-size" "2000"))
+  ;; Our CIEL image:
+  (ciel  ("sbcl" "--core" "/home/YOU/lisp/ciel/ciel" "--eval" "(in-package :ciel-user)"))))
+
+;; Choose the default image:
+(setq slime-default-lisp 'ciel)
+#+end_src
+
+Now, use =M-- M-x slime= (alt minus) and choose the Lisp image to start. You can
+have more than one running in parallel.
+
 TODO: we will distribute ready-to-use core images.
 
 ** With a binary. Use CIEL's custom REPL.
