@@ -214,9 +214,31 @@ See also [awesome-cl\#date-and-time](https://github.com/CodyReichert/awesome-cl#
 Databases
 ---------
 
-Mito and SxQL are available.
+[cl-dbi](https://github.com/fukamachi/cl-dbi/) (db independent interface) and [SxQL](https://github.com/fukamachi/sxql) (a SQL generator) are available.
 
-<https://lispcookbook.github.io/cl-cookbook/databases.html>
+Connect to a database with cl-dbi:
+
+~~~lisp
+ (defvar *connection*
+  (dbi:connect :sqlite3
+               :database-name "/home/gt/test.sqlite3"))
+~~~
+
+and execute queries.
+
+Use SXQL to generate SQL from a lispy DSL:
+
+~~~lisp
+(select (:id :name :sex)
+  (from (:as :person :p))
+  (where (:and (:>= :age 18)
+               (:< :age 65)))
+  (order-by (:desc :age)))
+~~~
+
+If you want an ORM, see [Mito](https://github.com/fukamachi/mito/) or [clsql](http://clsql.kpe.io/manual/). You also have things like [cl-yesql](https://github.com/ruricolist/cl-yesql). For more choices, see https://github.com/CodyReichert/awesome-cl#database
+
+And for a tutorial, see <https://lispcookbook.github.io/cl-cookbook/databases.html>
 
 
 Files and directories

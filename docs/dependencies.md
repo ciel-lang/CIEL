@@ -18,6 +18,7 @@
 Essentially, it provides a '!' syntax that you can use to ...
 - closer-mop: Closer to MOP is a compatibility layer that rectifies many of the absent or incorrect CLOS MOP features across a broad range of Common Lisp implementations.
 - cmd: A utility for running external programs
+- dbi: Database independent interface for Common Lisp
 - defstar: defstar: macros allowing easy inline type declarations for
 variables and and function return values.
 - dexador: Yet another HTTP client for Common Lisp
@@ -34,14 +35,12 @@ See: http://www.ergy.com/FSet.html
   BORDEAUX-THREADS.  It supports HTTP 1.1, serves static files, has a
   simple framework for user-defined handlers and can be extended
   through su...
-- iterate: Jonathan Amsterdam's iterator/gatherer/accumulator facility
 - local-time: A library for manipulating dates and times, based on a paper by Erik Naggum
 - log4cl: NIL
 - lparallel: Parallelism for Common Lisp
 - lquery: A library to allow jQuery-like HTML/DOM manipulation.
 - ltk: LTK
 - metabang-bind: Bind is a macro that generalizes multiple-value-bind, let, let*, destructuring-bind, structure and slot accessors, and a whole lot more.
-- mito: Abstraction layer for DB schema
 - modf: A SETF like macro for functional programming
 - moira: Monitor and restart background threads.
 - named-readtables: Library that creates a namespace for named readtable
@@ -51,6 +50,7 @@ See: http://www.ergy.com/FSet.html
 - printv: printv: a batteries-included tracing and debug-logging macro
 - pythonic-string-reader: A simple and unintrusive read table modification that allows for
 simple string literal definition that doesn't require escaping characters.
+- quicksearch: Quicksearch searches CL library, and outputs results at REPL.
 - quri: Yet another URI library for Common Lisp
 - repl-utilities: Ease common tasks at the REPL.
 - serapeum: Utilities beyond Alexandria.

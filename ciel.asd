@@ -49,8 +49,8 @@
                :parse-number
 
                ;; database
-               :mito
-               :sxql
+               :dbi  ;; connects and executes queries.
+               :sxql ;; SQL generator from lispy syntax.
 
                ;; numerical
                :vgplot

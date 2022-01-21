@@ -87,8 +87,7 @@ denotes a set if each element of the list is unique under KEY and TEST.
 ARGLIST: `(sequence &key (start 0) end)`
 
 FUNCTION: Returns a random permutation of SEQUENCE bounded by START and END.
-Original sequence may be destructively modified, and (if it contains
-CONS or lists themselv) share storage with the original one.
+Original sequence may be destructively modified.
 Signals an error if SEQUENCE is not a proper sequence.
 ## RANDOM-ELT 
 
