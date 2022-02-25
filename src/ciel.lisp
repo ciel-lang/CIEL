@@ -1,6 +1,6 @@
 
 (in-package :cl-user)
-(defpackage ciel
+(uiop:define-package ciel
   (:use :cl)
   (:export #:enable-shell-passthrough
            #:-->)
@@ -328,13 +328,13 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defpackage ciel-user
+(uiop:define-package ciel-user
   (:use :cl :ciel)
   (:local-nicknames (:csv :cl-csv)
                     (:http :dexador)))
 
 ;TODO: a conflict between Serapeum and generic-cl
-(defpackage generic-ciel
+(uiop:define-package generic-ciel
   (:use :generic-cl
         :ciel)
   ;XXX: local nicknames are duplicated in each package declaration.
