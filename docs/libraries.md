@@ -16,12 +16,21 @@ It's always
 
 for an alist, a hash-table, a struct, an object… Use `accesses` for nested access (specially useful with JSON).
 
-### Hash-table utilities (Serapeum)
+### Hash-table utilities (Alexandria and Serapeum)
 
-We import functions from Serapeum. <https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#hash-tables>
+We import functions from [Alexandria](https://alexandria.common-lisp.dev/draft/alexandria.html#Hash-Tables) and [Serapeum](https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#hash-tables).
 
-To see their full list with their documentation, see [serapeum](serapeum.md).
+To see their full list with their documentation, see [alexandria](alexandria.md) [serapeum](serapeum.md).
+
+```txt
+;; alexandria
+hash-table-keys
+hash-table-values
+ensure-gethash
+```
+
 ``` txt
+;; serapeum
 :dict
 :do-hash-table ;; see also trivial-do
 :dict*

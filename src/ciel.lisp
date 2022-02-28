@@ -131,6 +131,15 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
                            :include
                            *deps/alexandria-2/sequences*)
 
+;; alexandria/hash-tables
+(defparameter *deps/alexandria/hash-tables*
+  '(:hash-table-keys
+    :hash-table-values
+    :ensure-gethash))
+(cl-reexport:reexport-from :alexandria
+                           :include
+                           *deps/alexandria/hash-tables*)
+
 ;; alexandria/numbers
 (cl-reexport:reexport-from :alexandria
                            :include
@@ -139,8 +148,10 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
 
 (push (list "docs/alexandria.md"
             :alexandria
-            *deps/alexandria/sequences-lists*
-            "Symbols imported from ALEXANDRIA for sequences and lists")
+            (union
+             *deps/alexandria/sequences-lists*
+             *deps/alexandria/hash-tables*)
+            "Symbols imported from ALEXANDRIA for sequences and hash-tables")
       *doc-pages*)
 
 ;; serapeum: sequences/hash tables
@@ -303,8 +314,11 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
     (error (c) (format *error-output* "Error during documentation lookup: ~a~&" c))))
 
 (defun generate-dependencies-page-reference ()
-  (loop for doc-spec in *doc-pages*
+  (loop for doc-spec in (reverse *doc-pages*)
+     ;; reverse used during development. If we push the same data onto *doc-pages*, the previous one is still processed after the one, so we won't see changes in a doc/….md file.
+     ;; We could erase the first occurence.
      do
+       (format t "~&Formating ~a doc to ~a: ~a~&" (second doc-spec) (first doc-spec) (third doc-spec))
        (with-open-file (f (first doc-spec)
                           :direction :output
                           :if-does-not-exist :create
@@ -315,7 +329,7 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
          (loop for elt in (third doc-spec)
             for sym = (uiop:find-symbol* elt (second doc-spec))
             do
-              (format f "## ~a ~%~%~a~&"
+              (format f "~%## ~a ~%~a~&"
                       elt
                       (with-output-to-string (s)
                         (symbol-documentation sym :stream s)))))))
