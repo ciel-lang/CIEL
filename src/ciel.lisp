@@ -154,6 +154,20 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
             "Symbols imported from ALEXANDRIA for sequences and hash-tables")
       *doc-pages*)
 
+;; alexandria/flow
+(defparameter *deps/alexandria/flow*
+  '(:if-let
+    :when-let
+    :when-let*
+    ))
+(cl-reexport:reexport-from :alexandria
+                           :include *deps/alexandria/flow*)
+(push (list "docs/alexandria-control-flow.md"
+            :alexandria
+            *deps/alexandria/flow*
+            "Symbols imported from ALEXANDRIA for control flow.")
+      *doc-pages*)
+
 ;; serapeum: sequences/hash tables
 (defparameter *deps/serapeum/sequences-hashtables*
   '(:assort
