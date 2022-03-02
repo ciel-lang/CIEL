@@ -4,7 +4,8 @@
   (:use :cl)
   (:export #:enable-shell-passthrough
            #:-->)
-  (:local-nicknames (:csv :cl-csv)
+  (:local-nicknames (:alex :alexandria)
+                    (:csv :cl-csv)
                     (:http :dexador)))
 
 #|
