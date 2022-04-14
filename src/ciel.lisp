@@ -43,7 +43,11 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
 ;; UIOP
 (cl-reexport:reexport-from :uiop
                            :include
-                           '(:define-package))
+                           '(:define-package ;; shall we override defpackage?
+                             :find-symbol*
+                             :symbol-call
+                             :not-implemented-error
+                             :command-line-arguments))
 
 ;; Syntax.
 (cl-reexport:reexport-from :pythonic-string-reader
