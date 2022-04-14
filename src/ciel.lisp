@@ -4,7 +4,12 @@
   (:use :cl)
   (:export #:enable-shell-passthrough
            #:-->)
-  (:local-nicknames (:alex :alexandria)
+  (:local-nicknames (:/os :uiop/os)
+                    ;; let's try this nickname.
+                    ;; Simply :os doesn't help at auto-discovery with SLIME's autocompletion.
+                    ;; but let's add it anyways for correctness.
+                    (:os :uiop/os)
+                    (:alex :alexandria)
                     (:csv :cl-csv)
                     (:http :dexador)))
 

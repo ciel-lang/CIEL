@@ -255,6 +255,8 @@ Files and directories
 
 CL has built-in functions to deal with files and directories and UIOP provides more. See [https://lispcookbook.github.io/cl-cookbook/files.html](https://lispcookbook.github.io/cl-cookbook/files.html).
 
+See also some functions under `uiop/os` (or simply `uiop` or `os` for short) like `os:getcwd`.
+
 We include the [FOF (File-object finder)](https://gitlab.com/ambrevar/fof/) library, which is very useful to:
 
 - search for files, recursively or not, and filter with our predicates,
@@ -457,6 +459,57 @@ Close plots with `close-plot` or `close-all-plots`.
 Explore the demo [here](https://github.com/volkers/vgplot/blob/master/demo.lisp).
 
 
+Operating System
+----------------
+
+`UIOP`, as always, has some useful functions. This time, they are
+under `uiop/os` (or simply `uiop`). We added a local nickname:
+`os`. You will find:
+
+```
+os:*implementation-type*
+os:architecture
+os:chdir
+os:detect-os
+os:featurep
+os:getcwd
+os:getenv
+os:getenvp
+os:hostname
+os:implementation-identifier
+os:implementation-type
+os:lisp-version-string
+os:operating-system
+os:os-cond
+os:os-genera-p
+os:os-macosx-p
+os:os-unix-p
+os:os-windows-p
+os:parse-file-location-info
+os:parse-windows-shortcut
+os:read-little-endian
+os:read-null-terminated-string
+```
+
+
+~~~lisp
+;; read an environment variable:
+CIEL> (os:getenv "USER")
+"vindarel"
+
+;; get the current working directory:
+CIEL> (os:getcwd)
+#P"/home/vindarel/projects/ciel/"
+
+CIEL> (os:detect-os)
+:OS-UNIX
+~~~
+
+
+But typing `os:` and TAB in SLIME doesn't help very much with
+auto-discovery, so we also added a `/os` local nickname, so that we
+see the available symbols earlier in the autocompletion list.
+
 
 Regular expressions
 -------------------
@@ -529,6 +582,17 @@ We ship:
 
 Development
 -----------
+
+### Defining packages
+
+`defpackage` is nice and well, until you notice some shortcomings. That's why we import UIOP's `define-package`. You'll get:
+
+- less warnings when you remove an exported symbol
+- a `:reexport` option (as well as `:use-reexport` and `:mix-reeport`)
+- `:recycle` and `:mix` options.
+
+Here's [uiop:define-package documentation](https://asdf.common-lisp.dev/uiop.html#UIOP_002fPACKAGE).
+
 
 ### Testing (Fiveam)
 
