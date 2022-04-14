@@ -40,6 +40,11 @@ generic-cl).
 
 We currently only try this with serapeum. See *deps/serapeum/sequences-hashtables* and how the docs/serapeum.md page is generated with `generate-dependencies-page-reference'.")
 
+;; UIOP
+(cl-reexport:reexport-from :uiop
+                           :include
+                           '(:define-package))
+
 ;; Syntax.
 (cl-reexport:reexport-from :pythonic-string-reader
                            :include

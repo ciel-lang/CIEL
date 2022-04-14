@@ -1,3 +1,14 @@
+
+## Packages
+
+`defpackage` is nice and well, until you notice some shortcomings. That's why we import UIOP's `define-package`. You'll get:
+
+- less warnings when you remove an exported symbol
+- a `:reexport` option (as well as `:use-reexport` and `:mix-reeport`)
+- `:recycle` and `:mix` options.
+
+Here's [uiop:define-package documentation](https://asdf.common-lisp.dev/uiop.html#UIOP_002fPACKAGE).
+
 ## Arrow macros
 
 We provide the Clojure-like arrow macros and "diamond wands" from the [arrow-macros](https://github.com/hipeta/arrow-macros) library.
