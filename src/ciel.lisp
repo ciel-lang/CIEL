@@ -50,6 +50,7 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
                            :include
                            '(:define-package ;; shall we override defpackage?
                              :find-symbol*
+                             :format!
                              :symbol-call
                              :not-implemented-error
                              :command-line-arguments))
