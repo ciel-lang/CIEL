@@ -7,7 +7,7 @@
 - cl-ansi-text: ANSI control string characters, focused on color
 - cl-cron: A simple tool that provides cron like facilities directly inside of common lisp. For this to work properly note that your lisp implementation should have support for threads
 - cl-csv: Facilities for reading and writing CSV format files
-- cl-json: JSON in Lisp. JSON (JavaScript Object Notation) is a lightweight data-interchange format.
+- shasht: Common Lisp JSON reading and writing for the Kzinti. The primary interface to parsing and reading JSON is the `read-json` function. The primary interface to serializing and writing JSON is the `write-json` function.
 - cl-ppcre: Perl-compatible regular expression library
 - cl-punch: Scala-like anonymous lambda literal
 - cl-reexport: Reexport external symbols in other packages.

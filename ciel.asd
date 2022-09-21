@@ -26,7 +26,7 @@
                :closer-mop
                :cl-ansi-text
                :cl-csv
-               :cl-json
+               :shasht
                :dissect
                :fset
                :generic-cl

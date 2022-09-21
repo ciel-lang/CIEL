@@ -375,7 +375,8 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
 (uiop:define-package ciel-user
   (:use :cl :ciel)
   (:local-nicknames (:csv :cl-csv)
-                    (:http :dexador)))
+                    (:http :dexador)
+                    (:json :shasht)))
 
 ;TODO: a conflict between Serapeum and generic-cl
 (uiop:define-package generic-ciel
@@ -391,11 +392,6 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
 ;; but this conflicts with other packages using a reader macro on the double quote
 ;; by using cl-syntax (Jonathan, Djula).
 ;; (pythonic-string-reader:enable-pythonic-string-syntax)
-
-;; cl-json wants to convert our lisp symbols to camelCase, and the JSON ones to lisp-case.
-;; We disable that.
-(setf json:*json-identifier-name-to-lisp* #'identity)
-(setf json:*lisp-identifier-name-to-json* #'identity)
 
 ;; Limit the maximum default output.
 (setf *print-lines* 1000)

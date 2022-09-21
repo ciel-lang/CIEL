@@ -161,35 +161,82 @@ See also:
 
 ### JSON
 
-We use [cl-json](https://common-lisp.net/project/cl-json/cl-json.html) ([GitHub](https://github.com/hankhero/cl-json)). It has a `json` nickname.
+We use [shasht](https://github.com/yitzchak/shasht). It has a `json` nickname.
 
-To encode an object to a string, use `encode-json-to-string`:
+It is one of the newest and one of the best JSON handling libraries.
 
-```lisp
-(json:encode-json-to-string (list (dict :a 1)))
-;; "[{\"A\":1}]"
-```
-
-To decode from a string: `decode-json-from-string`.
-
-To encode or decode objects from a *stream*, use:
-
--   `encode-json object &optional stream`
--   `decode-json &optional stream`
-
-as in:
+To encode an object to a stream (standard output, a string, or another
+stream), use `write-json`. Its signature is:
 
 ```lisp
-(with-output-to-string (s)
-   (json:encode-json (dict :foo (list 1 2 3)) s))
-;; "{\"FOO\":[1,2,3]}"
-
-(with-input-from-string (s "{\"foo\": [1, 2, 3], \"bar\": true, \"baz\": \"!\"}")
-  (json:decode-json s))
-;; ((:|foo| 1 2 3) (:|bar| . T) (:|baz| . "!"))
+(write-json value &optional (output-stream t))
 ```
 
-cl-json can encode and decode from objects. Given a simple class:
+Example:
+
+By default, write to standard output:
+
+```lisp
+(json:write-json (list (dict :a 1)))
+;; => printed representation:
+[
+  {
+    "A": 1
+  }
+]
+;; => and the returned object:
+(
+ (dict
+  :A 1
+ ) )
+```
+
+Note how Shasht returns a hash-table, that is handily constructed with
+our `dict` representation.
+
+To encode an object and print to a string, use the final `output-stream` argument to `nil`:
+
+~~~lisp
+(shasht:write-json (list (dict :a 1)) nil)
+;; =>
+"[
+  {
+    \"A\": 1
+  }
+]"
+~~~
+
+To encode or decode objects from a stream or a string, use `read-json`:
+
+```lisp
+(let ((string "{\"foo\": [1, 2, 3], \"bar\": true, \"baz\": \"!\"}"))
+  (json:read-json string))
+;; =>
+ (dict
+  "foo" #(1 2 3)  ;; <= an array
+  "bar" T
+  "baz" "!"
+ )
+```
+
+Note how the `[1, 2, 3]` list was formatted to a vector (`#(1 2
+3)`). Shasht gives us many options as dynamic variables that influence
+the parsing (see its README and below), in that case we can change
+`*read-default-array-format*` to `:list`:
+
+~~~lisp
+(let ((json:*read-default-array-format* :list))
+  (let ((string "{\"foo\": [1, 2, 3], \"bar\": true, \"baz\": \"!\"}"))
+    (json:read-json string)))
+;; =>
+ (dict
+  "foo" '(1 2 3)  ;; <= now a list
+  "bar" T
+  "baz" "!"
+ )
+~~~
+
+Shasht can **encode and decode from objects**. Given a simple class:
 
 ```lisp
 (defclass person ()
@@ -200,18 +247,102 @@ cl-json can encode and decode from objects. Given a simple class:
 We can encode an instance of it:
 
 ```lisp
-(json:encode-json-to-string (make-instance 'person :name "you"))
-;; "{\"NAME\":\"you\",\"LISPER\":true}"
+(json:write-json (make-instance 'person :name "you"))
+;; =>
+{
+  "NAME": "you",
+  "LISPER": true
+}
+#<PERSON {1007FDDDC3}>
 ```
 
-By default, cl-json wants to convert our lisp symbols to camelCase, and the JSON ones to lisp-case. We disable that in the `ciel-user` package.
+Shasht options
+==============
 
-You can set this behaviour back with:
+*(See its README for possible updates)*
+
+Parsing (reading) options:
+
+- `common-lisp:*read-default-float-format*` — Controls the floating-point format
+   that is to be used when reading a floating-point number.
+- `*read-default-true-value*` — The default value to return when reading a true
+  token. Initially set to `t`.
+- `*read-default-false-value*` — The default value to return when reading a
+  false token. Initially set to `nil`.
+- `*read-default-null-value*` — The default value to return when reading a null
+  token. Initially set to `:null`.
+- `*read-default-array-format*` — The default format to use when reading an
+  array. Current supported formats are `:vector` or `:list`. Initially set to
+  `:vector`.
+- `*read-default-object-format*` — The default format to use when reading an
+  object. Current supported formats are `:hash-table`, `:alist` or `:plist`.
+  Initially set to `:hash-table`.
+- `*read-length*` — The maximum number of values in an array or an object.
+  Initially set to `nil` which disables length checking.
+- `*read-level*` — The maximum number of levels to allow during reading for
+  arrays and objects. Initially set to `nil` which disables level checking.
+
+There is also a keyword variant `read-json*` which will set the various dynamic
+variables from supplied keywords.
 
 ```lisp
-(setf json:*json-identifier-name-to-lisp* #'json:camel-case-to-lisp)
-(setf json:*lisp-identifier-name-to-json* #'json:lisp-to-camel-case)
+(read-json* :stream nil
+            :eof-error t
+            :eof-value nil
+            :single-value nil
+            :true-value t
+            :false-value nil
+            :null-value :null
+            :array-format :vector
+            :object-format :hash-table
+            :float-format 'single-float
+            :length nil
+            :level nil)
 ```
+
+Serialization (writing) options:
+
+- `common-lisp:*print-pretty*` — If true then a simple indentation algorithm
+  will be used.
+- `*write-indent-string*` — The string to use when indenting objects and arrays.
+   Initially set to `#\space`.
+- `*write-ascii-encoding*` — If true then any non ASCII values will be encoded
+  using Unicode escape sequences. Initially set to `nil`.
+- `*write-true-values*` — Values that will be written as a true token. Initially
+  set to `'(t :true)`.
+- `*write-false-values*` — Values that will be written as a false token.
+  Initially set to `'(nil :false)`.
+- `*write-null-values*` — Values that will be written as a null token. Initially
+  set to `(:null)`.
+- `*write-alist-as-object*` — If true then assocation lists will be written as
+  an object. Initially set to `nil`.
+- `*write-plist-as-object*` — If true then property lists will be written as an
+  object. Initially set to `nil`.
+- `*write-empty-array-values*` — A list of values that will be written as an
+  empty array.
+- `*write-empty-object-values*` — A list of values that will be written as an
+  empty object.
+- `*write-array-tags*` — A list of values whose appearance in the CAR of a list
+  indicates the CDR of the list should be written as an array. Initially set to
+  `'(:array)`.
+- `*write-object-alist-tags*` — A list of values whose appearance in the CAR of
+  a list indicates the CDR of the list is an alist and should be written as an
+  object. Initially set to `'(:object-alist)`.
+- `*write-object-plist-tags*` — A list of values whose appearance in the CAR of
+  a list indicates the CDR of the list is a plist and should be written as an
+  object. Initially set to `'(:object-plist)`.
+
+The actual serialization of JSON data is done by the generic function
+`print-json-value` which can be specialized for additional value types.
+
+```lisp
+(print-json-value value output-stream)
+```
+
+There is also a keyword variant `write-json*` which will set the various dynamic
+variables from supplied keywords and will default to the current dynamic value
+of each keyword.
+
 
 Date and time
 -------------
