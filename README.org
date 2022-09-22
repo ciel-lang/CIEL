@@ -1,8 +1,8 @@
 * CIEL Is an Extended Lisp                                         :noexport:
 
-STATUS: highly WIP, the API WILL change, but it is usable.
+STATUS: ~highly~ WIP, the API WILL change, but it is usable.
 
-I am dogfooding it.
+I am dogfooding it in public and private projects since several months.
 
 
 * What is this ?                                                   :noexport:

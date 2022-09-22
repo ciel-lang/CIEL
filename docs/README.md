@@ -13,7 +13,7 @@ Status: it's very much a work in progress, but it should always be usable from m
 One of our goals is to make Common Lisp useful out of the box for
 mundane tasks -by today's standards.
 
-Consequently, we ship libraries to
+Consequently, **we ship libraries** to
 handle JSON and CSV, as well as others to ease string manipulation,
 to have regular expressions out of the box, for threads and
 jobs scheduling, for HTTP and URI handling, to create simple GUIs with
@@ -24,7 +24,7 @@ your fingertips whenever you start CIEL. Some of the libraries we bring in are f
 syntax a bit. For example, we include the `Trivia` library for
 pattern matching.
 
-We also aim to soften the irritating parts of standard Common Lisp.
+We also aim to **soften the irritating parts of standard Common Lisp**.
 A famous one, puzzling for beginners and non-optimal for seasoned
 lispers, is the creation of hash-tables. We include the `dict` function
 from the Serapeum library (which we enhanced further with a pull request):
@@ -56,7 +56,12 @@ In standard Common Lisp, the equivalent is more convoluted:
 ;; (and we don't get a readable representation, so our example is not even equivalent)
 ~~~
 
-We also add some missing functions. For example, after you used `parse-integer`, you are probably looking for a `parse-float` function… but you can't find it, because it isn't defined by the standard. You must install a third-party library. Now you have it.
+We **add missing functions**. For example, after you used `parse-integer`, you are probably looking for a `parse-float` function… but you can't find it, because it isn't defined by the standard. You must install a third-party library. Now you have it.
+
+We **enhance the docstrings** of built-in functions and macros with more
+explanations and examples, so you don't have to reach to external
+documentation just yet in order to understand and try out things like
+`mapcar` or `loop` (look 'ma, LOOP has no docstring by default).
 
 Moreover, we want to bring a **user friendly REPL on the terminal**,
 with bells and whistles useful to the developer and people living in a

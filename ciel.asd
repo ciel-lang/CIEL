@@ -113,18 +113,19 @@
                )
   :components ((:module "src"
                         :components
-                        ((:file "ciel"))))
+                        ((:file "packages")
+                         (:file "docstrings")
+                         (:file "ciel"))))
 
   :description "CIEL Is an Extended Lisp.")
 
 (asdf:defsystem "ciel/repl"
-  :depends-on (:ciel
+  :depends-on (;; :ciel  ;; don't, it will re-load its components files and re-apply their side effects (docstrings.lisp).
                ;; deps
                :cl-readline
                :cffi  ;; "tmp", for cl-readline add history
                :lisp-critic  ;; it would be nice to integrate it with Slime.
-               :magic-ed
-               )
+               :magic-ed)
   :components ((:file "repl")
                (:file "shell-utils")
                (:file "repl-utils"))
