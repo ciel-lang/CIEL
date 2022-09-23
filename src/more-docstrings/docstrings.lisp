@@ -1,4 +1,7 @@
-(in-package :ciel)
+(uiop:define-package :more-docstrings
+    (:use :cl))
+
+(in-package :more-docstrings)
 
 #|
 Add more documentation and add examples to the docstrings.
@@ -23,7 +26,7 @@ case.
 ;;; One function to do the job:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defparameter *docstrings-cache* (make-hash-table)
+(defvar *docstrings-cache* (make-hash-table)
   "Cache the original docstring of functions and macros we are augmenting.
   Mainly to ease our tests at the REPL.")
 

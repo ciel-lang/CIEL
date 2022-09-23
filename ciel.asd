@@ -114,8 +114,10 @@
   :components ((:module "src"
                         :components
                         ((:file "packages")
-                         (:file "docstrings")
-                         (:file "ciel"))))
+                         (:file "ciel")))
+               (:module "src/more-docstrings"
+                        :components
+                        ((:file "docstrings"))))
 
   :description "CIEL Is an Extended Lisp.")
 
