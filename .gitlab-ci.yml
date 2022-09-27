@@ -19,11 +19,10 @@ build:
   # stage: build
   script:
     - make build
-    - make image
+    # - make image
     - mv bin ciel-v0
 
   artifacts:
-    name: "ciel-v0"
+    name: "ciel-repl-v0"
     paths:
       - ciel-v0/
-      - ciel
