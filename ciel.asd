@@ -149,7 +149,7 @@
   :entry-point "sbcli::repl")
 
 ;; Don't ship libssl, rely on the target OS'.
-;; Needs to require or quickload cl+ssl before we can compile and load this .asd file? :S
+;; XXX: we need to load cl+ssl before we can compile and load this .asd file :/
 #+linux (deploy:define-library cl+ssl::libssl :dont-deploy T)
 #+linux (deploy:define-library cl+ssl::libcrypto :dont-deploy T)
 

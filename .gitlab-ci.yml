@@ -20,8 +20,10 @@ build:
   script:
     - make build
     - make image
+    - mv bin ciel-v0
 
   artifacts:
-    name: "ciel"
+    name: "ciel-v0"
     paths:
-      - bin/
+      - ciel-v0/
+      - ciel
