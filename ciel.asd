@@ -122,7 +122,7 @@
   :description "CIEL Is an Extended Lisp.")
 
 (asdf:defsystem "ciel/repl"
-  :depends-on (;; :ciel  ;; don't, it will re-load its components files and re-apply their side effects (docstrings.lisp).
+  :depends-on (;; :ciel  ;; let's avoid, it could run side effects twice (like a defparameter set then reset).
                ;; deps
                :cl-readline
                :cffi  ;; "tmp", for cl-readline add history

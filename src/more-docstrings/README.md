@@ -35,9 +35,6 @@ https://lispcookbook.github.io/cl-cookbook/iteration.html
 
 and that's it. To be continued.
 
-A couple gotchas though:
+A gotcha though:
 
-- if we quickload the package twice, the docstrings
-are appended twice too :S The hash-table cache doesn't help in that
-case.
-- we are modifying the symbols in the :cl package.
+- we are modifying the symbols in the :cl package, there is currently no way to "undo" these additions.

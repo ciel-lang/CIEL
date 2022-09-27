@@ -37,7 +37,8 @@ case.
 
         (let ((doc (documentation symbol doc-type)))
           (setf (gethash symbol *docstrings-cache*)
-                doc)
+                ;; don't store a NIL docstring.
+                (or doc ""))
           doc))))
 
 (defun docstring-append (symbol s &optional (doc-type 'function))
