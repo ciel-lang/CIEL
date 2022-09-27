@@ -10,6 +10,8 @@ image:
 
 build:
 	$(LISP) --non-interactive \
+		--eval '(ql:quickload :deploy)' \
+		--eval '(ql:quickload "cl+ssl")' \
 		--load ciel.asd \
 		--eval '(ql:quickload :swank)' \
 	     --eval '(ql:quickload :ciel)' \
