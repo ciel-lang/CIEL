@@ -1,6 +1,6 @@
 * CIEL Is an Extended Lisp                                         :noexport:
 
-STATUS: ~highly~ WIP, the API WILL change, but it is usable.
+STATUS: +highly+ WIP, the API WILL change, but it is usable.
 
 I am dogfooding it in public and private projects since several months.
 
@@ -63,12 +63,12 @@ See [[docs/README.md][the documentation]].
 
 * TODOs                                                            :noexport:
 
-- settle on libraries that help newcomers
-- automate the documentation
+- [-] settle on libraries that help newcomers
+- [-] automate the documentation
 - distribute (Quicklisp, Qlot, Quicklisp distribution, Ultralisp,
   Ultralisp distribution (upcoming)…)
-- ship a core image and a binary
-- optionnal: create a tool that, given a CIEL code base, explains what
+- [-] ship a binary +and a core image+.
+- optional: create a tool that, given a CIEL code base, explains what
   packages to import in order to switch to "plain CL".
 
 How to procede ?
@@ -141,9 +141,14 @@ TODO: we will distribute ready-to-use core images.
 ** With a binary. Use CIEL's custom REPL.
 
    You don't need anything, just download the CIEL executable and run
-   its REPL.
+   its REPL. You need to build the core image yourself though.
 
-   TODO: build it on CI for different platforms.
+   - we provide an experimental binary for Debian systems: go to
+     https://gitlab.com/vindarel/ciel/-/pipelines, download the latest
+     artifacts, unzip the =ciel-v0.zip= archive and run
+     =ciel-v0/ciel-repl=.
+
+   TODO: build it for different platforms.
 
    To build it, clone this repository and run =make build=.
 
