@@ -5,7 +5,7 @@ image: clfoundation/sbcl
 # and to update ASDF to >= 3.3.4 in order to use local-package-nicknames.
 before_script:
   - apt-get update -qy
-  - apt-get install -y git-core tar
+  - apt-get install -y git-core tar libmagic-dev
   # The image doesn't have Quicklisp installed by default.
   - QUICKLISP_ADD_TO_INIT_FILE=true /usr/local/bin/install-quicklisp
   # clone libraries not in Quicklisp or if we need the latest version.
