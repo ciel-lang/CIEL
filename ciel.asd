@@ -137,3 +137,8 @@
   :entry-point "sbcli::repl"
 
   :description "readline REPL for CIEL.")
+
+;; Use compression: from 114M, 0.02s startup time to 27M and 0.42s (SBCL 2.0.10).
+#+sb-core-compression
+(defmethod asdf:perform ((o asdf:image-op) (c asdf:system))
+  (uiop:dump-image (asdf:output-file o c) :executable t :compression t))
