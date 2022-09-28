@@ -69,10 +69,12 @@ For example:
 (NIL NIL NIL)
 ")
 
+
 ;;; mapcan
 (docstring-append 'mapcan "
 
 NCONC concatenates lists destructively.")
+
 
 ;;; sort
 (docstring-append 'sort "
@@ -84,6 +86,8 @@ Since SORT is destructive, use COPY-LIST:
 
 See also STABLE-SORT.")
 
+
+;;; loop
 (docstring-append 'loop "
 The basic LOOP structure is
 
@@ -104,6 +108,8 @@ To iterate over hash-tables… try MAPHASH first :D
 For many examples, see the CL Cookbook:
 https://lispcookbook.github.io/cl-cookbook/iteration.html")
 
+
+;;; maphash
 (docstring-append 'maphash "
 
 Example:
@@ -112,5 +118,52 @@ Example:
            (format t \"key is: ~a, value is: ~a~&\" key value))
          (dict :a 'one))
 ;; => key is: A, value is: ONE")
+
+
+;;; defun
+(docstring-append 'defun "
+
+Example:
+
+(defun hello (name)
+  \"Say \\\"hello\\\" to NAME.\"
+  (format t \"Hello ~a!\" name))
+
+Define named parameters with &key:
+
+(defun hello (name &key lisper)
+  ...)
+
+and use it like so: (hello \"you\" :lisper t)
+
+Key parameters are NIL by default. Give them another default value like this:
+
+(defun hello (name &key (lisper t))
+  ...)
+
+Read more:
+https://gigamonkeys.com/book/functions.html
+https://lispcookbook.github.io/cl-cookbook/functions.html")
+
+
+;;; defmacro
+(docstring-append 'defmacro "Macros operate on code, which they see as lists of lists of symbols.
+
+Macros, unlike functions, do not evaluate their arguments.  They
+expand (at compile time) into another piece of code, that will
+eventually be evaluated.
+
+First rule for macros: don't write a macro when a function can do.
+
+Example macros: IF WITH-OPEN-FILE UNWIND-PROTECT DEFUN LOOP
+
+See also: QUOTE BACKQUOTE GENSYM MACROEXPAND
+
+Read more:
+https://lispcookbook.github.io/cl-cookbook/macros.html
+https://gigamonkeys.com/book/macros-standard-control-constructs.html
+https://www.youtube.com/watch?v=ygKXeLKhiTI Little bits of Lisp video
+")
+
 
 ;;; to be continued.
