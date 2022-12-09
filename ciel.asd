@@ -134,7 +134,6 @@
   :depends-on (;; :ciel  ;; let's avoid, it could run side effects twice (like a defparameter set then reset).
                ;; deps
                :cl-readline
-               :cffi  ;; "tmp", for cl-readline add history
                :lisp-critic  ;; it would be nice to integrate it with Slime.
                :magic-ed)
   :components ((:file "repl")
