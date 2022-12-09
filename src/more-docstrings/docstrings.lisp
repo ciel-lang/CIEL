@@ -155,7 +155,7 @@ eventually be evaluated.
 
 First rule for macros: don't write a macro when a function can do.
 
-Example macros: IF WITH-OPEN-FILE UNWIND-PROTECT DEFUN LOOP
+Example macros: DEFUN LOOP SETF WITH-OPEN-FILE
 
 See also: QUOTE BACKQUOTE GENSYM MACROEXPAND
 

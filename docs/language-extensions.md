@@ -60,11 +60,13 @@ And there is more. All the available macros are:
 
 We import the `bind` macro from [metabang-bind](https://common-lisp.net/project/metabang-bind/user-guide.html) ([GitHub](https://github.com/gwkkwg/metabang-bind)).
 
-The idiomatic way to declare local variables is `let`. Use it if it is fine for you.
+The idiomatic way to declare local variables is `let` (and `let*`),
+the way to declare local functions is `flet` (and `labels`). Use them
+if it is fine for you.
 
-However, if you ever noticed to write convoluted `let` forms, adding
-list destructuring, multiple values or slot access into the mix, then
-read on.
+However, if you ever noticed you write convoluted `let` forms, adding
+list destructuring, multiple values or slot access into the mix, and
+if you use a `flet` *and then* a `let`, then read on.
 
 `bind` integrates more variable binding and list destructuring idioms. It has two goals. Quoting:
 
@@ -75,7 +77,7 @@ read on.
 ### Bind in CIEL
 
 We import the `bind` macro. However, the package has more external
-symbols that we don't import, such as its error type (`bind-erro`) and
+symbols that we don't import, such as its error type (`bind-error`) and
 its extension mechanism.
 
 > Note: if you like object destructuring in general, you'll like [pattern matching](/language-extensions?id=pattern-matching).

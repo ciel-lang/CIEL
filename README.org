@@ -65,7 +65,7 @@ See [[docs/README.md][the documentation]].
 
 - [-] settle on libraries that help newcomers
 - [-] automate the documentation
-- distribute (Quicklisp, Qlot, Quicklisp distribution, Ultralisp,
+- distribute (Quicklisp, Qlot, Quicklisp distribution, [[https://ultralisp.org/projects/ciel-lang/CIEL][Ultralisp]],
   Ultralisp distribution (upcoming)…)
 - [-] ship a binary +and a core image+.
 - optional: create a tool that, given a CIEL code base, explains what
@@ -97,25 +97,32 @@ Rules
 
 * Install
 
+  You will probably need the following system dependencies (names for
+  a Debian system):
+
+: libmagic-dev libc6-dev gcc  # from magicffi
 
 ** With Quicklisp
 
 You need a Lisp implementation and Quicklisp installed.
 
-CIEL is not yet on Quicklisp (but it is on [[https://ultralisp.org][Ultralisp]]), so clone this
-repository and load the .asd (with =load= or =C-c C-k= in
-Slime).
+CIEL is not yet on Quicklisp, but it is on [[https://ultralisp.org][Ultralisp]].
+
+So, either clone this repository:
 
 : git clone https://github.com/ciel-lang/CIEL ~/quicklisp/local-projects/CIEL
 
-Then, quickload it:
+either install the Ultralisp distribution and pull the library from there:
+
+: (ql-dist:install-dist "http://dist.ultralisp.org/" :prompt nil)
+
+Then, load the .asd file (with =asdf:load-asd= or =C-c C-k= in Slime), quickload "ciel":
 
 #+BEGIN_SRC lisp
 (ql:quickload "ciel")
 #+end_src
 
-and enter the =ciel-user= package, instead of the default
-=common-lisp-user= (or =cl-user=):
+and enter the =ciel-user= package:
 
 #+BEGIN_SRC lisp
 (in-package :ciel-user)
@@ -136,7 +143,8 @@ and use it:
 Then you can configure Slime to have the choice of the Lisp image to
 start. See below in [[*Use CIEL at startup]]
 
-TODO: we will distribute ready-to-use core images.
+We +will distribute ready-to-use core images+ can not distribute core
+images, you must build it yourself.
 
 ** With a binary. Use CIEL's custom REPL.
 
