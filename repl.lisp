@@ -508,6 +508,14 @@ strings to match candidates against (for example in the form \"package:sym\")."
 
 (defun repl ()
 
+(defun repl (&key noinform)
+  "Toplevel REPL.
+
+  CLI options:
+  - -h, --help
+  - --noinform: don't print the welcome banner.
+  "
+
   (let ((argv (uiop:command-line-arguments)))
     (when (or (member "-h" argv :test #'string-equal)
               (member "--help" argv :test #'string-equal))
@@ -525,13 +533,16 @@ strings to match candidates against (for example in the form \"package:sym\")."
   (if (probe-file *config-file*)
       (load *config-file*))
 
-  (princ *banner*)
-  (write-line (str:repeat 80 "-"))
-  (print-system-info)
-  (write-line (str:repeat 80 "-"))
-  (help)
-  (write-char #\linefeed)
-  (finish-output nil)
+  ;; Print a banner and system info.
+  (unless (or noinform
+              (member "--noinform" (uiop:command-line-arguments) :test #'string-equal))
+    (princ *banner*)
+    (write-line (str:repeat 80 "-"))
+    (print-system-info)
+    (write-line (str:repeat 80 "-"))
+    (help)
+    (write-char #\linefeed)
+    (finish-output nil))
 
   (when *hist-file* (read-hist-file))
 
