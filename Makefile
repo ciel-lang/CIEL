@@ -14,6 +14,7 @@ build:
 		--eval '(ql:quickload "cl+ssl")' \
 		--load ciel.asd \
 		--eval '(ql:quickload :swank)' \
+	     --eval '(push :deploy-console *features*)' \
 	     --eval '(ql:quickload :ciel)' \
 	     --eval '(ql:quickload :ciel/repl)' \
 	     --eval '(asdf:make :ciel/repl)' \
