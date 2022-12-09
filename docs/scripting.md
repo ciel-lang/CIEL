@@ -49,7 +49,7 @@ Output:
 
 
 ```
-$ ciel myscript.lisp you
+$ ciel script.lisp you
 =>
 
 Hello you!
@@ -71,6 +71,38 @@ ciel-user>
 ## Command line arguments
 
 Access them with `(uiop:command-line-arguments)`.
+
+
+## Executable file and shebang line
+
+We can also make a CIEL file executable and run it directly:
+
+```
+$ chmod +x script.lisp
+$ ./script.lisp
+```
+
+Add the following shebang at the beginning:
+
+```sh
+#!/bin/sh
+#|-*- mode:lisp -*-|#
+#|
+exec /path/to/ciel `basename $0` "$@"
+|#
+
+(in-package :ciel-user)
+;; lisp code follows.
+```
+
+How it works:
+
+- it starts as a /bin/sh script
+  - all lines starting by `#` are shell comments
+- the exec calls the `ciel` binary with this file name as first argument,
+  the rest of the file (lisp code) is not read by the shell.
+  - before LOAD-ing this Lisp file, we remove the #!/bin/sh shebang line.
+  - Lisp ignores comments between `#|` and `|#`.
 
 
 ---
