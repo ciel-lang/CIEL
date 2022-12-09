@@ -13,4 +13,4 @@
 
 (in-package :ciel-user)
 
-(sb-ext:save-lisp-and-die "ciel")
+(sb-ext:save-lisp-and-die "ciel-core")

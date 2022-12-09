@@ -144,8 +144,8 @@
   :defsystem-depends-on (:deploy)  ;; need to (ql:quickload "deploy") before building.
   ;; :build-operation "program-op"
   :build-operation "deploy-op"
-  :build-pathname "ciel-repl"
   :entry-point "sbcli::repl")
+  :build-pathname "ciel"
 
 ;; Don't ship libssl, rely on the target OS'.
 ;; XXX: we need to load cl+ssl before we can compile and load this .asd file :/

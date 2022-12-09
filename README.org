@@ -138,7 +138,7 @@ Build a /core image/ for your lisp with all CIEL's dependencies:
 
 and use it:
 
-: sbcl --core ciel --eval '(in-package :ciel-user)'
+: sbcl --core ciel-core --eval '(in-package :ciel-user)'
 
 Then you can configure Slime to have the choice of the Lisp image to
 start. See below in [[*Use CIEL at startup]]
@@ -154,13 +154,13 @@ images, you must build it yourself.
    - we provide an experimental binary for Debian systems: go to
      https://gitlab.com/vindarel/ciel/-/pipelines, download the latest
      artifacts, unzip the =ciel-v0.zip= archive and run
-     =ciel-v0/ciel-repl=.
+     =ciel-v0/ciel=.
 
    TODO: build it for different platforms.
 
    To build it, clone this repository and run =make build=.
 
-   Start it with =./ciel-repl=.
+   Start it with =./ciel=.
 
    You are dropped into a custom Lisp REPL, freely based on [[https://github.com/hellerve/sbcli][sbcli]].
 
@@ -241,7 +241,7 @@ You need to:
 #+BEGIN_SRC lisp
   (setq slime-lisp-implementations
         `((sbcl    ("sbcl" "--dynamic-space-size" "2000"))  ;; default. Adapt if needed.
-          (ciel-sbcl  ("sbcl" "--core" "/path/to/ciel/ciel" "--eval" "(in-package :ciel-user)"))))
+          (ciel-sbcl  ("sbcl" "--core" "/path/to/ciel/ciel-core" "--eval" "(in-package :ciel-user)"))))
   (setq slime-default-lisp 'ciel-sbcl)
 #+end_src
 

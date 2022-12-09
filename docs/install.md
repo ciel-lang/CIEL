@@ -38,10 +38,11 @@ sbcl --load build-image.lisp
 and use it:
 
 ``` example
-sbcl --core ciel --eval '(in-package :ciel-user)'
+sbcl --core ciel-core --eval '(in-package :ciel-user)'
 ```
 
-TODO: we will distribute ready-to-use core images.
+Note: you must build the core image, we can't distribute ready-to-use core images, it must be built on your machine.
+
 
 ## With a binary. Use CIEL's custom REPL.
 
@@ -51,7 +52,7 @@ TODO: build it on CI for different platforms.
 
 To build it, clone this repository and run `make build`.
 
-Start it with `./ciel-repl`.
+Start it with `./ciel`.
 
 You are dropped into a custom Lisp REPL, freely based on [sbcli](https://github.com/hellerve/sbcli).
 
