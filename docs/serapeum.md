@@ -1,9 +1,10 @@
-# Symbols imported from SERAPEUM
+# Symbols imported from SERAPEUM for sequences and hashtables
+
 
 ## ASSORT 
 
-
-ARGLIST: `(seq &key (key #'identity) (test #'eql) (start 0) end)`
+ARGLIST: `(seq &key (key #'identity) (test #'eql) (start 0) end hash &aux
+ (orig-test test))`
 
 FUNCTION: Return SEQ assorted by KEY.
 
@@ -25,8 +26,13 @@ of.
 
     (assort '(1 2 1 2 1 2) :test #'<=)
     => '((1 1) (2 2 1 2))
-## BATCHES 
 
+The default algorithm used by `assort' is, in the worst case, O(n) in
+the number of groups. If HASH is specified, then a hash table is used
+instead. However TEST must be acceptable as the `:test' argument to
+`make-hash-table'.
+
+## BATCHES 
 
 ARGLIST: `(seq n &key (start 0) end even)`
 
@@ -37,8 +43,8 @@ FUNCTION: Return SEQ in batches of N elements.
 
 If EVEN is non-nil, then SEQ must be evenly divisible into batches of
 size N, with no leftovers.
-## IOTA 
 
+## IOTA 
 
 ARGLIST: `(n &key (start 0) (step 1))`
 
@@ -51,10 +57,11 @@ Examples:
   (iota 4)                      => (0 1 2 3)
   (iota 3 :start 1 :step 1.0)   => (1.0 2.0 3.0)
   (iota 3 :start -1 :step -1/2) => (-1 -3/2 -2)
+
 ## RUNS 
 
-
-ARGLIST: `(seq &key (start 0) end (key #'identity) (test #'eql))`
+ARGLIST: `(seq &key (start 0) end (key #'identity) (test #'eql)
+ (count most-positive-fixnum))`
 
 FUNCTION: Return a list of runs of similar elements in SEQ.
 The arguments START, END, and KEY are as for `reduce'.
@@ -67,8 +74,13 @@ first argument.
 
     (runs '(1 2 3 1 2 3) :test #'<)
     => ((1 2 3) (1 2 3))
-## PARTITION 
 
+The COUNT argument limits how many runs are returned.
+
+    (runs '(head tail tail head head tail) :count 2)
+    => '((head) (tail tail))
+
+## PARTITION 
 
 ARGLIST: `(pred seq &key (start 0) end (key #'identity))`
 
@@ -87,8 +99,8 @@ the sequence; `partition` always returns the “true” elements first.
 
     (assort '(1 2 3) :key #'evenp) => ((1 3) (2))
     (partition #'evenp '(1 2 3)) => (2), (1 3)
-## PARTITIONS 
 
+## PARTITIONS 
 
 ARGLIST: `(preds seq &key (start 0) end (key #'identity))`
 
@@ -99,8 +111,8 @@ returns a filtered copy of SEQ. As a second value, it returns an extra
 sequence of the items that do not match any predicate.
 
 Items are assigned to the first predicate they match.
-## SPLIT-SEQUENCE 
 
+## SPLIT-SEQUENCE 
 
 ARGLIST: `(delimiter sequence &key (start 0) (end nil) (from-end nil) (count nil)
  (remove-empty-subseqs nil) (test #'eql test-p) (test-not nil test-not-p)
@@ -116,17 +128,18 @@ this function; :from-end values of NIL and T are equivalent unless
 resulting list. The second return value is an index suitable as an
 argument to CL:SUBSEQ into the sequence indicating where processing
 stopped.
+
 ## COUNT-CPUS 
 
-
-ARGLIST: `(&key (default 2))`
+ARGLIST: `(&key (default 2) online)`
 
 FUNCTION: Try very hard to return a meaningful count of CPUs.
+If ONLINE is non-nil, try to return only the active CPUs.
 
 The second value is T if the number of processors could be queried,
 `nil' otherwise.
-## DICT 
 
+## DICT 
 
 ARGLIST: `(&rest keys-and-values)`
 
@@ -148,8 +161,8 @@ Note that `dict' can also be used for destructuring (with Trivia).
     (match (dict :x 1)
       ((dict :x x) x))
     => 1
-## DO-HASH-TABLE 
 
+## DO-HASH-TABLE 
 
 ARGLIST: `((key value table &optional return) &body body)`
 
@@ -157,23 +170,23 @@ FUNCTION: Iterate over hash table TABLE, in no particular order.
 
 At each iteration, a key from TABLE is bound to KEY, and the value of
 that key in TABLE is bound to VALUE.
-## DICT* 
 
+## DICT* 
 
 ARGLIST: `(dict &rest args)`
 
 FUNCTION: Merge new bindings into DICT.
 Roughly equivalent to `(merge-tables DICT (dict args...))'.
-## DICTQ 
 
+## DICTQ 
 
 ARGLIST: `(&rest keys-and-values)`
 
 FUNCTION: A literal hash table.
 Like `dict', but the keys and values are implicitly quoted, and the
 hash table is inlined as a literal object.
-## POPHASH 
 
+## POPHASH 
 
 ARGLIST: `(key hash-table)`
 
@@ -182,8 +195,8 @@ FUNCTION: Lookup KEY in HASH-TABLE, return its value, and remove it.
 This is only a shorthand. It is not in itself thread-safe.
 
 From Zetalisp.
-## SWAPHASH 
 
+## SWAPHASH 
 
 ARGLIST: `(key value hash-table)`
 
@@ -192,8 +205,8 @@ FUNCTION: Set KEY and VALUE in HASH-TABLE, returning the old values of KEY.
 This is only a shorthand. It is not in itself thread-safe.
 
 From Zetalisp.
-## HASH-FOLD 
 
+## HASH-FOLD 
 
 ARGLIST: `(fn init hash-table)`
 
@@ -202,15 +215,15 @@ table, its value, and the return value of the last call to FN. On the
 first call, INIT is supplied in place of the previous value.
 
 From Guile.
-## MAPHASH-RETURN 
 
+## MAPHASH-RETURN 
 
 ARGLIST: `(fn hash-table)`
 
 FUNCTION: Like MAPHASH, but collect and return the values from FN.
 From Zetalisp.
-## MERGE-TABLES 
 
+## MERGE-TABLES 
 
 ARGLIST: `(&rest tables)`
 
@@ -228,8 +241,8 @@ All of the tables being merged must have the same value for
 `hash-table-test'.
 
 Clojure's `merge'.
-## FLIP-HASH-TABLE 
 
+## FLIP-HASH-TABLE 
 
 ARGLIST: `(table &key (test (constantly t)) (key #'identity))`
 
@@ -254,8 +267,8 @@ KEY allows you to transform the keys in the old hash table.
      (gethash 'one negative-number-names) => -1, nil
 
 KEY defaults to `identity'.
-## SET-HASH-TABLE 
 
+## SET-HASH-TABLE 
 
 ARGLIST: `(set &rest hash-table-args &key (test #'eql) (key #'identity) (strict t)
      &allow-other-keys)`
@@ -269,16 +282,16 @@ STRICT determines whether to check that the list actually is a set.
 The resulting hash table has the elements of SET for both its keys and
 values. That is, each element of SET is stored as if by
      (setf (gethash (key element) table) element)
-## HASH-TABLE-PREDICATE 
 
+## HASH-TABLE-PREDICATE 
 
 ARGLIST: `(hash-table)`
 
 FUNCTION: Return a predicate for membership in HASH-TABLE.
 The predicate returns the same two values as `gethash', but in the
 opposite order.
-## HASH-TABLE-FUNCTION 
 
+## HASH-TABLE-FUNCTION 
 
 ARGLIST: `(hash-table &key read-only strict (key-type 't) (value-type 't) strict-types)`
 
@@ -308,30 +321,30 @@ made to set a value that does not satisfy VALUE-TYPE. However, the
 hash table provided is *not* checked to ensure that the existing
 pairings KEY-TYPE and VALUE-TYPE -- not unless STRICT-TYPES is also
 specified.
-## MAKE-HASH-TABLE-FUNCTION 
 
+## MAKE-HASH-TABLE-FUNCTION 
 
 ARGLIST: `(&rest args &key &allow-other-keys)`
 
 FUNCTION: Call `hash-table-function' on a fresh hash table.
 ARGS can be args to `hash-table-function' or args to
 `make-hash-table', as they are disjoint.
-## DELETE-FROM-HASH-TABLE 
 
+## DELETE-FROM-HASH-TABLE 
 
 ARGLIST: `(table &rest keys)`
 
 FUNCTION: Return TABLE with KEYS removed (as with `remhash').
 Cf. `delete-from-plist' in Alexandria.
-## PAIRHASH 
 
+## PAIRHASH 
 
 ARGLIST: `(keys data &optional hash-table)`
 
 FUNCTION: Like `pairlis', but for a hash table.
 
-Unlike `pairlis', KEYS and DATA are only required to be sequences, not
-lists.
+Unlike `pairlis', KEYS and DATA are only required to be sequences (of
+the same length), not lists.
 
 By default, the hash table returned uses `eql' as its tests. If you
 want a different test, make the table yourself and pass it as the
