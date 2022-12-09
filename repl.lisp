@@ -506,7 +506,23 @@ strings to match candidates against (for example in the form \"package:sym\")."
     (format t "~&")
     (sbcli::sbcli "" *prompt*)))
 
-(defun repl ()
+(defun edit-current-input (arg key)
+  ;; experimental, doesn't properly work.
+  (declare (ignore arg key))
+  (let ((filename "/tmp/ciel-temp.lisp")
+        (current-input rl:*line-buffer*))
+    (str:to-file filename current-input)
+    (magic-ed filename)
+    ;; ... user writes...
+    ;; (NB: rl:replace-line preserves the point position and that's annoying)
+    ;; (setf rl:*line-buffer* (str:trim (str:from-file filename)))
+    ;; (rl:redisplay)
+    ;; (rl:delete-text 0 rl:+end+)
+    (uiop:format! t "text is: ~a~&" (str:from-file filename))
+    ;; (rl:insert-text (str:concat "hello" (str:trim (str:from-file filename))))
+    (setf rl:*line-buffer* (str:trim (str:from-file filename)))
+    (rl:redisplay)
+    ))
 
 (defun repl (&key noinform)
   "Toplevel REPL.
@@ -529,6 +545,16 @@ strings to match candidates against (for example in the form \"package:sym\")."
 
   (rl:register-function :complete #'custom-complete)
   (rl:register-function :redisplay #'syntax-hl)
+
+  ;; testing…
+  (defun print-some-text (arg key)
+    (declare (ignore arg key))
+    (rl:insert-text "inserted text"))
+
+  #+(or)
+  (rl:bind-keyseq "\\C-o" #'print-some-text)
+  (rl:bind-keyseq "\\C-x\\C-e" #'edit-current-input)
+  (rl:set-paren-blink-timeout 500)
 
   (if (probe-file *config-file*)
       (load *config-file*))
