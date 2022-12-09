@@ -380,9 +380,45 @@ And for a tutorial, see <https://lispcookbook.github.io/cl-cookbook/databases.ht
 
 ## Files and directories
 
-CL has built-in functions to deal with files and directories and UIOP provides more. See [https://lispcookbook.github.io/cl-cookbook/files.html](https://lispcookbook.github.io/cl-cookbook/files.html).
+CL has built-in functions to deal with files and directories, and UIOP provides more. See [https://lispcookbook.github.io/cl-cookbook/files.html](https://lispcookbook.github.io/cl-cookbook/files.html).
 
-See also some functions under `uiop/os` (or simply `uiop` or `os` for short) like `os:getcwd`.
+See some functions under `uiop`, especially under `uiop/filesystem` (`filesystem` for short) like `filesystem:file-exists-p`, and some more under `uiop/os` (or just `os`) like `os:getcwd`.
+
+Example functions (not exhaustive):
+
+```
+filesystem:call-with-current-directory
+filesystem:collect-sub*directories
+filesystem:delete-directory-tree
+filesystem:delete-empty-directory
+filesystem:delete-file-if-exists
+filesystem:directory*
+filesystem:directory-exists-p
+filesystem:directory-files
+filesystem:ensure-all-directories-exist
+filesystem:file-exists-p
+filesystem:filter-logical-directory-results
+filesystem:get-pathname-defaults
+filesystem:getenv-absolute-directories
+filesystem:getenv-absolute-directory
+filesystem:getenv-pathname
+filesystem:getenv-pathnames
+filesystem:inter-directory-separator
+filesystem:lisp-implementation-directory
+filesystem:lisp-implementation-pathname-p
+filesystem:native-namestring
+filesystem:parse-native-namestring
+filesystem:probe-file*
+filesystem:rename-file-overwriting-target
+filesystem:resolve-symlinks
+filesystem:resolve-symlinks*
+filesystem:safe-file-write-date
+filesystem:split-native-pathnames-string
+filesystem:subdirectories
+filesystem:truename*
+filesystem:truenamize
+filesystem:with-current-directory
+```
 
 We include the [FOF (File-object finder)](https://gitlab.com/ambrevar/fof/) library, which is very useful to:
 
@@ -398,7 +434,6 @@ In practice, it mostly supersedes:
 - Common Lisp pathnames (at least for existing files).
 - Many Unix tools:
   - `find` for recursive and programmable file search. Unlike `find`, `finder`'s predicates are extensible.
-  - `ls`
   - `stat`
   - `chown`
   - `chmod`

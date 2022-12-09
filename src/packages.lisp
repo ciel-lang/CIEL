@@ -3,19 +3,20 @@
 (uiop:define-package ciel
   (:use :cl)
   (:export #:enable-shell-passthrough
-           #:-->)
-  (:local-nicknames (:/os :uiop/os)
-                    ;; let's try this nickname.
-                    ;; Simply :os doesn't help at auto-discovery with SLIME's autocompletion.
-                    ;; but let's add it anyways for correctness.
-                    (:os :uiop/os)
-                    (:alex :alexandria)
-                    (:csv :cl-csv)
-                    (:http :dexador)))
+           #:-->))
 
 (uiop:define-package ciel-user
   (:use :cl :ciel)
-  (:local-nicknames (:csv :cl-csv)
+  (:local-nicknames (:/os :uiop/os)     ; let's try this nickname.
+                    ;; Simply :os doesn't help at auto-discovery with SLIME's autocompletion.
+                    ;; But let's add it anyways for correctness,
+                    ;; it's handy for the shell and scripts.
+                    (:os :uiop/os)
+                    ;; This other uiop module is always useful:
+                    (:filesystem :uiop/filesystem)
+
+                    (:alex :alexandria)
+                    (:csv :cl-csv)
                     (:http :dexador)
                     (:json :shasht)))
 

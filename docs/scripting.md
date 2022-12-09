@@ -30,7 +30,7 @@ An example script:
 (cmd:cmd "ls")
 
 ;; Access environment variables:
-(hello (uiop:getenv "USER"))
+(hello (os:getenv "USER"))  ;; os is a nickname for uiop/os
 
 (format! t "Let's define an alias to run shell commands with '!'. This gives: ")
 (defalias ! #'cmd:cmd)
