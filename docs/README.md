@@ -1,12 +1,19 @@
 # CIEL
 
-CIEL is a collection of useful libraries.
+CIEL is a ready-to-use collection of Lisp libraries.
 
 It's Common Lisp, batteries included.
 
+It comes in 3 forms:
+
+- a binary, to run CIEL **scripts**.
+- a simple full-featured **REPL** for the terminal.
+- a **Lisp library**.
+
 Questions, doubts? See the [FAQ](FAQ.md).
 
-Status: it's very much a work in progress, but it should always be usable from master.
+Status: it's a work in progress. I use it for clients' projects.
+
 
 ## Rationale
 
@@ -63,14 +70,18 @@ explanations and examples, so you don't have to reach to external
 documentation just yet in order to understand and try out things like
 `mapcar` or `loop` (look 'ma, LOOP has no docstring by default).
 
-Moreover, we want to bring a **user friendly REPL on the terminal**,
+Moreover, we bring a **user friendly REPL on the terminal**,
 with bells and whistles useful to the developer and people living in a
 terminal window. For example, our [repl for the terminal](repl.md) has readline support, multi-line editing, optional syntax highlighting, a shell passthrough, and more goodies.
 
+We bring **scripting capabilities**. Just run `ciel myscript.lisp`, and use all the high-level CIEL libraries and Common Lisp features in your script. It starts up fast.
 
-*We are only started. You can sponsor us [on GitHub sponsors](https://github.com/sponsors/vindarel/)*
+
+*We are only started. You can sponsor us [on GitHub sponsors](https://github.com/sponsors/vindarel/), thank you!*
 
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/K3K828W0V)
+
+*If you need to learn Common Lisp the efficient way, I have [a course on videos](https://www.udemy.com/course/common-lisp-programming/?referralCode=2F3D698BBC4326F94358), with many real-world practical stuff in and still growing. If you are a student, drop me a line for a coupon. Thank you for your support!*
 
 
 # Install
