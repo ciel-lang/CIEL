@@ -2,14 +2,20 @@
 
 STATUS: +highly+ WIP, the API WILL change, but it is usable.
 
-I am dogfooding it in public and private projects since several months.
+I am dogfooding it in public and private projects.
 
 
 * What is this ?                                                   :noexport:
 
-  CIEL is a collection of useful libraries.
+  CIEL is a ready-to-use collection of libraries.
 
   It's Common Lisp, batteries included.
+
+  It comes in 3 forms:
+
+  - a binary, to run CIEL **scripts**.
+  - a simple full-featured **REPL** for the terminal.
+  - a **Lisp library**.
 
   Questions, doubts? See the [[file:docs/FAQ.md][FAQ]].
 
@@ -17,9 +23,9 @@ I am dogfooding it in public and private projects since several months.
 
 One of our goals is to make Common Lisp useful out of the box for
 mundane tasks -by today standards. As such, we ship libraries to
-handle JSON and CSV, as well as others to ease string manipulation, to
+handle **JSON** or **CSV**, as well as others to ease string manipulation, to
 do pattern matching, to bring regular expressions, for threads and
-jobs scheduling, for HTTP and URI handling, to create simple GUIs with
+jobs scheduling, for **HTTP** and URI handling, to create simple GUIs with
 Ltk, and so on. You can of course do all this without CIEL, but
 then you have to install the library manager first and load these libraries
 into your Lisp image every time you start it. Now, you have them at
@@ -56,8 +62,10 @@ In standard Common Lisp, the equivalent is more convoluted:
 ;; (and we don't get a readable representation, so our example is not even equivalent)
 #+end_src
 
-Moreover, we want to bring a **full featured REPL on the terminal**
-(see more below).
+Moreover, we bring:
+
+- a **full featured REPL on the terminal** and
+- **scripting capabilities**, see more below.
 
 See [[docs/README.md][the documentation]].
 
@@ -89,7 +97,10 @@ Rules
   - [[#with-a-core-image][With a core image]]
   - [[#with-a-binary-use-ciels-custom-repl][With a binary. Use CIEL's custom REPL.]]
 - [[#usage][Usage]]
-  - [[#use-ciel-at-startup][Use CIEL at startup]]
+  - [[#scripting][Scripting]]
+  - [[#shell-repl][Shell REPL]]
+  - [[#lisp-library][Lisp library]]
+  - [[#core-image-use-ciel-your-current-developer-setup][Core image: use CIEL your current developer setup]]
 - [[#libraries][Libraries]]
 - [[#language-extensions][Language extensions]]
 - [[#final-words][Final words]]
@@ -200,7 +211,116 @@ See more in [[docs/README.md][the documentation]].
 
 * Usage
 
-Create a package and "use" =ciel= in addition of =cl=:
+** Scripting
+
+NOTE: this is brand new! Expect limitations and changes.
+
+Get the =ciel= binary and call it with a .lisp file:
+
+#+begin_src bash
+$ ciel script.lisp
+#+end_src
+
+An example script:
+
+#+begin_src lisp
+;; Start your script with this to access all CIEL goodies:
+(in-package :ciel-user)
+
+;; We have access to the STR library:
+(print (str:join "-" (list "I" "am" "a" "lisper")))
+
+;; We have access to the DICT notation for hash-tables:
+(print "testing dict:")
+(print (dict :a 1 :b 2))
+
+;; format! prints on standard output and flushes the streams.
+(format! t "cmd?")
+
+;; We can run shell commands:
+(cmd:cmd "ls")
+
+(format! t "Let's define an alias to run shell commands with '!'. This gives: ")
+(defalias ! #'cmd:cmd)
+(! "pwd")
+
+;; In cas of an error, we can ask for a CIEL toplevel REPL:
+(handler-case
+    (error "oh no")
+  (error (c)
+    (format! t "An error occured: ~a" c)
+    (format! t "Here's a CIEL top level REPL: ")
+    (sbcli::repl :noinform t)))
+#+end_src
+
+Output:
+
+#+begin_src txt
+"I-am-a-lisper"
+"testing dict:"
+
+ (dict
+  :A 1
+  :B 2
+ )
+cmd? ABOUT.org	    ciel		     ciel-core
+ bin		    docs		     src
+ […]
+Let's define an alias to run shell commands with '!'. This gives:
+/home/vindarel/projets/ciel
+ciel-user>
+#+end_src
+
+** Shell REPL
+
+Run =ciel= with no arguments:
+
+#+begin_src bash
+$ ciel
+
+       _..._
+    .-'_..._''.                         .---.
+  .' .'      '..--.      __.....__     |   |
+ / .'           |__|  .-''         '.   |   |
+. '             .--. /     .-''''-.  `. |   |
+| |             |  |/     /________   |   |
+| |             |  ||                  ||   |
+. '             |  |    .-------------'|   |
+  '.          .|  |     '-.____...---.|   |
+  '. `._____.-'/|__|  `.             .' |   |
+    `-.______ /         `''-...... -'   '---'
+             `
+
+
+--------------------------------------------------------------------------------
+OS: Linux 5.4.0-124-generic
+Lisp: SBCL 2.0.1.debian
+ASDF: 3.3.4.15
+Quicklisp: (#<DIST quicklisp 2022-07-08>)
+--------------------------------------------------------------------------------
+CIEL's REPL version 0.1.5
+Read more on packages with readme or summary. For example: (summary :str)
+Special commands:
+  %help => Prints this general help message
+  %doc => Print the available documentation for this symbol.
+  %? => Gets help on a symbol <sym>: :? str
+  %w => Writes the current session to a file <filename>
+  %d => Dumps the disassembly of a symbol <sym>
+  %t => Prints the type of a expression <expr>
+  %q => Ends the session.
+  %lisp-critic => Enable or disable the lisp critic. He critizes the code you type before compiling it.
+  %edit => Edit a file with EDITOR and evaluate it.
+Press CTRL-D or type :q to exit
+
+ciel-user>
+
+#+end_src
+
+** Lisp library
+
+You can install and =quickload= CIEL like any other Common Lisp library.
+
+To use it in your project, create a package and "use" =ciel= in addition of =cl=:
 
 #+BEGIN_SRC lisp
   (defpackage yourpackage
@@ -217,12 +337,12 @@ You can also use =generic-ciel=, based on [[https://github.com/alex-gutev/generi
 generic-cl allows us to define our =+= or =equalp= methods for our
 own objects (and more).
 
-** Use CIEL at startup
+** Core image: use CIEL your current developer setup
 
 You can enter the =CIEL-USER= package when you start your Lisp image
 from your editor.
 
-A working, but naive and slow-ish approach is to add this in your =~/.sbclrc=:
+A working, but naive and slow-ish approach would be to add this in your =~/.sbclrc=:
 
 #+BEGIN_SRC lisp
 (ql:quickload "ciel")
@@ -230,12 +350,12 @@ A working, but naive and slow-ish approach is to add this in your =~/.sbclrc=:
 (ciel-user-help)
 #+end_src
 
-A faster way is to use CIEL's core and to use SLIME's or your editor's
+A faster way is to use CIEL's core image and to use SLIME's or your editor's
 feature to [[https://common-lisp.net/project/slime/doc/html/Multiple-Lisps.html#Multiple-Lisps][configure multiple Lisps]].
 
 You need to:
 
-- build CIEL's core for your machine (=make image=),
+- build CIEL's core image for your machine (=make image=),
 - add this to your Emacs init file:
 
 #+BEGIN_SRC lisp
@@ -250,7 +370,8 @@ You need to:
   then start a new Lisp process with =M-- M-x slime= (alt-minus prefix),
   and choose ciel-sbcl. You can start more than one Lisp process from SLIME.
 
-The Lisp process should start as fast as the default SBCL.
+The Lisp process should start instantly, as fast as the default SBCL,
+you won't wait for the quicklisp libraries to load.
 
 * Libraries
 

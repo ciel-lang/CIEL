@@ -137,6 +137,7 @@
                :lisp-critic  ;; it would be nice to integrate it with Slime.
                :magic-ed)
   :components ((:file "repl")
+               (:file "scripting")
                (:file "shell-utils")
                (:file "repl-utils"))
 
@@ -144,8 +145,8 @@
   :defsystem-depends-on (:deploy)  ;; need to (ql:quickload "deploy") before building.
   ;; :build-operation "program-op"
   :build-operation "deploy-op"
-  :entry-point "sbcli::repl")
   :build-pathname "ciel"
+  :entry-point "ciel::main")
 
 ;; Don't ship libssl, rely on the target OS'.
 ;; XXX: we need to load cl+ssl before we can compile and load this .asd file :/
