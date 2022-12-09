@@ -100,7 +100,7 @@ Rules
   - [[#scripting][Scripting]]
   - [[#shell-repl][Shell REPL]]
   - [[#lisp-library][Lisp library]]
-  - [[#core-image-use-ciel-your-current-developer-setup][Core image: use CIEL your current developer setup]]
+  - [[#core-image-use-ciel-in-your-current-developer-setup][Core image: use CIEL in your current developer setup]]
 - [[#libraries][Libraries]]
 - [[#language-extensions][Language extensions]]
 - [[#final-words][Final words]]
@@ -337,7 +337,7 @@ You can also use =generic-ciel=, based on [[https://github.com/alex-gutev/generi
 generic-cl allows us to define our =+= or =equalp= methods for our
 own objects (and more).
 
-** Core image: use CIEL your current developer setup
+** Core image: use CIEL in your current developer setup
 
 You can enter the =CIEL-USER= package when you start your Lisp image
 from your editor.

@@ -14,18 +14,23 @@ An example script:
 ;; Start your script with this to access all CIEL goodies:
 (in-package :ciel-user)
 
-;; We have access to the STR library:
-(print (str:join "-" (list "I" "am" "a" "lisper")))
+(defun hello (name)
+  "Say hello."
+  ;; format! prints on standard output and flushes the streams.
+  (format! t "Hello ~a!~&" name))
+
+;; Access CLI args:
+(hello (second (uiop:command-line-arguments)))
 
 ;; We have access to the DICT notation for hash-tables:
 (print "testing dict:")
 (print (dict :a 1 :b 2))
 
-;; format! prints on standard output and flushes the streams.
-(format! t "cmd?")
-
 ;; We can run shell commands:
 (cmd:cmd "ls")
+
+;; Access environment variables:
+(hello (uiop:getenv "USER"))
 
 (format! t "Let's define an alias to run shell commands with '!'. This gives: ")
 (defalias ! #'cmd:cmd)
@@ -42,8 +47,12 @@ An example script:
 
 Output:
 
+
 ```
-"I-am-a-lisper"
+$ ciel myscript.lisp you
+=>
+
+Hello you!
 "testing dict:"
 
  (dict
@@ -53,6 +62,7 @@ Output:
 cmd? ABOUT.org	    ciel		     ciel-core
    bin  		    docs		     src
  […]
+Hello vindarel!
 Let's define an alias to run shell commands with '!'. This gives:
 /home/vindarel/projets/ciel
 ciel-user>
