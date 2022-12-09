@@ -256,8 +256,7 @@ We can encode an instance of it:
 #<PERSON {1007FDDDC3}>
 ```
 
-Shasht options
-==============
+#### JSON options
 
 *(See its README for possible updates)*
 
@@ -344,15 +343,13 @@ variables from supplied keywords and will default to the current dynamic value
 of each keyword.
 
 
-Date and time
--------------
+## Date and time
 
 The [local-time](https://common-lisp.net/project/local-time/) package is available.
 
 See also [awesome-cl\#date-and-time](https://github.com/CodyReichert/awesome-cl#date-and-time) and the [Cookbook](https://lispcookbook.github.io/cl-cookbook/dates_and_times.html).
 
-Databases
----------
+## Databases
 
 [cl-dbi](https://github.com/fukamachi/cl-dbi/) (db independent interface) and [SxQL](https://github.com/fukamachi/sxql) (a SQL generator) are available.
 
@@ -381,8 +378,7 @@ If you want an ORM, see [Mito](https://github.com/fukamachi/mito/) or [clsql](ht
 And for a tutorial, see <https://lispcookbook.github.io/cl-cookbook/databases.html>
 
 
-Files and directories
----------------------
+## Files and directories
 
 CL has built-in functions to deal with files and directories and UIOP provides more. See [https://lispcookbook.github.io/cl-cookbook/files.html](https://lispcookbook.github.io/cl-cookbook/files.html).
 
@@ -447,8 +443,7 @@ The object is a STANDARD-OBJECT of type FOF/FILE:FILE.
 >
 ~~~
 
-GUI (ltk)
----------
+## GUI (ltk)
 
 We ship [ltk](http://www.peter-herth.de/ltk/ltkdoc/).
 
@@ -484,8 +479,7 @@ Use the `with-ltk` macro to define your GUI, use `make-instance` + a widget name
 
 Read more: <https://lispcookbook.github.io/cl-cookbook/gui.html#tk>
 
-Iteration
----------
+## Iteration
 
 See <https://lispcookbook.github.io/cl-cookbook/iteration.html> for examples, including about the good old `loop`.
 
@@ -506,8 +500,7 @@ We import macros from [trivial-do](https://github.com/yitzchak/trivial-do/), tha
 We ship `for` so you can try it, but we don't import its symbols.
 
 
-Numerical and scientific
-------------------------
+## Numerical and scientific
 
 We import `mean`, `variance`, `median` and `clamp` from Alexandria.
 
@@ -590,8 +583,7 @@ Close plots with `close-plot` or `close-all-plots`.
 Explore the demo [here](https://github.com/volkers/vgplot/blob/master/demo.lisp).
 
 
-Operating System
-----------------
+## Operating System
 
 `UIOP`, as always, has some useful functions. This time, they are
 under `uiop/os` (or simply `uiop`). We added a local nickname:
@@ -642,15 +634,13 @@ auto-discovery, so we also added a `/os` local nickname, so that we
 see the available symbols earlier in the autocompletion list.
 
 
-Regular expressions
--------------------
+## Regular expressions
 
 Use `ppcre`.
 
 See <https://common-lisp-libraries.readthedocs.io/cl-ppcre> and <https://lispcookbook.github.io/cl-cookbook/regexp.html>
 
-Threads, monitoring, scheduling
--------------------------------
+## Threads, monitoring, scheduling
 
 We ship:
 
@@ -688,8 +678,7 @@ Stop all jobs with `stop-cron`.
 (boot-only nil) (hash-key nil))
 ```
 
-HTTP and URI handling
----------------------
+## HTTP and URI handling
 
 See:
 
@@ -701,8 +690,7 @@ See:
 (dex:get "http://my.url")
 ```
 
-Web
----
+## Web
 
 We ship:
 
@@ -711,8 +699,7 @@ We ship:
 
 <https://lispcookbook.github.io/cl-cookbook/web.html>
 
-Development
------------
+## Development
 
 ### Defining packages
 
