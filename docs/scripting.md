@@ -102,8 +102,37 @@ How it works:
 - the exec calls the `ciel` binary with this file name as first argument,
   the rest of the file (lisp code) is not read by the shell.
   - before LOAD-ing this Lisp file, we remove the #!/bin/sh shebang line.
-  - Lisp ignores comments between `#|` and `|#`.
+  - Lisp ignores comments between `#|` and `|#` and runs the following lisp code.
 
+## Eval and one-liners
+
+Use `--eval` or `-e` to eval some lisp code.
+
+Example:
+
+```sh
+$ ciel -e "(uiop:file-exists-p \"README.org\")"
+/home/vindarel/projets/ciel/README.org
+
+$ ciel -e "(-> \"README.org\" (uiop:file-exists-p))"
+/home/vindarel/projets/ciel/README.org
+
+$ ciel -e "(-> (http:get \"https://fakestoreapi.com/products/1\") (json:read-json))"
+
+ (dict
+  "id" 1
+  "title" "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops"
+  "price" 109.95
+  "description" "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday"
+  "category" "men's clothing"
+  "image" "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg"
+  "rating"
+  (dict
+   "rate" 3.9
+   "count" 120
+  )
+ )
+```
 
 ---
 

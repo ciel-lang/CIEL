@@ -28,9 +28,36 @@
   (with-open-file (s file)
     (str:starts-with-p "#!" (read-line s))))
 
-(defun main ()
-  "Run a lisp file as a script.
-  If no argument is given or if the file doesn't exist, run the top-level CIEL
+;; eval
+(defun wrap-user-code (s)
+  "Wrap this user code to handle common conditions, such as a C-c C-c to quit gracefully."
+  ;; But is it enough when we run a shell command?
+  `(handler-case
+       ,s                                ;; --eval takes one form only.
+     (sb-sys:interactive-interrupt (c)
+       (declare (ignore c))
+       (format! *error-output* "Bye!~%"))
+     (error (c)
+       (format! *error-output* "~a" c))))
+
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ciel-user
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; (in-package :ciel-user)
+
+(defun main (&optional args)
+  "Read optional command-line arguments, execute some lisp code or start a top-level REPL.
+
+  # eval some lisp code
+
+  Use --eval or -e. Example:
+
+  $ ciel -e \"(uiop:file-exists-p \"README.org\")\"
+  /home/vindarel/projets/ciel/README.org   <= the file name is returned, otherwise \"NIL\".
+
+  # start the readline CIEL REPL
+
+  If no argument is given or if the file given as argument doesn't exist, run the top-level CIEL
 
   The script should begin with:
 
@@ -60,18 +87,59 @@
     - Lisp ignore comments between #| and |#
 
   Exciting things to come!"
-  ;; (format t "Hello main! ~S~&" uiop:*command-line-arguments*)
-  (let ((file (first (uiop:command-line-arguments))))
-    (cond
-      ((and file
-            (uiop:file-exists-p file))
-       (if (has-shebang file)
-           ;; I'm a bit cautious about this function.
-           ;; (mostly, small issues when testing at the REPL, should be fine though…)
-           (load-without-shebang file)
-           ;; So the one with no risk:
-           (load file)))
-      (t
-       (when (and file (not (uiop:file-exists-p file)))
-         (format t "warn: file ~S does not exist.~&" file))
-       (sbcli::repl)))))
+  (let ((args (or args ;; for testing
+                  (uiop:command-line-arguments))))
+
+    (handler-case
+        (loop
+           :for arg = (first args) :do
+
+             (cond
+               ;; --eval, -e
+               ((member arg '("--eval" "-e") :test #'equal)
+                (pop args)
+                (setf arg (first args))
+
+                (handler-case
+                    ;; I want to run this in :ciel-user,
+                    ;; but to define these helper functions in :ciel.
+                    (let ((*package* (find-package :ciel-user))
+                          res)
+                      (setf res
+                            (eval
+                             (wrap-user-code (read-from-string arg))))
+                      (when res
+                        ;; print aesthetically or respect lisp structure?
+                        (format! t "~a~&" res)))
+                  (end-of-file ()
+                    (format! t "End of file error. Did you close all parenthesis?"))
+                  (error (c)
+                    (format! t "An error occured: ~a~&" c)))
+
+                (return-from main))
+
+               ;; LOAD some file.lisp
+               ;; Originally, the goal of the scripting capabilities. The rest are details.
+               ((and arg
+                     (uiop:file-exists-p arg))
+                (pop args)
+                (if (has-shebang arg)
+                    ;; I was a bit cautious about this function.
+                    ;; (mostly, small issues when testing at the REPL because of packages and local nicknames,
+                    ;; should be fine though…)
+                    (load-without-shebang arg)
+                    ;; So the one with no risk:
+                    (load arg))
+                (return-from main))
+
+               ;; default: run CIEL's REPL.
+               (t
+                (when (and arg (not (uiop:file-exists-p arg)))
+                  (format t "warn: file ~S does not exist.~&" arg)
+                  (pop args))
+                (sbcli::repl)
+                )))
+
+      (error (c)
+        (format! *error-output* "Unexpected error: ~a~&" c)
+        (return-from main)))))
