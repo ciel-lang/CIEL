@@ -134,6 +134,78 @@ $ ciel -e "(-> (http:get \"https://fakestoreapi.com/products/1\") (json:read-jso
  )
 ```
 
+## Other scripts
+
+### Simple HTTP server
+
+see `src/scripts/simpleHTTPserver.lisp` in the CIEL repository.
+
+~~~lisp
+(in-package :ciel-user)
+
+;; CLI args: the script name, an optional port number.
+(defparameter *port* (or (parse-integer (second (uiop:command-line-arguments)))
+                         8000))
+
+(defvar *acceptor* (make-instance 'hunchentoot:easy-acceptor
+                     :document-root "./"
+                     :port *port*))
+(hunchentoot:start *acceptor*)  ;; async, runs in its own thread.
+
+(format! t "~&Serving files on port ~a…~&" *port*)
+(handler-case
+    ;; The server runs on another thread, don't quit instantly.
+    ;; Catch a C-c and quit gracefully.
+    (sleep most-positive-fixnum)
+  (sb-sys:interactive-interrupt ()
+    (format! t "Bye!")))
+~~~
+
+Given you have an `index.html` file:
+
+```html
+<html>
+  <head>
+    <title>Hello!</title>
+  </head>
+  <body>
+    <h1>Hello CIEL!</h1>
+    <p>
+    We just served our own files.
+    </p>
+  </body>
+</html>
+```
+
+If you want to serve static assets under a `static/` directory:
+
+~~~lisp
+;; Serve static assets under static/
+(push (hunchentoot:create-folder-dispatcher-and-handler
+       "/static/"  "static/"  ;; starts without a /
+       )
+      hunchentoot:*dispatch-table*)
+~~~
+
+Now load a .js file as usual in your template:
+
+        <script src="/static/ciel.js"></script>
+
+which can be:
+
+~~~javascript
+// ciel.js
+alert("hello CIEL!");
+~~~
+
+Example output:
+
+```
+$ ciel src/scripts/simpleHTTPserver.lisp 4444
+Serving files on port 4444…
+127.0.0.1 - [2022-12-14 12:06:00] "GET / HTTP/1.1" 200 200 "-" "Mozilla/5.0 (X11; Linux x86_64; rv:103.0) Gecko/20100101 Firefox/103.0"
+```
+
 ---
 
 Now, let us iron out the details ;)
