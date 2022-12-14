@@ -75,7 +75,7 @@ Access them with `(uiop:command-line-arguments)`.
 
 ## Executable file and shebang line
 
-We can also make a CIEL file executable and run it directly:
+We can also make a CIEL file executable and run it directly, like this:
 
 ```
 $ chmod +x script.lisp
@@ -85,15 +85,24 @@ $ ./script.lisp
 Add the following shebang at the beginning:
 
 ```sh
-#!/bin/sh
-#|-*- mode:lisp -*-|#
-#|
-exec /path/to/ciel `basename $0` "$@"
-|#
+#!/usr/bin/env ciel
 
 (in-package :ciel-user)
 ;; lisp code follows.
 ```
+
+You also need to add the `ciel` binary in your path. A possibility:
+
+    $ ln -s /home/path/to/ciel/bin/ciel ~/.local/bin/ciel
+
+It magically works because before LOAD-ing this Lisp file, we remove the shebang line, and load the remaining Lisp code.
+
+<!-- daaaamn no need of a complex shebang like Roswell like at did at the beginning. See previous commits. Do we want a complex shebang to pass options to the CIEL binary ?
+
+#!/bin/sh
+#|-*- mode:lisp -*-|#
+#|
+exec /path/to/ciel `basename $0` "$@"
 
 How it works:
 
@@ -103,6 +112,8 @@ How it works:
   the rest of the file (lisp code) is not read by the shell.
   - before LOAD-ing this Lisp file, we remove the #!/bin/sh shebang line.
   - Lisp ignores comments between `#|` and `|#` and runs the following lisp code.
+
+-->
 
 ## Eval and one-liners
 
@@ -155,8 +166,8 @@ see `src/scripts/simpleHTTPserver.lisp` in the CIEL repository.
 (format! t "~&Serving files on port ~a…~&" *port*)
 (handler-case
     ;; The server runs on another thread, don't quit instantly.
-    ;; Catch a C-c and quit gracefully.
     (sleep most-positive-fixnum)
+  ;; Catch a C-c and quit gracefully.
   (sb-sys:interactive-interrupt ()
     (format! t "Bye!")))
 ~~~
@@ -182,7 +193,7 @@ If you want to serve static assets under a `static/` directory:
 ~~~lisp
 ;; Serve static assets under static/
 (push (hunchentoot:create-folder-dispatcher-and-handler
-       "/static/"  "static/"  ;; starts without a /
+       "/static/"  "static/"
        )
       hunchentoot:*dispatch-table*)
 ~~~
@@ -205,6 +216,44 @@ $ ciel src/scripts/simpleHTTPserver.lisp 4444
 Serving files on port 4444…
 127.0.0.1 - [2022-12-14 12:06:00] "GET / HTTP/1.1" 200 200 "-" "Mozilla/5.0 (X11; Linux x86_64; rv:103.0) Gecko/20100101 Firefox/103.0"
 ```
+
+### Quicksearch
+
+Search for Lisp libraries on Quicklisp, Cliki and Github.
+
+see `src/scripts/quicksearch.lisp`.
+
+```lisp
+$ ciel src/scripts/quicksearch.lisp color
+
+SEARCH-RESULTS: "color"
+=======================
+
+ Quicklisp
+ ---------
+  cl-colors
+      /home/vince/quicklisp/dists/quicklisp/software/cl-colors-20180328-git/
+      http://beta.quicklisp.org/archive/cl-colors/2018-03-28/cl-colors-20180328-git.tgz
+      http://quickdocs.org/cl-colors/
+[…]
+ Cliki
+ -----
+  colorize
+      http://www.cliki.net/colorize
+      Colorize is an Application for colorizing chunks of Common Lisp, Scheme,
+      Elisp, C, C++, or Java code
+[…]
+ GitHub
+ ------
+  colorize
+      https://github.com/kingcons/colorize
+      A Syntax Highlighting library
+  cl-colors
+      https://github.com/tpapp/cl-colors
+      Simple color library for Common Lisp
+[…]
+```
+
 
 ---
 
