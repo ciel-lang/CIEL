@@ -64,6 +64,75 @@ What is CIEL for?
 
 Please see the project's homepage, and write to us if it is not clear enough!
 
+## About CIEL scripting
+
+### Is CIEL like Babashka for Clojure?
+
+Babashka is a popular Clojure tool that is:
+
+- a fast-starting scripting environment
+- a standalone binary
+- a collection of useful built-in libraries
+
+So, it looks like it is.
+
+Babashka was made possible thanks to the GraalVM Native Image, a
+technical breakthrough on the JVM world. Without it, they wouldn't
+have a fast-starting scripting environment. Common Lispers on the
+contrary always could build standalone binaries, with Lisp sources
+compiled to machine code. So these "scripting" capabilities are not a
+surprise. CIEL scripting only makes it very easy to run and share
+Common Lisp scripts (with batteries included).
+
+### Does CIEL scripting replace Roswell?
+
+Roswell does a lot more than scripting, especially it allows to easily
+install various Common Lisp implementations.
+
+It makes it easy to share programs, we just have to run
+`ros install github-handle/software-name`.
+
+However we find easier and faster to install and run a CIEL script,
+since CIEL avoids compilation times, thanks to it including various
+libraries out of the box.
+
+At the time of writing, Roswell does something (or many things) more. It allows to
+[build images and executables](https://github.com/roswell/roswell/wiki/Building-images-and-executables),
+and it even provides a few interesting options, like options to reduce the binary size.
+
+### What about cl-launch?
+
+[cl-launch](https://www.cliki.net/cl-launch) is supposed to help for
+scripting. Because of its bad documentation, I have difficulties
+seeing what it does and how to use it. It can maybe be helpful, but it
+won't give you batteries included like CIEL does.
+
+### Is that all the scripting options available for Common Lisp?
+
+Of course not. For one, implementations like SBCL have the `--script` and `--load` flags.
+
+You can use a shebang line too.
+
+See other solutions / attempts on [awesome-cl#scripting](https://github.com/CodyReichert/awesome-cl#scripting).
+
+### But writing Lisp code on the terminal is not fun :(
+
+I find it fun, but don't write big one-liners to feed to `--eval` ;)
+You can write your CIEL scripts using your favourite editor setup.
+
+Also, Common Lisp strings only accept double quotes, so use single quotes for the outter eval expression, and double quotes inside.
+
+Anyways, CIEL scripting doesn't replace a good editor setup, where you
+can have all the praised [image-based interactivity](https://www.youtube.com/watch?v=jBBS4FeY7XM)
+a good Lisp provides.
+
+Also, once you have your Common Lisp development environment in place,
+you can build your own standalone binaries, with or without relying on
+the `:ciel` library.
+
+<!-- But in that case, you have to build a binary for every platform yourself. CIEL scripting can help here. -->
+
+
 About Common Lisp
 =================
 
