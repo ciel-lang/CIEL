@@ -101,22 +101,11 @@
 
     $ ciel myscript.lisp
 
-  2) by using a shebang. It's a little bit convoluted:
+  2) by using a shebang.
 
-  #!/bin/sh
-  #|-*- mode:lisp -*-|#
-  #|
-  exec /path/to/ciel `basename $0` \"$@\"
+  #!/usr/bin/env ciel
+  (in-package :ciel-user)
   (print \"hello CIEL!\")
-
-  How it works:
-
-  - it starts as a /bin/sh script
-    - all lines starting by # are shell comments
-  - the exec calls the ciel binary with this file name as first argument,
-    the rest of the file (lisp code) is not read by the shell.
-    - before LOAD-ing this Lisp file, we remove the #!/bin/sh shebang line.
-    - Lisp ignore comments between #| and |#
 
   Exciting things to come!"
   (let ((args (or args ;; for testing
