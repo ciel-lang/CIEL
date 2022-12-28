@@ -2,10 +2,18 @@
 
 > Note: this is brand new! Expect limitations and changes.
 
-Get the `ciel` binary and call it with a .lisp file:
+Get the `ciel` binary and call it with your .lisp script:
 
 ```
 $ ciel script.lisp
+```
+
+(or `./script.lisp`, see below)
+
+Call built-in scripts:
+
+```
+$ ciel --script simpleHTTPserver 9000
 ```
 
 An example script:
@@ -20,7 +28,7 @@ An example script:
   (format! t "Hello ~a!~&" name))
 
 ;; Access CLI args:
-(hello (second (uiop:command-line-arguments)))
+(hello (second uiop:*command-line-arguments*))
 
 ;; We have access to the DICT notation for hash-tables:
 (print "testing dict:")
@@ -70,7 +78,9 @@ ciel-user>
 
 ## Command line arguments
 
-Access them with `(uiop:command-line-arguments)`.
+Access them with `uiop:*command-line-arguments`.
+
+This list of arguments can be modified by us. You can always check the original list with `(uiop:command-line-arguments)`.
 
 
 ## Executable file and shebang line
@@ -145,9 +155,15 @@ $ ciel -e "(-> (http:get \"https://fakestoreapi.com/products/1\") (json:read-jso
  )
 ```
 
-## Other scripts
+## Built-in scripts
+
+Call built-in scripts with `--script` or `-s`.
 
 ### Simple HTTP server
+
+```
+$ ciel -s simpleHTTPserver 9000
+```
 
 see `src/scripts/simpleHTTPserver.lisp` in the CIEL repository.
 
@@ -155,7 +171,7 @@ see `src/scripts/simpleHTTPserver.lisp` in the CIEL repository.
 (in-package :ciel-user)
 
 ;; CLI args: the script name, an optional port number.
-(defparameter *port* (or (parse-integer (second (uiop:command-line-arguments)))
+(defparameter *port* (or (ignore-errors (parse-integer (second uiop:*command-line-arguments*)))
                          8000))
 
 (defvar *acceptor* (make-instance 'hunchentoot:easy-acceptor
@@ -169,7 +185,8 @@ see `src/scripts/simpleHTTPserver.lisp` in the CIEL repository.
     (sleep most-positive-fixnum)
   ;; Catch a C-c and quit gracefully.
   (sb-sys:interactive-interrupt ()
-    (format! t "Bye!")))
+    (format! t "Bye!")
+    (hunchentoot:stop *acceptor*)))
 ~~~
 
 Given you have an `index.html` file:
@@ -224,7 +241,7 @@ Search for Lisp libraries on Quicklisp, Cliki and Github.
 see `src/scripts/quicksearch.lisp`.
 
 ```lisp
-$ ciel src/scripts/quicksearch.lisp color
+$ ciel -s quicksearch color
 
 SEARCH-RESULTS: "color"
 =======================

@@ -8,12 +8,12 @@
 (in-package :ciel-user)
 
 ;; CLI args: the script name, an optional port number.
-(defparameter *port* (or (parse-integer (second (uiop:command-line-arguments)))
-                         8000))
+(defparameter *port* (or (ignore-errors (parse-integer (second uiop:*command-line-arguments*)))
+                         9000))
 
-(defvar *acceptor* (make-instance 'hunchentoot:easy-acceptor
-                     :document-root "./"
-                     :port *port*))
+(defparameter *acceptor* (make-instance 'hunchentoot:easy-acceptor
+                                        :document-root "./"
+                                        :port *port*))
 (hunchentoot:start *acceptor*)
 
 ;; Serve static assets under a static/ directory (optional).
@@ -26,4 +26,8 @@
 (handler-case
     (sleep most-positive-fixnum)
   (sb-sys:interactive-interrupt ()
-    (format! t "Bye!")))
+    (format! t "Bye!")
+    (hunchentoot:stop *acceptor*))
+  (error ()
+    (format! t "An error occured. Quitting.")
+    (hunchentoot:stop *acceptor*)))

@@ -1,6 +1,10 @@
 
 (in-package :ciel)
 
+(defparameter *scripts* (dict)
+  "Available scripts.
+  Hash-table: file name (sans extension) -> file content (string).")
+
 (defun maybe-ignore-shebang (in)
   "If this file starts with #!, delete the shebang line,
   so we can LOAD the file.
@@ -39,6 +43,34 @@
        (format! *error-output* "Bye!~%"))
      (error (c)
        (format! *error-output* "~a" c))))
+
+
+(defun register-builtin-scripts ()
+  "Find available scripts in src/scripts, register them in *SCRIPTS*.
+  Call this before creating the CIEL binary."
+  ;; We save the file's content as a string.
+  ;; We will run them with LOAD (and an input stream from the string).
+  ;;
+  ;; Example:
+  ;;
+  ;; (load (make-string-input-stream (str:from-file "src/scripts/simpleHTTPserver.lisp")))
+  (loop for file in (uiop:directory-files "src/scripts/")
+     if (equal "lisp" (pathname-type file))
+     do (format t "~t scripts: registering ~a~&" (pathname-name file))
+       (setf (gethash (pathname-name file) *scripts*)
+             (str:from-file file))))
+
+(defun run-script (name)
+  "If NAME is registered in *SCRIPTS*, run this script."
+  (bind (((:values content exists) (gethash name *scripts*)))
+    (cond
+      ((and exists (str:blankp content)
+       (format *error-output* "uh the script ~s has no content?~&" name)))
+      ((not exists)
+       (format *error-output* "The script ~s was not found.~&" name))
+      (t
+       ;; Run it!
+       (load (make-string-input-stream content))))))
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ciel-user
@@ -118,6 +150,18 @@
 
                 (return-from main))
 
+               ;; --script / -s : run scripts by name.
+               ;; They are registered by name in the binary.
+               ;; Ideas:
+               ;; - look for scripts in specified directories.
+               ((member arg '("--script" "-s") :test #'equal)
+                (pop args)
+                (setf arg (first args))
+                ;; ditch the "-s" option, must not be seen by the script.
+                (pop uiop:*command-line-arguments*)
+                (run-script arg)
+                (return-from main))
+
                ;; LOAD some file.lisp
                ;; Originally, the goal of the scripting capabilities. The rest are details.
                ((and arg
@@ -143,3 +187,10 @@
       (error (c)
         (format! *error-output* "Unexpected error: ~a~&" c)
         (return-from main)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; top-level for binary construction.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(format t "~&Registering built-in scripts in src/scripts/ …~&")
+(register-builtin-scripts)

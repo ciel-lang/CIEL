@@ -10,9 +10,9 @@
 
 (in-package :ciel-user)
 
-(unless (second (uiop:command-line-arguments))
+(unless (second uiop:*command-line-arguments*)
   (format! t "Quicksearch: search for Lisp libraries on Quicklisp, Cliki and Github.~&")
   (format! t "Usage: ciel quicksearch.lisp keyword~&")
   (uiop:quit))
 
-(quicksearch:? (second (uiop:command-line-arguments)) :ud)  ;; url and details.
+(quicksearch:? (second uiop:*command-line-arguments*) :ud)  ;; url and details.

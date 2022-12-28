@@ -139,7 +139,16 @@
   :components ((:file "repl")
                (:file "scripting")
                (:file "shell-utils")
-               (:file "repl-utils"))
+               (:file "repl-utils")
+
+               ;; I define them here, for good practice (for me),
+               ;; but I don't use them.
+               ;; static-file is important, otherwise the scripts would be run.
+               (:module "src/scripts"
+                        :components
+                        ((:static-file "quicksearch")
+                         (:static-file "simpleHTTPserver")))
+               )
 
   ;; Build a binary with Deploy, ship foreign libraries (and ignore libssl).
   :defsystem-depends-on (:deploy)  ;; need to (ql:quickload "deploy") before building.
