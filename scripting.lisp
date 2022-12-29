@@ -72,13 +72,53 @@
        ;; Run it!
        (load (make-string-input-stream content))))))
 
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ciel-user
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; (in-package :ciel-user)
+(defun top-level/command ()
+  "Creates and returns the top-level command"
+  (clingon:make-command
+   :name "ciel"
+   :description "CIEL Is an Extended Lisp. It's Common Lisp, batteries included."
+   :version "0.1.0"
+   :license "todo"
+   :authors '("vindarel <vindarel@mailz.org>")
+   :usage (format nil "accepts optional command-line arguments.~%
+~t~tWith no arguments, run the CIEL readline REPL.~%
+~t~tWith a file as argument, run it as a script.~%
+~t~tWith --eval / -e <FORM>, eval a Lisp form.~%
+~t~tWith --script / -s <SCRIPT>, run a a script by its name.")
+   :options (top-level/options)
+   :handler #'top-level/handler
+   :sub-commands (top-level/sub-commands)))
 
-(defun main (&optional args)
-  "Read optional command-line arguments, execute some lisp code or start a top-level REPL.
+(defun top-level/options ()
+  "Creates and returns the options for the top-level command"
+  (list
+   (clingon:make-option
+    :counter
+    :description "verbosity level"
+    :short-name #\v
+    :long-name "verbose"
+    :key :verbose)
+   (clingon:make-option
+    :counter
+    :description "help"
+    :short-name #\h
+    :key :short-help)
+   (clingon:make-option
+    :string
+    :description "eval a lisp form"
+    :short-name #\e
+    :long-name "eval"
+    :key :eval)
+   (clingon:make-option
+    :filepath
+    :description "run a lisp file"
+    :short-name #\s
+    :long-name "script"
+    :key :script)
+   ))
+
+(defun top-level/handler (cmd)
+  "The top-level handler: read optional command-line arguments, execute some lisp code or start a top-level REPL.
 
   # eval some lisp code
 
@@ -105,81 +145,113 @@
 
   #!/usr/bin/env ciel
   (in-package :ciel-user)
-  (print \"hello CIEL!\")
-
-  Exciting things to come!"
-  (let ((args (or args ;; for testing
-                  (uiop:command-line-arguments))))
+  (print \"hello CIEL!\")"
+  (let ((args (clingon:command-arguments cmd))
+        (user (clingon:getopt cmd :user))
+        (eval-string (clingon:getopt cmd :eval))
+        (script-name (clingon:getopt cmd :script))
+        (short-help (clingon:getopt cmd :short-help))
+        (verbose (clingon:getopt cmd :verbose)))
 
     (handler-case
-        (loop
-           :for arg = (first args) :do
+        (cond
 
-             (cond
-               ;; --eval, -e
-               ((member arg '("--eval" "-e") :test #'equal)
-                (pop args)
-                (setf arg (first args))
+          ;; -h (not by default)
+          (short-help
+           (clingon:print-usage cmd t)
+           (return-from top-level/handler))
 
-                (handler-case
-                    ;; I want to run this in :ciel-user,
-                    ;; but to define these helper functions in :ciel.
-                    (let ((*package* (find-package :ciel-user))
-                          res)
-                      (setf res
-                            (eval
-                             (wrap-user-code (read-from-string arg))))
-                      (when res
-                        ;; print aesthetically or respect lisp structure?
-                        (format! t "~a~&" res)))
-                  (end-of-file ()
-                    (format! t "End of file error. Did you close all parenthesis?"))
-                  (error (c)
-                    (format! t "An error occured: ~a~&" c)))
+          ;; --eval, -e
+          (eval-string
+           (handler-case
+               ;; I want to run this in :ciel-user,
+               ;; but to define these helper functions in :ciel.
+               (let ((*package* (find-package :ciel-user))
+                     res)
+                 (setf res
+                       (eval
+                        (wrap-user-code (read-from-string eval-string))))
+                 (when res
+                   ;; print aesthetically or respect lisp structure?
+                   (format! t "~a~&" res)))
+             (end-of-file ()
+               (format! t "End of file error. Did you close all parenthesis?"))
+             (error (c)
+               (format! t "An error occured: ~a~&" c)))
 
-                (return-from main))
+           (return-from top-level/handler))
 
-               ;; --script / -s : run scripts by name.
-               ;; They are registered by name in the binary.
-               ;; Ideas:
-               ;; - look for scripts in specified directories.
-               ((member arg '("--script" "-s") :test #'equal)
-                (pop args)
-                (setf arg (first args))
-                ;; ditch the "-s" option, must not be seen by the script.
-                (pop uiop:*command-line-arguments*)
-                (run-script arg)
-                (return-from main))
+          ;; --script / -s : run scripts by name.
+          ;; They are registered by name in the binary.
+          ;; Ideas:
+          ;; - look for scripts in specified directories.
+          (script-name
+           ;; ditch the "-s" option, must not be seen by the script.
+           (pop uiop:*command-line-arguments*)
+           (run-script script-name)
+           (return-from top-level/handler))
 
-               ;; LOAD some file.lisp
-               ;; Originally, the goal of the scripting capabilities. The rest are details.
-               ((and arg
-                     (uiop:file-exists-p arg))
-                (pop args)
-                (if (has-shebang arg)
-                    ;; I was a bit cautious about this function.
-                    ;; (mostly, small issues when testing at the REPL because of packages and local nicknames,
-                    ;; should be fine though…)
-                    (load-without-shebang arg)
-                    ;; So the one with no risk:
-                    (load arg))
-                (return-from main))
+          ;; A free arg should denote a file.
+          ((and args
+                (not (uiop:file-exists-p (first args))))
+           (format t "file ~S does not exist.~&" (first args))
+           (return-from top-level/handler))
 
-               ;; default: run CIEL's REPL.
-               (t
-                (when (and arg (not (uiop:file-exists-p arg)))
-                  (format t "warn: file ~S does not exist.~&" arg)
-                  (pop args))
-                (sbcli::repl)
-                )))
+          ;; LOAD some file.lisp
+          ;; Originally, the goal of the scripting capabilities. The rest are details.
+          ((and (first args)
+                (uiop:file-exists-p (first args)))
+           (if (has-shebang (first args))
+               ;; I was a bit cautious about this function.
+               ;; (mostly, small issues when testing at the REPL because of packages and local nicknames,
+               ;; should be fine though…)
+               (load-without-shebang (first args))
+               ;; So the one with no risk:
+               (load (first args)))
+           (return-from top-level/handler))
+
+          ;; default: run CIEL's REPL.
+          (t
+           (sbcli::repl)))
 
       (error (c)
         (format! *error-output* "Unexpected error: ~a~&" c)
-        (return-from main)))))
+        (return-from top-level/handler)))
+    ))
+
+
+;; ZSH completion.
+(defun top-level/sub-commands ()
+  "Returns the list of sub-commands for the top-level command"
+  (list
+   (zsh-completion/command)))
+
+(defun zsh-completion/command ()
+  "Returns a command for generating the Zsh completion script.
+  Installation instructions are given in the output."
+  (clingon:make-command
+   :name "zsh-completion"
+   :description "generate the Zsh completion script"
+   :usage ""
+   :handler (lambda (cmd)
+              ;; Use the parent command when generating the completions,
+              ;; so that we can traverse all sub-commands in the tree.
+              (let ((parent (clingon:command-parent cmd)))
+                (clingon:print-documentation :zsh-completions parent t)))))
+
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ciel-user
+;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; (in-package :ciel-user)
+
+(defun main ()
+  "Entry point for the binary. Parse options."
+  (let ((app (top-level/command)))
+    (clingon:run app)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; top-level for binary construction.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(format t "~&Registering built-in scripts in src/scripts/ …~&")
+                                        ;
+(format t "~&Registering built-in scripts in src/scripts/ …~&") ;
 (register-builtin-scripts)

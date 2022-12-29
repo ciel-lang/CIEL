@@ -80,7 +80,20 @@ ciel-user>
 
 Access them with `uiop:*command-line-arguments`.
 
-This list of arguments can be modified by us. You can always check the original list with `(uiop:command-line-arguments)`.
+This list of arguments can be modified by us (especially if you call
+scripts with the `-s` option). You can always check the full original
+list with `(uiop:command-line-arguments)`.
+
+You can use a proper command-line options parser, which is shipped with CIEL: [Clingon](https://github.com/dnaeon/clingon). This top-notch library supports:
+
+- Short and long option names support
+- Automatic generation of help/usage information for commands and sub-commands
+- Support for various kinds of options like *string*, *integer*, *boolean*, *switches*, *enums*, *list*, *counter*, *filepath*, etc.
+- Out of the box support for `--version` and `--help` flags
+- Subcommands
+- Support for pre-hook and post-hook actions for commands, which allows invoking functions before and after the respective handler of the command is executed
+- Support for Bash and Zsh shell completions
+- and more.
 
 
 ## Executable file and shebang line

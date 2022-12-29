@@ -47,6 +47,9 @@
                ;; GUI
                :ltk
 
+               ;; CLI
+               :clingon  ;; args parsing
+
                :local-time
                :modf
 
