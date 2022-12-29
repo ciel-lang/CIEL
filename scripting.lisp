@@ -99,11 +99,6 @@
     :long-name "verbose"
     :key :verbose)
    (clingon:make-option
-    :counter
-    :description "help"
-    :short-name #\h
-    :key :short-help)
-   (clingon:make-option
     :string
     :description "eval a lisp form"
     :short-name #\e
@@ -155,11 +150,6 @@
 
     (handler-case
         (cond
-
-          ;; -h (not by default)
-          (short-help
-           (clingon:print-usage cmd t)
-           (return-from top-level/handler))
 
           ;; --eval, -e
           (eval-string
