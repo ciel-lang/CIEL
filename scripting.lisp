@@ -171,14 +171,18 @@
 
            (return-from top-level/handler))
 
+          ;;
           ;; --script / -s : run scripts by name.
+          ;;
           ;; They are registered by name in the binary.
           ;; Ideas:
           ;; - look for scripts in specified directories.
           (script-name
            ;; ditch the "-s" option, must not be seen by the script.
            (pop uiop:*command-line-arguments*)
-           (run-script script-name)
+           (let ((dir (uiop:getcwd)))
+             (uiop:with-current-directory (dir)
+               (run-script script-name)))
            (return-from top-level/handler))
 
           ;; A free arg should denote a file.
