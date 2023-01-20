@@ -22,9 +22,18 @@
        )
       hunchentoot:*dispatch-table*)
 
-(format! t "~&Serving files on port ~a…~&" *port*)
 (handler-case
-    (sleep most-positive-fixnum)
+    (progn
+      ;; Start the webserver.
+      (hunchentoot:start *acceptor*)
+      (format! t "~&Serving files on port ~a…~&" *port*)
+      (format! t "~&~&~t ⤷ http://127.0.0.1:~a ~&~&" *port*)
+
+      ;; Wait in the foreground.
+      (sleep most-positive-fixnum))
+
+  (usocket:address-in-use-error ()
+    (format! *error-output* "This port is already in use. Quitting.~&"))
   (sb-sys:interactive-interrupt ()
     (format! t "Bye!")
     (hunchentoot:stop *acceptor*))
