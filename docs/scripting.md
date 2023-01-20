@@ -170,7 +170,9 @@ $ ciel -e "(-> (http:get \"https://fakestoreapi.com/products/1\") (json:read-jso
 
 ## Built-in scripts
 
-Call built-in scripts with `--script` or `-s`.
+Call built-in scripts with `--script <scriptname>` or `-s`.
+
+Call `ciel --scripts` to list the available scripts.
 
 ### Simple HTTP server
 

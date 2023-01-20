@@ -1,6 +1,8 @@
 
 (in-package :ciel)
 
+(defparameter *ciel-version* "0.1" "Read from .asd or version.lisp-expr file.")
+
 (defparameter *scripts* (dict)
   "Available scripts.
   Hash-table: file name (sans extension) -> file content (string).")
@@ -77,14 +79,14 @@
   (clingon:make-command
    :name "ciel"
    :description "CIEL Is an Extended Lisp. It's Common Lisp, batteries included."
-   :version "0.1.0"
+   :version *ciel-version*
    :license "todo"
    :authors '("vindarel <vindarel@mailz.org>")
    :usage (format nil "accepts optional command-line arguments.~%
 ~t~tWith no arguments, run the CIEL readline REPL.~%
 ~t~tWith a file as argument, run it as a script.~%
 ~t~tWith --eval / -e <FORM>, eval a Lisp form.~%
-~t~tWith --script / -s <SCRIPT>, run a a script by its name.")
+~t~tWith --script / -s <SCRIPT>, run a a script by its name. See --scripts to list the available scripts.")
    :options (top-level/options)
    :handler #'top-level/handler
    :sub-commands (top-level/sub-commands)))
@@ -110,7 +112,18 @@
     :short-name #\s
     :long-name "script"
     :key :script)
+   (clingon:make-option
+    :counter
+    :description "list available scripts."
+    :long-name "scripts"
+    :short-name #\z
+    :key :scripts)
    ))
+
+#+(or)
+;; Try options parsing:
+(clingon:parse-command-line (top-level/command) (list "-s" "myscript" "9999"))
+
 
 (defun top-level/handler (cmd)
   "The top-level handler: read optional command-line arguments, execute some lisp code or start a top-level REPL.
@@ -141,17 +154,26 @@
   #!/usr/bin/env ciel
   (in-package :ciel-user)
   (print \"hello CIEL!\")"
+
+  ;; XXX: it might be better to NOT use Clingon: we want to be able to pass remaining options
+  ;; to the script.
+  ;; ciel -s simpleHTTPserver 9999 => OK
+  ;; ciel -s simpleHTTPserver 9999 -h => clingon fails with "unkown option -h of kind short".
   (let ((args (clingon:command-arguments cmd))
         (user (clingon:getopt cmd :user))
         (eval-string (clingon:getopt cmd :eval))
         (script-name (clingon:getopt cmd :script))
+        (scripts (clingon:getopt cmd :scripts))
         (short-help (clingon:getopt cmd :short-help))
         (verbose (clingon:getopt cmd :verbose)))
 
     (handler-case
         (cond
 
+          ;;
           ;; --eval, -e
+          ;;
+
           (eval-string
            (handler-case
                ;; I want to run this in :ciel-user,
@@ -170,19 +192,34 @@
                (format! t "An error occured: ~a~&" c)))
 
            (return-from top-level/handler))
-
           ;;
           ;; --script / -s : run scripts by name.
           ;;
           ;; They are registered by name in the binary.
           ;; Ideas:
           ;; - look for scripts in specified directories.
+
           (script-name
            ;; ditch the "-s" option, must not be seen by the script.
            (pop uiop:*command-line-arguments*)
            (let ((dir (uiop:getcwd)))
              (uiop:with-current-directory (dir)
-               (run-script script-name)))
+                                          (run-script script-name)))
+           (return-from top-level/handler))
+
+          ;;
+          ;; list available scripts (helper command)
+          ;;
+          ;; There's maybe a bug in Clingon:
+          ;; if this option is handled before -s, it is always caught.
+          ;; Because --scripts starts with --script?
+          (scripts
+           (format t "CIEL v~a~%~%" *ciel-version*)
+           (format t "Available scripts:~&")
+           (do-hash-table (k v *scripts*)
+             (format t "~t - ~a~&" k))
+
+           (format! t "~%See: https://ciel-lang.github.io/CIEL/#/scripting~&")
            (return-from top-level/handler))
 
           ;; A free arg should denote a file.
