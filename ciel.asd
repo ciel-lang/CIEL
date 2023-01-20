@@ -43,6 +43,7 @@
                :easy-routes ;; better route definition for Hunchentoot.
                :quri
                :lquery
+               :spinneret   ;; lispy templates. Used in simpleHTTPserver.lisp
 
                ;; GUI
                :ltk

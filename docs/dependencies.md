@@ -55,6 +55,7 @@ simple string literal definition that doesn't require escaping characters.
 - repl-utilities: Ease common tasks at the REPL.
 - serapeum: Utilities beyond Alexandria.
 - shlex: Lexical analyzer for simple shell-like syntax.
+- spinneret: Common Lisp HTML5 generator.
 - str: Modern, consistent and terse Common Lisp string manipulation library.
 - sxql: A SQL generator
 - trivia: NON-optimized pattern matcher compatible with OPTIMA, with extensible optimizer interface and clean codebase

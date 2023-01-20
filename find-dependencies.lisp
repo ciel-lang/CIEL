@@ -9,7 +9,10 @@ Redirect the script output to docs/dependencies.md (see Makefile).
 |#
 
 (require 'asdf)
+(print "loading quicklisp…")
 (load "~/quicklisp/setup")
+
+(require "cl+ssl")
 (load "ciel.asd")
 (require 'swank) ;; but why?
 (ql:quickload '("ciel" "str") :silent t)
