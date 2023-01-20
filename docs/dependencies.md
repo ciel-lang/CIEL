@@ -7,7 +7,6 @@
 - cl-ansi-text: ANSI control string characters, focused on color
 - cl-cron: A simple tool that provides cron like facilities directly inside of common lisp. For this to work properly note that your lisp implementation should have support for threads
 - cl-csv: Facilities for reading and writing CSV format files
-- shasht: Common Lisp JSON reading and writing for the Kzinti. The primary interface to parsing and reading JSON is the `read-json` function. The primary interface to serializing and writing JSON is the `write-json` function.
 - cl-ppcre: Perl-compatible regular expression library
 - cl-punch: Scala-like anonymous lambda literal
 - cl-reexport: Reexport external symbols in other packages.
@@ -16,6 +15,7 @@
   constructs from Common Lisp.
 
 Essentially, it provides a '!' syntax that you can use to ...
+- clingon: Command-line options parser system for Common Lisp
 - closer-mop: Closer to MOP is a compatibility layer that rectifies many of the absent or incorrect CLOS MOP features across a broad range of Common Lisp implementations.
 - cmd: A utility for running external programs
 - dbi: Database independent interface for Common Lisp
@@ -43,8 +43,8 @@ See: http://www.ergy.com/FSet.html
 - metabang-bind: Bind is a macro that generalizes multiple-value-bind, let, let*, destructuring-bind, structure and slot accessors, and a whole lot more.
 - modf: A SETF like macro for functional programming
 - moira: Monitor and restart background threads.
-- named-readtables: Library that creates a namespace for named readtable
-  akin to the namespace of packages.
+- named-readtables: Library that creates a namespace for readtables akin
+  to the namespace of packages.
 - parse-float: Parse floating point values in strings.
 - parse-number: Number parsing library
 - printv: printv: a batteries-included tracing and debug-logging macro
@@ -54,6 +54,7 @@ simple string literal definition that doesn't require escaping characters.
 - quri: Yet another URI library for Common Lisp
 - repl-utilities: Ease common tasks at the REPL.
 - serapeum: Utilities beyond Alexandria.
+- shasht: JSON reading and writing for the Kzinti.
 - shlex: Lexical analyzer for simple shell-like syntax.
 - spinneret: Common Lisp HTML5 generator.
 - str: Modern, consistent and terse Common Lisp string manipulation library.
