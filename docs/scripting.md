@@ -178,29 +178,11 @@ Call built-in scripts with `--script` or `-s`.
 $ ciel -s simpleHTTPserver 9000
 ```
 
-see `src/scripts/simpleHTTPserver.lisp` in the CIEL repository.
+open `http://localhost:9000` and see the list of files.
 
-~~~lisp
-(in-package :ciel-user)
+See `src/scripts/simpleHTTPserver.lisp` in the CIEL repository.
 
-;; CLI args: the script name, an optional port number.
-(defparameter *port* (or (ignore-errors (parse-integer (second uiop:*command-line-arguments*)))
-                         8000))
-
-(defvar *acceptor* (make-instance 'hunchentoot:easy-acceptor
-                     :document-root "./"
-                     :port *port*))
-(hunchentoot:start *acceptor*)  ;; async, runs in its own thread.
-
-(format! t "~&Serving files on port ~a…~&" *port*)
-(handler-case
-    ;; The server runs on another thread, don't quit instantly.
-    (sleep most-positive-fixnum)
-  ;; Catch a C-c and quit gracefully.
-  (sb-sys:interactive-interrupt ()
-    (format! t "Bye!")
-    (hunchentoot:stop *acceptor*)))
-~~~
+You can preview HTML files and have static assets under a `static/` directory.
 
 Given you have an `index.html` file:
 
@@ -218,15 +200,7 @@ Given you have an `index.html` file:
 </html>
 ```
 
-If you want to serve static assets under a `static/` directory:
-
-~~~lisp
-;; Serve static assets under static/
-(push (hunchentoot:create-folder-dispatcher-and-handler
-       "/static/"  "static/"
-       )
-      hunchentoot:*dispatch-table*)
-~~~
+The script will serve static assets under a `static/` directory.
 
 Now load a .js file as usual in your template:
 
@@ -242,8 +216,13 @@ alert("hello CIEL!");
 Example output:
 
 ```
-$ ciel src/scripts/simpleHTTPserver.lisp 4444
-Serving files on port 4444…
+$ ciel -s simpleHTTPserver 4242
+Serving files on port 4242…
+
+  ⤷ http://127.0.0.1:4242
+
+[click on the index.html file]
+
 127.0.0.1 - [2022-12-14 12:06:00] "GET / HTTP/1.1" 200 200 "-" "Mozilla/5.0 (X11; Linux x86_64; rv:103.0) Gecko/20100101 Firefox/103.0"
 ```
 
