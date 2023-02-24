@@ -105,6 +105,7 @@ Rules
 - [[#language-extensions][Language extensions]]
 - [[#final-words][Final words]]
 - [[#how-to-generate-the-documentation][How to generate the documentation]]
+- [[#lisp][Lisp?!]]
 
 * Install
 
@@ -371,3 +372,15 @@ and now:
 * How to generate the documentation
 
 See =src/ciel.lisp= and run =(generate-dependencies-page-reference)=.
+
+* Lisp?!
+
+  - [[https://github.com/CodyReichert/awesome-cl][awesome-cl]]
+  - [[https://lispcookbook.github.io/cl-cookbook/][the Common Lisp Cookbook]]
+    - [[https://lispcookbook.github.io/cl-cookbook/editor-support.html][editor support]]
+  - [[https://github.com/azzamsa/awesome-lisp-companies/][Lisp companies]]
+  - blog posts:
+    - [[https://lisp-journey.gitlab.io/blog/these-years-in-common-lisp-2022-in-review/][these years in Lisp: 2022 in review]]
+    - [[https://lisp-journey.gitlab.io/pythonvslisp/][Python VS Common Lisp, workflow and ecosystem]]
+    - [[https://stevelosh.com/blog/2018/08/a-road-to-common-lisp/][A road to Common Lisp]]
+  - 🎥 my [[https://www.udemy.com/course/common-lisp-programming/?referralCode=2F3D698BBC4326F94358][Common Lisp course in videos: from novice to efficient programmer]], on the Udemy platform.
