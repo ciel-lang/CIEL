@@ -4,6 +4,13 @@
 
 (require "asdf")  ;; for CI
 
+;; We need to load cl+ssl before we can load and compile this .asd file.
+;; We need it to build the binary with asdf:make, using Deploy
+;; (see its use below).
+(unless (find-package :cl+ssl)
+  (warn "Loading ciel.asd: we don't find the package CL+SSL. You need to install it before loading this .asd file.~&"))
+(require "cl+ssl")
+
 (asdf:defsystem "ciel"
   :description "CIEL Is an Extended Lisp (Common Lisp, batteries included)."
   :version "0.1"
@@ -162,7 +169,6 @@
   :entry-point "ciel::main")
 
 ;; Don't ship libssl, rely on the target OS'.
-;; XXX: we need to load cl+ssl before we can compile and load this .asd file :/
 #+linux (deploy:define-library cl+ssl::libssl :dont-deploy T)
 #+linux (deploy:define-library cl+ssl::libcrypto :dont-deploy T)
 
