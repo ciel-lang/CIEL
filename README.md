@@ -1,0 +1,361 @@
+
+<p>
+  <h2 align="center"> CIEL </h2>
+  <h3 align="center"> Common Lisp, batteries included. </h3>
+</p>
+
+<p align="center">
+  <a href="https://ciel-lang.github.io/CIEL/#/"><b> Home page </b></a> |
+  <a href="https://github.com/ciel-lang/CIEL/issues"><b>Issues</b></a> |
+  <a href="https://github.com/ciel-lang/CIEL/discussions"><b> Discussions</b></a> |
+  <a href="https://github.com/sponsors/vindarel"> Support us! </a> |
+  <a href="https://ko-fi.com/vindarel"> Buy me a coffee! </a> |
+</p>
+
+# CIEL Is an Extended Lisp
+
+STATUS: ~~highly~~ WIP, the API WILL change, but it is usable.
+
+I am dogfooding it in public and private projects.
+
+## What is this ?
+
+CIEL is a ready-to-use collection of libraries.
+
+It's Common Lisp, batteries included.
+
+It comes in 3 forms:
+
+- a binary, to run CIEL **scripts**: fast start-up times, standalone image, built-in utilities.
+- a simple full-featured **REPL** for the terminal.
+- a **Lisp library** and **core image**.
+
+Questions, doubts? See the [FAQ](docs/FAQ.md).
+
+## Rationale
+
+One of our goals is to make Common Lisp useful out of the box for
+mundane tasks -by today standards. As such, we ship libraries to handle
+**JSON** or **CSV**, as well as others to ease string
+manipulation, to do pattern matching, to bring regular expressions, for
+threads and jobs scheduling, for **HTTP** and URI handling, to
+create simple GUIs with Ltk, and so on. You can of course do all this
+without CIEL, but then you have to install the library manager first and
+load these libraries into your Lisp image every time you start it. Now,
+you have them at your fingertips whenever you start CIEL.
+
+We also aim to soften the irritating parts of standard Common Lisp. A
+famous one, puzzling for beginners and non-optimal for seasoned lispers,
+is the creation of hash-tables. We include the `dict` function from the
+Serapeum library (which we enhanced further with a pull request):
+
+    CIEL-USER> (dict :a 1 :b 2 :c 3)
+
+which prints:
+
+``` txt
+(dict
+ :A 1
+ :B 2
+ :C 3
+)
+```
+
+In standard Common Lisp, the equivalent is more convoluted:
+
+``` commonlisp
+  (let ((ht (make-hash-table :test 'equal)))
+    (setf (gethash :a ht) 1)
+    (setf (gethash :b ht) 2)
+    (setf (gethash :c ht) 3)
+    ht)
+;; #<HASH-TABLE :TEST EQUAL :COUNT 3 {1006CE5613}>
+;; (and we don't get a readable representation, so our example is not even equivalent)
+```
+
+Moreover, we bring:
+
+-   a **full featured REPL on the terminal** and
+-   **scripting capabilities**, see more below.
+
+See *the documentation*.
+
+# Install
+
+You will probably need the following system dependencies (names for a
+Debian system):
+
+    libmagic-dev libc6-dev gcc  # from magicffi
+
+## With Quicklisp
+
+You need a Lisp implementation and Quicklisp installed.
+
+CIEL is not yet on Quicklisp, but it is on [Ultralisp](https://ultralisp.org).
+
+So, either clone this repository:
+
+    git clone https://github.com/ciel-lang/CIEL ~/quicklisp/local-projects/CIEL
+
+either install the Ultralisp distribution and pull the library from
+there:
+
+    (ql-dist:install-dist "http://dist.ultralisp.org/" :prompt nil)
+
+Then, load the .asd file (with `asdf:load-asd` or `C-c C-k` in Slime),
+quickload "ciel":
+
+```lisp
+(ql:quickload "ciel")
+```
+
+and enter the `ciel-user` package:
+
+```lisp
+(in-package :ciel-user)
+```
+
+## With a core image
+
+You need a Lisp implementation, but you don't need Quicklisp.
+
+Build a *core image* for your lisp with all CIEL's dependencies:
+
+    sbcl --load build-image.lisp
+
+and use it:
+
+    sbcl --core ciel-core --eval '(in-package :ciel-user)'
+
+Then you can configure Slime to have the choice of the Lisp image to
+start. See below in *\*Use CIEL at startup*
+
+We ~~will distribute ready-to-use core images~~ can not distribute core
+images, you must build it yourself.
+
+## With a binary. Use CIEL's custom REPL.
+
+You don't need anything, just download the CIEL executable and run its
+REPL. You need to build the core image yourself though.
+
+- we provide an experimental binary for Debian systems: go to
+  <https://gitlab.com/vindarel/ciel/-/pipelines>, download the latest
+  artifacts, unzip the `ciel-v0.zip` archive and run `ciel-v0/ciel`.
+
+TODO: build it for different platforms.
+
+To build it, clone this repository and run `make build`.
+
+Start it with `./ciel`.
+
+You are dropped into a custom Lisp REPL, freely based on
+[sbcli](https://github.com/hellerve/sbcli).
+
+This REPL is more user friendly than the default SBCL one:
+
+- it has readline capabilities, meaning that the arrow keys work by
+  default (wouhou!) and there is a persistent history, like in any
+  shell.
+- it has **multiline input**.
+- it has **TAB completion**.
+- it handles errors gracefully: you are not dropped into the debugger
+  and its sub-REPL, you simply see the error message.
+- it has optional **syntax highlighting**.
+- it has an optional **lisp critic** that scans the code you enter at
+  the REPL for instances of bad practices.
+- it has a **shell pass-through**: try `!ls`.
+
+- it has **documentation lookup** shorthands: use `:doc symbol` or `?`
+  after a symbol to get its documentation: `ciel-user> (dict ?`.
+
+- it has **developer friendly** macros: use `(printv code)` for an
+  annotated trace output.
+
+- and it defines more helper commands:
+
+```txt
+%help => Prints this general help message
+%doc => Prints the available documentation for this symbol
+%? => Inspect a symbol: %? str
+%w => Writes the current session to a file <filename>
+%d => Dumps the disassembly of a symbol <sym>
+%t => Prints the type of a expression <expr>
+%lisp-critic => Toggles the lisp-critic
+%q => Ends the session.
+```
+
+See more in [*the documentation*](https://ciel-lang.github.io/CIEL/#/).
+
+# Usage
+
+## Scripting
+
+NOTE: this is brand new! Expect limitations and changes.
+
+Get the `ciel` binary and call it with your .lisp script:
+
+    $ ciel script.lisp
+
+Call built-in scripts:
+
+    $ ciel --script simpleHTTPserver 9000
+
+or
+
+    $ ciel -s quicksearch colors
+
+See [the documentation](https://ciel-lang.github.io/CIEL/#/scripting).
+
+## Shell REPL
+
+Run `ciel` with no arguments:
+
+```bash
+$ ciel
+
+       _..._
+    .-'_..._''.                         .---.
+  .' .'      '..--.      __.....__     |   |
+ / .'           |__|  .-''         '.   |   |
+. '             .--. /     .-''''-.  `. |   |
+| |             |  |/     /________   |   |
+| |             |  ||                  ||   |
+. '             |  |    .-------------'|   |
+  '.          .|  |     '-.____...---.|   |
+  '. `._____.-'/|__|  `.             .' |   |
+    `-.______ /         `''-...... -'   '---'
+             `
+
+
+--------------------------------------------------------------------------------
+OS: Linux 5.4.0-124-generic
+Lisp: SBCL 2.0.1.debian
+ASDF: 3.3.4.15
+Quicklisp: (#<DIST quicklisp 2022-07-08>)
+--------------------------------------------------------------------------------
+CIEL's REPL version 0.1.5
+Read more on packages with readme or summary. For example: (summary :str)
+Special commands:
+  %help => Prints this general help message
+  %doc => Print the available documentation for this symbol.
+  %? => Gets help on a symbol <sym>: :? str
+  %w => Writes the current session to a file <filename>
+  %d => Dumps the disassembly of a symbol <sym>
+  %t => Prints the type of a expression <expr>
+  %q => Ends the session.
+  %lisp-critic => Enable or disable the lisp critic. He critizes the code you type before compiling it.
+  %edit => Edit a file with EDITOR and evaluate it.
+Press CTRL-D or type :q to exit
+
+ciel-user>
+
+```
+
+## Lisp library
+
+You can install and `quickload` CIEL like any other Common Lisp library.
+
+To use it in your project, create a package and "use" `ciel` in addition
+of `cl`:
+
+```lisp
+(defpackage yourpackage
+  (:use :cl :ciel))
+```
+
+You can also use `generic-ciel`, based on
+[generic-cl](https://github.com/alex-gutev/generic-cl/) (warn:
+generic-ciel is less tested at the moment).
+
+~~~lisp
+    (defpackage yourpackage
+      (:use :cl :generic-ciel))
+~~~
+
+generic-cl allows us to define our `+` or `equalp` methods for our own
+objects (and more).
+
+## Core image: use CIEL in your current developer setup
+
+You can enter the `CIEL-USER` package when you start your Lisp image
+from your editor.
+
+A working, but naive and slow-ish approach would be to add this in your
+`~/.sbclrc`:
+
+```lisp
+(ql:quickload "ciel")
+(in-package :ciel-user)
+(ciel-user-help)
+```
+
+A faster way is to use CIEL's core image and to use SLIME's or your
+editor's feature to [configure multiple
+Lisps](https://common-lisp.net/project/slime/doc/html/Multiple-Lisps.html#Multiple-Lisps).
+
+You need to:
+
+- build CIEL's core image for your machine (`make image`),
+- add this to your Emacs init file:
+
+```lisp
+(setq slime-lisp-implementations
+      `((sbcl    ("sbcl" "--dynamic-space-size" "2000"))  ;; default. Adapt if needed.
+        (ciel-sbcl  ("sbcl" "--core" "/path/to/ciel/ciel-core" "--eval" "(in-package :ciel-user)"))))
+(setq slime-default-lisp 'ciel-sbcl)
+```
+
+- and start a new Lisp process.
+- optional: if you didn't set it as default with `slime-default-lisp`,
+  then start a new Lisp process with `M-- M-x slime` (alt-minus
+  prefix), and choose ciel-sbcl. You can start more than one Lisp
+  process from SLIME.
+
+The Lisp process should start instantly, as fast as the default SBCL,
+you won't wait for the quicklisp libraries to load.
+
+## Libraries
+
+We import, use and document libraries to fill various use cases: generic
+access to data structures, functional data structures, string
+manipulation, JSON, database access, web, URI handling, GUI, iteration
+helpers, type checking helpers, syntax extensions, developer utilities,
+etc.
+
+See the documentation.
+
+To see the full list of dependencies, see the `ciel.asd` project
+definition or this [dependencies list](docs/dependencies.md).
+
+## Language extensions
+
+We provide arrow macros, easy type declaratons in the function lambda
+list, macros for exhaustiveness type checking, pattern matching, etc.
+
+See [the documentation](https://ciel-lang.github.io/CIEL/#/language-extensions).
+
+# Final words
+
+That was your life in CL:
+
+<p align="center"><img src="docs/before.jpeg" /></p>
+
+and now:
+
+<p align="center"><img src="docs/after-plus.jpeg" /></p>
+
+# Misc: how to generate the documentation
+
+See `src/ciel.lisp` and run `(generate-dependencies-page-reference)`.
+
+# Lisp?!
+
+- [awesome-cl](https://github.com/CodyReichert/awesome-cl)
+- [the Common Lisp Cookbook](https://lispcookbook.github.io/cl-cookbook/)
+  - [editor support](https://lispcookbook.github.io/cl-cookbook/editor-support.html)
+- [Lisp companies](https://github.com/azzamsa/awesome-lisp-companies/)
+- blog posts:
+  - [these years in Lisp: 2022 in review](https://lisp-journey.gitlab.io/blog/these-years-in-common-lisp-2022-in-review/)
+  - [Python VS Common Lisp, workflow and ecosystem](https://lisp-journey.gitlab.io/pythonvslisp/)
+  - [A road to Common Lisp](https://stevelosh.com/blog/2018/08/a-road-to-common-lisp/)
+- 🎥 my [Common Lisp course in videos: from novice to efficient programmer](https://www.udemy.com/course/common-lisp-programming/?referralCode=2F3D698BBC4326F94358), on the Udemy platform.
