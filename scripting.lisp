@@ -39,7 +39,7 @@
   "Wrap this user code to handle common conditions, such as a C-c C-c to quit gracefully."
   ;; But is it enough when we run a shell command?
   `(handler-case
-       ,s                                ;; --eval takes one form only.
+       ,s                                ;; --eval takes one form only so no need of ,@
      (sb-sys:interactive-interrupt (c)
        (declare (ignore c))
        (format! *error-output* "Bye!~%"))
@@ -113,7 +113,7 @@
     :long-name "script"
     :key :script)
    (clingon:make-option
-    :counter
+    :flag
     :description "list available scripts."
     :long-name "scripts"
     :short-name #\z
@@ -192,27 +192,24 @@
                (format! t "An error occured: ~a~&" c)))
 
            (return-from top-level/handler))
+
           ;;
           ;; --script / -s : run scripts by name.
           ;;
           ;; They are registered by name in the binary.
           ;; Ideas:
           ;; - look for scripts in specified directories.
-
           (script-name
            ;; ditch the "-s" option, must not be seen by the script.
            (pop uiop:*command-line-arguments*)
            (let ((dir (uiop:getcwd)))
              (uiop:with-current-directory (dir)
-                                          (run-script script-name)))
+               (run-script script-name)))
            (return-from top-level/handler))
 
           ;;
-          ;; list available scripts (helper command)
+          ;; --scripts : list available scripts (helper command).
           ;;
-          ;; There's maybe a bug in Clingon:
-          ;; if this option is handled before -s, it is always caught.
-          ;; Because --scripts starts with --script?
           (scripts
            (format t "CIEL v~a~%~%" *ciel-version*)
            (format t "Available scripts:~&")
@@ -222,7 +219,10 @@
            (format! t "~%See: https://ciel-lang.github.io/CIEL/#/scripting~&")
            (return-from top-level/handler))
 
-          ;; A free arg should denote a file.
+          ;;
+          ;; Free args: run (LOAD) a file.
+          ;;
+          ;; First, check the file exists.
           ((and args
                 (not (uiop:file-exists-p (first args))))
            (format t "file ~S does not exist.~&" (first args))

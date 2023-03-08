@@ -13,7 +13,7 @@ $ ciel script.lisp
 Call built-in scripts:
 
 ```
-$ ciel --script simpleHTTPserver 9000
+$ ciel -s simpleHTTPserver 9000
 ```
 
 An example script:

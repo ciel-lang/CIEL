@@ -2,7 +2,10 @@
 ;;; Run with:
 ;;; $ ciel -s simpleHTTPserver 4242
 ;;;
-;;; or add a shebang line and make this script executable.
+;;; or add a shebang line and make this script executable:
+;; #!/usr/bin/env ciel
+;; =>
+;; $ ./simpleHTTPserver.lisp
 ;;;
 
 (in-package :ciel-user)
@@ -32,8 +35,9 @@
       (file-namestring path)
       ;; How to simply get the directory name, not full path?
       ;; pathname-directory -> (:relative "path" "to" "dir")
-      (str:ensure-ends-with "/"
-                            (first (last (pathname-directory path))))))
+      ;; TODO: this is not yet merged in cl-str, sorry.
+      (str:ensure-end "/"
+                      (first (last (pathname-directory path))))))
 
 (defun show-file-list (file-list &key title)
   (with-page (:title title)
