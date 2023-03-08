@@ -196,9 +196,13 @@ Get the `ciel` binary and call it with your .lisp script:
 
     $ ciel script.lisp
 
+Use the `#!/usr/bin/env ciel` shebang line to directly call your files:
+
+    $ ./script
+
 Call built-in scripts:
 
-    $ ciel --script simpleHTTPserver 9000
+    $ ciel -s simpleHTTPserver 9000
 
 or
 
@@ -352,7 +356,7 @@ See `src/ciel.lisp` and run `(generate-dependencies-page-reference)`.
 
 - [awesome-cl](https://github.com/CodyReichert/awesome-cl)
 - [the Common Lisp Cookbook](https://lispcookbook.github.io/cl-cookbook/)
-  - [editor support](https://lispcookbook.github.io/cl-cookbook/editor-support.html)
+  - [editor support](https://lispcookbook.github.io/cl-cookbook/editor-support.html) (Emacs, Vim, VSCode, Atom, Pulsar, Jetbrains, Sublime, Jupyter notebooks…)
 - [Lisp companies](https://github.com/azzamsa/awesome-lisp-companies/)
 - blog posts:
   - [these years in Lisp: 2022 in review](https://lisp-journey.gitlab.io/blog/these-years-in-common-lisp-2022-in-review/)
