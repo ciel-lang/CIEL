@@ -19,7 +19,9 @@
                     (:alex :alexandria)
                     (:csv :cl-csv)
                     (:http :dexador)
-                    (:json :shasht)))
+                    (:json :shasht)
+
+                    (:routes :easy-routes)))
 
 ;TODO: a conflict between Serapeum and generic-cl
 (uiop:define-package generic-ciel
