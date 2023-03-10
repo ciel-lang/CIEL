@@ -14,7 +14,7 @@ It's always
 (access my-structure :elt)
 ```
 
-for an alist, a hash-table, a struct, an object… Use `accesses` for nested access (specially useful with JSON).
+for an alist, a hash-table, a struct, an object… Use `accesses` for nested access (specially useful with JSON). See also `json-pointer`.
 
 ### Hash-table utilities (Alexandria and Serapeum)
 
@@ -161,9 +161,13 @@ See also:
 
 ### JSON
 
-We use [shasht](https://github.com/yitzchak/shasht). It has a `json` nickname.
+We use [shasht](https://github.com/yitzchak/shasht) to read and write JSON. It has a `json` nickname.
 
-It is one of the newest and one of the best JSON handling libraries.
+We use [cl-json-pointer](https://github.com/y2q-actionman/cl-json-pointer/) to refer to nested keys with a short syntax. It has a `json-pointer` nickname.
+
+#### read-json, write-json
+
+Shasht is one of the newest and one of the best JSON handling libraries.
 
 To encode an object to a stream (standard output, a string, or another
 stream), use `write-json`. Its signature is:
@@ -341,6 +345,70 @@ The actual serialization of JSON data is done by the generic function
 There is also a keyword variant `write-json*` which will set the various dynamic
 variables from supplied keywords and will default to the current dynamic value
 of each keyword.
+
+#### JSON pointer
+
+JSON pointers ([RFC 6901](https://www.rfc-editor.org/rfc/rfc6901)) are especially handy to manipulate nested objects. We can access, set and delete keys and values with short pointers, which are strings.
+
+Example:
+
+~~~lisp
+(defparameter *json-data*
+  "{
+   \"foo\": [\"bar\", \"baz\"]
+   }")
+
+(let ((obj (json:read-json *json-data*)))
+  (json-pointer:get-by obj "/foo/0"))
+;; => "bar"
+~~~
+
+[cl-json-pointer](https://github.com/y2q-actionman/cl-json-pointer/) has some lengthy function names:
+
+- `get-by-json-pointer`, `set-by-json-pointer`… especially if we access them with the `json-pointer:` prefix.
+
+We provide shorten ones:
+
+- `get-by` `(obj pointer)`
+- `set-by` `(obj pointer value)`
+- `update-by` `(place pointer value)`
+- `add-by` `(obj pointer value)`
+- `delete-by` `(obj pointer)`
+- `deletef-by` `(place pointer)`
+- `remove-by` `(obj pointer)`
+- `exists-p-by` `(obj pointer)`
+
+`get-by` traverses OBJ with POINTER and returns three values:
+
+- the found value (nil if not found),
+- a generalized boolean saying the existence of the place pointed by POINTER,
+- and NIL.
+
+JSON-POINTER functions actually take a dict (hash-table) as first argument.
+
+Examples:
+
+~~~lisp
+(json-pointer:get-by (dict \"a\"
+                       (dict \"aa\" 11))
+                     \"/a/aa\")
+;; => 11
+~~~
+
+Parse a JSON string with `shasht:read-json` before feeding the result to json-pointer:
+
+~~~lisp
+(defvar *json-string*  \"{\\\"foo\\\": [\\\"1\\\", \\\"2\\\"]}\")
+
+(let ((obj (shasht:read-json *json-string*)))
+   (json-pointer:get-by obj \"/foo\"))
+;; =>
+#(\"1\" \"2\")
+T
+NIL
+~~~
+
+A JSON pointer starts with a "/".
 
 
 ## Date and time

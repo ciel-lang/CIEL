@@ -20,6 +20,7 @@
                     (:csv :cl-csv)
                     (:http :dexador)
                     (:json :shasht)
+                    (:json-pointer :cl-json-pointer)
 
                     (:routes :easy-routes)))
 

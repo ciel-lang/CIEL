@@ -6,7 +6,7 @@ It's Common Lisp, batteries included.
 
 It comes in 3 forms:
 
-- a binary, to run CIEL **scripts**.
+- a binary, to run CIEL **scripts**: fast start-up times, standalone binary, built-in utilities.
 - a simple full-featured **REPL** for the terminal.
 - a **Lisp library**.
 

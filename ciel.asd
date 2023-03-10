@@ -39,7 +39,8 @@
                :closer-mop
                :cl-ansi-text
                :cl-csv
-               :shasht
+               :shasht  ;; json
+               :cl-json-pointer
                :dissect
                :fset
                :generic-cl
@@ -131,6 +132,7 @@
   :components ((:module "src"
                         :components
                         ((:file "packages")
+                         (:file "json-pointer-minus")
                          (:file "ciel")))
                (:module "src/more-docstrings"
                         :components
