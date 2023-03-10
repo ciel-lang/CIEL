@@ -240,8 +240,8 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
     :type-expand
     :string-designator
     :property-list
-    :tuple
     ;; :proper-list ;; in alexandria
+    ;; :proper-list-p ;; in alexandria
     :association-list
     :character-designator
     :property-list-p
@@ -249,8 +249,6 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
     :type-specifier-p
     :list-designator
     :package-designator
-    ;; :proper-list-p ;; in alexandria
-    :tuplep
     :non-nil
     :file-associated-stream
     :stream-designator
