@@ -23,6 +23,6 @@ build:
     - mv bin ciel-v0
 
   artifacts:
-    name: "ciel-repl-v0"
+    name: "ciel-v0"
     paths:
       - ciel-v0/
