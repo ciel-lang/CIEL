@@ -31,13 +31,15 @@
 (defun file-or-directory-namestring (path)
   "Return the name of this file or of this directory.
   XXX: we want the name of the directory, not the full path."
+  (unless (fboundp 'str:ensure-suffix)
+    (print "WARN: str:ensure-suffix is in the latest cl-str. You'll need to clone it into ~/quicklisp/local-projects/"))
   (if (uiop:file-pathname-p path)
       (file-namestring path)
       ;; How to simply get the directory name, not full path?
       ;; pathname-directory -> (:relative "path" "to" "dir")
-      ;; TODO: this is not yet merged in cl-str, sorry.
-      (str:ensure-end "/"
-                      (first (last (pathname-directory path))))))
+      ;; INFO: this is merged in cl-str but not in Quicklisp yet.
+      (str:ensure-suffix "/"
+                         (first (last (pathname-directory path))))))
 
 (defun show-file-list (file-list &key title)
   (with-page (:title title)

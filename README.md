@@ -9,7 +9,7 @@
   <a href="https://github.com/ciel-lang/CIEL/issues"><b>Issues</b></a> |
   <a href="https://github.com/ciel-lang/CIEL/discussions"><b> Discussions</b></a> |
   <a href="https://github.com/sponsors/vindarel"> Support us! </a> |
-  <a href="https://ko-fi.com/vindarel"> Buy me a coffee! </a> |
+  <a href="https://ko-fi.com/vindarel"> Buy me a coffee! </a>
 </p>
 
 # CIEL Is an Extended Lisp
@@ -28,7 +28,7 @@ It comes in 3 forms:
 
 - a binary, to run CIEL **scripts**: fast start-up times, standalone image, built-in utilities.
 - a simple full-featured **REPL** for the terminal.
-- a **Lisp library** and **core image**.
+- a **Lisp library** and a **core image**.
 
 Questions, doubts? See the [FAQ](docs/FAQ.md).
 

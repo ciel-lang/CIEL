@@ -135,7 +135,7 @@
     *special*)
   ;; (write-line "Currently defined:")
   ;; (print-currently-defined)
-  (write-line "Press CTRL-D or type :q to exit"))
+  (write-line "Press CTRL-D or type %q to exit"))
 
 (defun symbol-documentation (symbol)
   "Print the available documentation for this symbol."
