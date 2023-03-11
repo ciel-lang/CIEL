@@ -1,11 +1,11 @@
+#!/usr/bin/env ciel
 ;;;
 ;;; Run with:
 ;;; $ ciel -s simpleHTTPserver 4242
 ;;;
-;;; or add a shebang line and make this script executable:
-;; #!/usr/bin/env ciel
-;; =>
-;; $ ./simpleHTTPserver.lisp
+;;; or
+;;;
+;;; $ ./simpleHTTPserver.lisp
 ;;;
 
 (in-package :ciel-user)

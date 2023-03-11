@@ -3,7 +3,7 @@
 ;;;
 ;;;
 ;;; Run with:
-;;; $ ciel quicksearch keyword
+;;; $ ciel -s quicksearch keyword
 ;;;
 ;;; or add a shebang line and make this script executable.
 ;;;

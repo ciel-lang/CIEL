@@ -72,7 +72,10 @@
        (format *error-output* "The script ~s was not found.~&" name))
       (t
        ;; Run it!
-       (load (make-string-input-stream content))))))
+       ;; Ignore the shebang line, if there is one.
+       ;; We can call scripts with ciel -s <name> or with ./script
+       (load (maybe-ignore-shebang
+              (make-string-input-stream content)))))))
 
 (defun top-level/command ()
   "Creates and returns the top-level command"
