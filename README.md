@@ -204,11 +204,9 @@ Call built-in scripts:
 
     $ ciel -s simpleHTTPserver 9000
 
-or
+See available built-in scripts with `--scripts`.
 
-    $ ciel -s quicksearch colors
-
-See [the documentation](https://ciel-lang.github.io/CIEL/#/scripting).
+See [the scripts documentation](https://ciel-lang.github.io/CIEL/#/scripting).
 
 ## Shell REPL
 

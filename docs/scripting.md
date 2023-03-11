@@ -8,7 +8,7 @@ Get the `ciel` binary and call it with your .lisp script:
 $ ciel script.lisp
 ```
 
-(or `./script.lisp`, see below)
+(or `./script.lisp` with a shebang line, see below)
 
 Call built-in scripts:
 
@@ -267,6 +267,18 @@ SEARCH-RESULTS: "color"
 […]
 ```
 
+### API Pointer
+
+Call a JSON API and access nested data with a JSON pointer:
+
+    ciel -s apipointer URL "/json/pointer"
+
+Example:
+
+    $ ciel -s apipointer https://fakestoreapi.com/products\?limit\=3 "/0/rating/rate"
+    3.9
+
+We welcome more capable, expanded scripts!
 
 ---
 
