@@ -3,9 +3,10 @@
 
 (defparameter *ciel-version* "0.1" "Read from .asd or version.lisp-expr file.")
 
-(defparameter *scripts* (dict)
+(defparameter *scripts* (dict 'equalp)
   "Available scripts.
-  Hash-table: file name (sans extension) -> file content (string).")
+  Hash-table: file name (sans extension) -> file content (string).
+  The name is case-insensitive (it's easier for typing things in the terminal).")
 
 (defun maybe-ignore-shebang (in)
   "If this file starts with #!, delete the shebang line,

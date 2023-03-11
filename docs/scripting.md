@@ -16,6 +16,8 @@ Call built-in scripts:
 $ ciel -s simpleHTTPserver 9000
 ```
 
+> Note: script names are case insensitive.
+
 An example script:
 
 ```lisp
