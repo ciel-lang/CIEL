@@ -111,9 +111,40 @@ won't give you batteries included like CIEL does.
 
 Of course not. For one, implementations like SBCL have the `--script` and `--load` flags.
 
-You can use a shebang line too.
+You can use a shebang line with them too. Here's one:
 
-See other solutions / attempts on [awesome-cl#scripting](https://github.com/CodyReichert/awesome-cl#scripting).
+```
+#|
+exec sbcl --load "$0" --eval "(main)" --quit --end-toplevel-options "${@:1}"
+|#
+....
+(defun main ()
+  ...)
+```
+
+You can make the script executable with `chmod +x` and run it.
+
+Here's how it works. Lines starting by a `#` are shell comments, so
+the first line is ignored. Then `sbcl` is run and the Lisp process
+takes over. The remaining lines are not read by the shell. `sbcl`
+loads this same file (`$0`) and calls the `(main)` function. In Lisp,
+lines in-between `#| … |#` are comments, so the `exec` line is
+ignored. Command line options are passed on to the Lisp
+process. Thanks to the main function, we can also load this file
+interactively on our editor, we don't have top-level code that will be
+run and have side effects.
+
+This works fine, but everytime you'll want to use third-party
+libraries, you'll notice the time it takes to load them. In CIEL, many
+are built-in, so your script starts up (very) fast.
+
+Also, our shebang line is easier to type:
+
+```
+#!/usr/bin/env ciel
+```
+
+See other solutions and attempts for scripting in CL on [awesome-cl#scripting](https://github.com/CodyReichert/awesome-cl#scripting).
 
 ### But writing Lisp code on the terminal is not fun :(
 
