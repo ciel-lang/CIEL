@@ -40,7 +40,7 @@
                :cl-ansi-text
                :cl-csv
                :shasht  ;; json
-               :cl-json-pointer
+               :cl-json-pointer/synonyms
                :dissect
                :fset
                :generic-cl

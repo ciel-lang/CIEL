@@ -5,6 +5,8 @@
 ;;; Example:
 ;;;
 ;;; $ ciel -s apipointer https://fakestoreapi.com/products?limit=5 "/0/rating/rate"
+;;; or
+;;; $ ./apipointer.lisp etc etc
 ;;;
 
 (in-package :ciel-user)
@@ -22,7 +24,7 @@
   (-<> url
     dex:get
     json:read-json
-    (json-pointer:get-by <> pointer)
+    (json-pointer:get <> pointer)
     ;; for a terminal output:
     pprint))
 

@@ -359,26 +359,22 @@ Example:
    }")
 
 (let ((obj (json:read-json *json-data*)))
-  (json-pointer:get-by obj "/foo/0"))
+  (json-pointer:get obj "/foo/0"))
 ;; => "bar"
 ~~~
 
-[cl-json-pointer](https://github.com/y2q-actionman/cl-json-pointer/) has some lengthy function names:
+The available functions and their arguments are:
 
-- `get-by-json-pointer`, `set-by-json-pointer`… especially if we access them with the `json-pointer:` prefix.
+- `json-pointer:get` `(obj pointer)`
+- `json-pointer:set` `(obj pointer value)`
+- `json-pointer:update` `(place pointer value)`
+- `json-pointer:add` `(obj pointer value)`
+- `json-pointer:delete` `(obj pointer)`
+- `json-pointer:deletef` `(place pointer)`
+- `json-pointer:remove` `(obj pointer)`
+- `json-pointer:exists-p` `(obj pointer)`
 
-We provide shorten ones:
-
-- `get-by` `(obj pointer)`
-- `set-by` `(obj pointer value)`
-- `update-by` `(place pointer value)`
-- `add-by` `(obj pointer value)`
-- `delete-by` `(obj pointer)`
-- `deletef-by` `(place pointer)`
-- `remove-by` `(obj pointer)`
-- `exists-p-by` `(obj pointer)`
-
-`get-by` traverses OBJ with POINTER and returns three values:
+`json-pointer:get` traverses OBJ with POINTER and returns three values:
 
 - the found value (nil if not found),
 - a generalized boolean saying the existence of the place pointed by POINTER,
@@ -389,9 +385,9 @@ JSON-POINTER functions actually take a dict (hash-table) as first argument.
 Examples:
 
 ~~~lisp
-(json-pointer:get-by (dict \"a\"
-                       (dict \"aa\" 11))
-                     \"/a/aa\")
+(json-pointer:get (dict \"a\"
+                     (dict \"aa\" 11))
+                   \"/a/aa\")
 ;; => 11
 ~~~
 
@@ -401,7 +397,7 @@ Parse a JSON string with `shasht:read-json` before feeding the result to json-po
 (defvar *json-string*  \"{\\\"foo\\\": [\\\"1\\\", \\\"2\\\"]}\")
 
 (let ((obj (shasht:read-json *json-string*)))
-   (json-pointer:get-by obj \"/foo\"))
+   (json-pointer:get obj \"/foo\"))
 ;; =>
 #(\"1\" \"2\")
 T
@@ -409,6 +405,9 @@ NIL
 ~~~
 
 A JSON pointer starts with a "/".
+
+<!-- A note on functions naming: [cl-json-pointer](https://github.com/y2q-actionman/cl-json-pointer/) has some lengthy function names by default (`get-by-json-pointer`), especially if we access them with the `json-pointer:` prefix. They provide very short ones (`get`), they live in another package name `cl-json-pointer/synonyms`. Our `json-pointer` is a nickname to it. If you want to import all the json-pointer functions with `use-package`, you can do so with `cl-json-pointer`. We created smaller function names, which you can import without conflicts (`get-by`). -->
+
 
 
 ## Date and time

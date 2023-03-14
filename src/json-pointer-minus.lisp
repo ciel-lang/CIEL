@@ -4,6 +4,9 @@
 ;; cl-json-pointer has lengthy functions: get-by-json-pointer, add-by-json-pointer, etc.
 ;; Let's create shorter ones: get-by etc.
 ;;
+;; update: oops, they have the cl-json-pointer/synonyms system with even shorter "get", "set" etc.
+;; Let's use it.
+;;
 ;; But why doesn't it accept a JSON string as input?!
 
 (in-package :ciel)
@@ -79,7 +82,8 @@ This is a modify macro for DELETE-BY (like PUSH or INCF)."
   (cl-json-pointer:exists-p-by-json-pointer obj pointer :flavor flavor))
 
 (defun json-pointer-shorten-functions ()
-  "Shorten function names inside the cl-json-pointer package."
+  "Shorten function names inside the cl-json-pointer package.
+  (not so useful anymore: they have shorter synonyms: get, set etc)"
   (let ((tuples (list
                  (list "GET-BY"  #'json-pointer-get-by)
                  ;;     NAME     NEW FUNCTION
