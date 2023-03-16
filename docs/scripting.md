@@ -1,6 +1,15 @@
 # Scripting
 
-> Note: this is brand new! Expect limitations and changes.
+CIEL provides a fast-starting scripting solution for Common Lisp.
+
+It is based on a standalone binary (created with the fast SBCL
+implementation) and it ships useful built-in utilities, for real-world
+needs: HTTP, JSON, CSV handling, plotting, and more. You just have to
+get the binary and run your script. Use a shebang line if you wish.
+
+It's a fast and easy solution to write Lisp code for your day-to-day tasks.
+
+> Note: this is brand new!  Expect limitations and changes.
 
 Get the `ciel` binary and call it with your .lisp script:
 
@@ -8,7 +17,7 @@ Get the `ciel` binary and call it with your .lisp script:
 $ ciel script.lisp
 ```
 
-(or `./script.lisp` with a shebang line, see below)
+(or just `./script.lisp` with a shebang line, see below)
 
 Call built-in scripts:
 
@@ -21,6 +30,9 @@ $ ciel -s simpleHTTPserver 9000
 An example script:
 
 ```lisp
+#!/usr/bin/env ciel
+;; optional shebang line, only for the short ./script call)
+
 ;; Start your script with this to access all CIEL goodies:
 (in-package :ciel-user)
 
