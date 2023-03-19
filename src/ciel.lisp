@@ -220,6 +220,7 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
                            :include
                            '(:ignoring
                              ;; Compile-time exhaustiveness checking
+                             :ecase-of
                              :etypecase-of
                              :ctypecase-of
                              :typecase-of
