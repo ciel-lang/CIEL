@@ -26,11 +26,14 @@ See the next sections for usage documentation.
 
 ## With Quicklisp
 
-You need a Lisp implementation and Quicklisp installed.
+If you go this route, you need a Lisp implementation and Quicklisp installed.
 
 CIEL is not yet on Quicklisp (but it is on [Ultralisp](https://ultralisp.org)), so clone this repository and load the .asd (with `load` or `C-c C-k` in Slime).
 
 ``` example
+# Get a dependency that is not up to date on Quicklisp:
+git clone https://github.com/vindarel/cl-str ~/quicklisp/local-projects/  # or use Ultralisp
+# Get CIEL proper:
 git clone https://github.com/ciel-lang/CIEL ~/quicklisp/local-projects/CIEL
 ```
 

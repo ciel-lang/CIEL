@@ -11,7 +11,7 @@ It's a fast and easy solution to write Lisp code for your day-to-day tasks.
 
 > Note: this is brand new!  Expect limitations and changes.
 
-Get the `ciel` binary and call it with your .lisp script:
+Get the `ciel` binary (it's under 30MB) and call it with your .lisp script:
 
 ```
 $ ciel script.lisp
