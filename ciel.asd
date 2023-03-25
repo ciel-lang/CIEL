@@ -8,7 +8,8 @@
 ;; We need it to build the binary with asdf:make, using Deploy
 ;; (see its use below).
 (unless (find-package :cl+ssl)
-  (warn "Loading ciel.asd: we don't find the package CL+SSL. You need to install it before loading this .asd file.~&"))
+  (warn "Loading ciel.asd: we don't find the package CL+SSL. You need to install it before loading this .asd file. Let's install it with Quicklisp now.~&")
+  (ql:quickload "cl+ssl"))
 (require "cl+ssl")
 
 (asdf:defsystem "ciel"
