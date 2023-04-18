@@ -73,8 +73,10 @@
        (format *error-output* "The script ~s was not found.~&" name))
       (t
        ;; Run it!
-       ;; Ignore the shebang line, if there is one.
-       ;; We can call scripts with ciel -s <name> or with ./script
+       ;; We first add a symbol in the feature list, so a script nows when it is being executed.
+       (push :ciel ciel-user::*features*)
+       ;; We ignore the shebang line, if there is one.
+       ;; We can call scripts either with ciel -s <name> or with ./script
        (load (maybe-ignore-shebang
               (make-string-input-stream content)))))))
 
@@ -233,9 +235,11 @@
            (return-from top-level/handler))
 
           ;; LOAD some file.lisp
-          ;; Originally, the goal of the scripting capabilities. The rest are details.
+          ;; Originally, this is the goal of the scripting capabilities. The rest are details.
           ((and (first args)
                 (uiop:file-exists-p (first args)))
+           ;; Add a symbol in the feature list, so a script nows when it is being executed.
+           (push :ciel ciel-user::*features*)
            (if (has-shebang (first args))
                ;; I was a bit cautious about this function.
                ;; (mostly, small issues when testing at the REPL because of packages and local nicknames,

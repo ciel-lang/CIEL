@@ -33,4 +33,9 @@
   (format! t "Usage: ciel apipointer.lisp URL [JSON-POINTERS]~&")
   (uiop:quit))
 
+;; Feature flag:
+;; call our main function only when running the script, not when developing on the REPL.
+#+ciel
 (main (second uiop:*command-line-arguments*) (third uiop:*command-line-arguments*))
+#-ciel
+(format t "Usage: (main url pointer)~&")

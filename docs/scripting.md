@@ -152,6 +152,54 @@ How it works:
 
 -->
 
+## Main function and interactive development
+
+TLDR: use the `#+ciel` feature flag as in:
+
+~~~lisp
+(in-package :ciel-user)
+
+(defun main ()
+  …)
+
+#+ciel
+(main)
+~~~
+
+Writing scripts is nice, but it is even better when doing so in a
+fully interactive Lisp environment, such as in Emacs and Slime (which
+is not the only good one anymore ;) ). We then must have a way to have
+a piece of code executed when we run the script (the call to the
+"main" function doing the side effects), but *not* executed when we
+`load` the file or when we compile and load the whole buffer during
+development (`C-c C-k`) (note that we can always compile functions
+individually with `C-c C-c`).
+
+In Python, the pattern is `__name__ == "__main__"`. In CIEL, we use
+Common Lisp's feature flags: the variable `*features*` (inside the
+`ciel-user` package) is a list containing symbols that represent
+features currently enabled in the Lisp image. For example, here's an
+extract:
+
+~~~lisp
+CIEL-USER> *features*
+(…
+ :CL-PPCRE-UNICODE :THREAD-SUPPORT :SWANK :QUICKLISP :ASDF3.3
+ :ASDF :OS-UNIX :ASDF-UNICODE :X86-64 :64-BIT
+ :COMMON-LISP :ELF :IEEE-FLOATING-POINT :LINUX :LITTLE-ENDIAN
+ :PACKAGE-LOCAL-NICKNAMES :SB-LDB :SB-PACKAGE-LOCKS :SB-THREAD :SB-UNICODE
+ :SBCL :UNIX)
+~~~
+
+Before running your script, we add the `:CIEL` symbol to this
+list. The `#+foo` reader macro is the way to check if the feature
+"foo" is enabled. You can also use `#-foo` to check its absence. To
+always disable a piece of code, the pattern is `#+(or)`, that always
+evaluates to nil.
+
+Make sure you are "in" the `ciel-user` package when writing this `#+ciel` check.
+
+
 ## Eval and one-liners
 
 Use `--eval` or `-e` to eval some lisp code.
@@ -187,6 +235,8 @@ $ ciel -e "(-> (http:get \"https://fakestoreapi.com/products/1\") (json:read-jso
 Call built-in scripts with `--script <scriptname>` or `-s`.
 
 Call `ciel --scripts` to list the available scripts.
+
+Those are for demo purposes and are subject to evolve. Ideas and contributions welcome.
 
 ### Simple HTTP server
 
