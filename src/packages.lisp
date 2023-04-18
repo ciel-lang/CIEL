@@ -22,7 +22,9 @@
                     (:json :shasht)
                     (:json-pointer :cl-json-pointer/synonyms)
 
-                    (:routes :easy-routes)))
+                    (:routes :easy-routes))
+  (:export
+   #:*script-args*))
 
 ;TODO: a conflict between Serapeum and generic-cl
 (uiop:define-package generic-ciel

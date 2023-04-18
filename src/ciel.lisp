@@ -360,6 +360,9 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
 
 (in-package :ciel-user)
 
+(defvar *script-args* (list)
+  "A list of command line arguments that are targetting the script called by ciel -s script")
+
 ;; We would like triple quotes for the functions docstring by default,
 ;; but this conflicts with other packages using a reader macro on the double quote
 ;; by using cl-syntax (Jonathan, Djula).

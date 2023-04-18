@@ -127,8 +127,15 @@
    ))
 
 #+(or)
-;; Try options parsing:
-(clingon:parse-command-line (top-level/command) (list "-s" "myscript" "9999"))
+(progn
+  ;; Try options parsing:
+  (clingon:parse-command-line (top-level/command) (list "-s" "myscript" "9999"))
+  ;; More free args work:
+  (clingon:parse-command-line (top-level/command) (list "-s" "myscript" "9999" "80" "b"))
+  ;; But not other CLI options (that I'd like to pass to myscript):
+  (clingon:parse-command-line (top-level/command) (list "-s" "myscript" "-b"))
+  ;; To pass options to myscript, use "--":
+  (clingon:parse-command-line (top-level/command) (list "-s" "myscript" "--" "-b")))
 
 
 (defun top-level/handler (cmd)
@@ -136,30 +143,17 @@
 
   # eval some lisp code
 
-  Use --eval or -e. Example:
-
-  $ ciel -e \"(uiop:file-exists-p \"README.org\")\"
-  /home/vindarel/projets/ciel/README.org   <= the file name is returned, otherwise \"NIL\".
+  Use --eval or -e.
 
   # start the readline CIEL REPL
 
   If no argument is given or if the file given as argument doesn't exist, run the top-level CIEL
 
-  The script should begin with:
-
-    (in-package :ciel-user)
-
   We have two ways to run a CIEL script:
 
   1) by calling the ciel binary with a file as argument:
 
-    $ ciel myscript.lisp
-
-  2) by using a shebang.
-
-  #!/usr/bin/env ciel
-  (in-package :ciel-user)
-  (print \"hello CIEL!\")"
+  2) by using a shebang line."
 
   ;; XXX: it might be better to NOT use Clingon: we want to be able to pass remaining options
   ;; to the script.
@@ -208,7 +202,12 @@
           (script-name
            ;; ditch the "-s" option, must not be seen by the script.
            (pop uiop:*command-line-arguments*)
-           (let ((dir (uiop:getcwd)))
+           (let ((dir (uiop:getcwd))
+                 ;; Here args is a list of remaining CLI parameters, sans the script name.
+                 ;; We want to pass it along the script too, to be coherent with loading
+                 ;; a file directly.
+                 ;; Scripts will rely on the arguments order (see simpleHTTPserver.lisp).
+                 (ciel-user:*script-args* (push script-name args)))
              (uiop:with-current-directory (dir)
                (run-script script-name)))
            (return-from top-level/handler))
@@ -238,16 +237,22 @@
           ;; Originally, this is the goal of the scripting capabilities. The rest are details.
           ((and (first args)
                 (uiop:file-exists-p (first args)))
-           ;; Add a symbol in the feature list, so a script nows when it is being executed.
+           ;; Add a symbol in the feature list, so a script knows when it is being executed.
            (push :ciel ciel-user::*features*)
-           (if (has-shebang (first args))
-               ;; I was a bit cautious about this function.
-               ;; (mostly, small issues when testing at the REPL because of packages and local nicknames,
-               ;; should be fine though…)
-               (load-without-shebang (first args))
-               ;; So the one with no risk:
-               (load (first args)))
-           (return-from top-level/handler))
+
+           ;; (uiop:format! t "~&what are the free args? ~s" args)
+           ;; The remaining free args are passed along to our script's arguments.
+           ;; Here the file name is already a free arg, so args equals something like
+           ;; '("simpleHTTPserver.lisp" "4242") aka it has the file name.
+           (let ((ciel-user:*script-args* args))
+             (if (has-shebang (first args))
+                 ;; I was a bit cautious about this function.
+                 ;; (mostly, small issues when testing at the REPL because of packages and local nicknames,
+                 ;; should be fine though…)
+                 (load-without-shebang (first args))
+                 ;; So the one with no risk:
+                 (load (first args)))
+             (return-from top-level/handler)))
 
           ;; default: run CIEL's REPL.
           (t
@@ -278,19 +283,38 @@
               (let ((parent (clingon:command-parent cmd)))
                 (clingon:print-documentation :zsh-completions parent t)))))
 
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; ciel-user
-;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; (in-package :ciel-user)
-
 (defun main ()
   "Entry point for the binary. Parse options."
+  (uiop:format! t "main & recompiled++…")
   (let ((app (top-level/command)))
     (clingon:run app)))
+
+(defun starts-with-verbose-option (args)
+  (member (first args) (list "-v" "--verbose") :test #'equal))
+
+(defmethod clingon:parse-command-line :around ((command clingon:command) arguments)
+  "Calls parse-command-line, but treats all unknown options as free arguments.
+  Our goal is to pass unknown options to the script, without using a \"--\" to separate the CIEL options from the script's options.
+
+  This works, but it handles all unknown options, including those coming first (that should error out legitimely), and Clingon handles known options coming last, after the script, as valid for CIEL.
+  Ultimately, we would like this:
+
+  $ ciel -s script -x 42 -v
+
+  to give options -x, 42 AND -v to the script."
+  ;; (uiop:format! t "-- all cli args: ~s~&" (uiop:command-line-arguments))
+  (handler-bind ((clingon:unknown-option
+                   (lambda (c)
+                     ;; The command is not yet parsed. Did we get a --verbose though?
+                     (when (starts-with-verbose-option (uiop:command-line-arguments))
+                       (uiop:format! *error-output* "[ciel] cli parsing: passing ~a to script~&" (clingon:unknown-option-name c)))
+                     (clingon:treat-as-argument c))))
+    (call-next-method)))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; top-level for binary construction.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                         ;
-(format t "~&Registering built-in scripts in src/scripts/ …~&") ;
+(format t "~&Registering built-in scripts in src/scripts/ …~&")
 (register-builtin-scripts)

@@ -27,7 +27,7 @@ $ ciel -s simpleHTTPserver 9000
 
 > Note: script names are case insensitive.
 
-An example script:
+### Example script
 
 ```lisp
 #!/usr/bin/env ciel
@@ -42,7 +42,7 @@ An example script:
   (format! t "Hello ~a!~&" name))
 
 ;; Access CLI args:
-(hello (second uiop:*command-line-arguments*))
+(hello (second *script-args*))
 
 ;; We have access to the DICT notation for hash-tables:
 (print "testing dict:")
@@ -92,12 +92,16 @@ ciel-user>
 
 ## Command line arguments
 
-Access them with `uiop:*command-line-arguments`.
+Access them with `ciel-user:*script-args*`. It is a list of strings that
+contains your script name as first argument.
 
-This list of arguments can be modified by us (especially if you call
+This list of arguments is modified by us (especially if you call
 scripts with the `-s` option). You can always check the full original
 list with `(uiop:command-line-arguments)`.
 
+You can use CL built-ins to look what's into this list, such as `(member "-h" *script-args* :test #'equal)`.
+
+<!-- todo: show example. -->
 You can use a proper command-line options parser, which is shipped with CIEL: [Clingon](https://github.com/dnaeon/clingon). This top-notch library supports:
 
 - Short and long option names support
@@ -108,6 +112,20 @@ You can use a proper command-line options parser, which is shipped with CIEL: [C
 - Support for pre-hook and post-hook actions for commands, which allows invoking functions before and after the respective handler of the command is executed
 - Support for Bash and Zsh shell completions
 - and more.
+
+All *unknown* free arguments coming after your script name are passed along to the script in the `*script-args*` variable. This works:
+
+    $ ./simpleHTTPserver.lisp -b 4242
+
+However, in the following case the "-v" option would be intercepted by the ciel binary, because it is one of its known options:
+
+    $ ./simpleHTTPserver.lisp -v -b 4242
+
+To give "-v" to your script, use a double slash, as in:
+
+    $ ./simpleHTTPserver.lisp -- -v -b 4242
+
+Pull requests are accepted to make this better.
 
 
 ## Executable file and shebang line
