@@ -24,19 +24,20 @@ $ ciel -v simpleHTTPserver.lisp -b 4444
 
 then the list '(simpleHTTPserver.lisp -b 4444) is given in *script-args*.")
 
-(defparameter *cli/browse-p*
-  (when (member "-b" *script-args* :test #'equal)
-    (setf *my-cli-args* (remove "-b" *script-args* :test #'equal))
-    t)
-  "Option -b: open the localhost URL with our browser (using xdg-open).")
-
 ;; CLI args: the script name, an optional port number.
-(defparameter *port* (or (ignore-errors (parse-integer (second *my-cli-args*)))
-                         9000))
+(defparameter *port* 9000
+  "Default port. Change it with a free argument on the command-line.")
 
-(defparameter *acceptor* (make-instance 'hunchentoot:easy-acceptor
-                                        :document-root "./"
-                                        :port *port*))
+(defparameter *acceptor* nil
+  "Hunchentoot's server instance. Create it with `make-acceptor'.")
+
+(defun make-acceptor (&key (port *port*))
+  "Return the existing acceptor or create one."
+  ;; I prefer to put this in a function to develop interactively.
+  (or *acceptor*
+      (setf *acceptor* (make-instance 'hunchentoot:easy-acceptor
+                                      :document-root "./"
+                                      :port port))))
 
 ;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; "Templates" (with s-expressions and Spinneret)
@@ -104,7 +105,7 @@ then the list '(simpleHTTPserver.lisp -b 4444) is given in *script-args*.")
         hunchentoot:*dispatch-table*))
 
 ;; main function:
-(defun simplehttpserver ()
+(defun simplehttpserver (&key browse (port *port*))
   "Create a Hunchentoot dispatcher on our root directory,
   serve static assets,
   start Hunchentoot and keep it on the foreground."
@@ -113,16 +114,16 @@ then the list '(simpleHTTPserver.lisp -b 4444) is given in *script-args*.")
   (handler-case
       (progn
         ;; Start the webserver.
-        (hunchentoot:start *acceptor*)
-        (format! t "~&Serving files on port ~a…~&" *port*)
-        (format! t "~&~&~t ⤷ http://127.0.0.1:~a ~&~&" *port*)
+        (hunchentoot:start (make-acceptor :port port))
+        (format! t "~&Serving files on port ~a…~&" port)
+        (format! t "~&~&~t ⤷ http://127.0.0.1:~a ~&~&" port)
 
         #+unix
-        (when (member "-b" uiop:*command-line-arguments* :test #'equal)
+        (when browse
           (uiop:format! t "Open web browser…~&")
           (uiop:run-program (list
                              "xdg-open"
-                             (format nil "http://localhost:~a" *port*))))
+                             (format nil "http://localhost:~a" port))))
 
         ;; Wait in the foreground.
         (sleep most-positive-fixnum))
@@ -136,7 +137,77 @@ then the list '(simpleHTTPserver.lisp -b 4444) is given in *script-args*.")
       (format! t "An error occured. Quitting.")
       (hunchentoot:stop *acceptor*))))
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Parse CLI arguments with Clingon.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defparameter cli/options
+  (list
+   (clingon:make-option
+    :flag
+    :description "Show help"
+    :short-name #\h
+    :key :help)
+   (clingon:make-option
+    :flag
+    :description "Open browser"
+    :short-name #\b
+    :long-name "browse"
+    :key :browse))
+  "Our script's options.")
+
+(defun cli/handler (cmd)
+  "Look at our CLI args and eventually start the web server.
+
+  cmd: a Clingon command built with cli/command."
+  (let* ((help (clingon:getopt cmd :help))
+         (browse (clingon:getopt cmd :browse))
+         ;; freeargs always have the script name??
+         (freeargs (rest (clingon:command-arguments cmd)))
+         (port *port*))
+    (when help
+      ;; This funcall is to avoid a style warning: the cli/command function
+      ;; is not yet defined.
+      (clingon:print-usage (funcall 'cli/command) t)
+      (return-from cli/handler))
+    (when freeargs
+      (setf port (or (ignore-errors
+                      (parse-integer (first freeargs)))
+                     *port*)))
+    (simplehttpserver :browse browse :port port)
+    ))
+
+(defun cli/command ()
+  "Create a top-level Clingon command."
+  (clingon:make-command
+   :name "simpleHTTPserver.lisp"
+   :description "Serve the local directory with a simple web server."
+   :usage "[-h] [-b] [PORT]"
+   :version "0.1"
+   :license "todo"
+   :authors '("vindarel")
+   :options cli/options
+   :handler #'cli/handler))
+
+#|
+A note on using Clingon's free arguments in scripts.
+(we get them with (clingon:command-arguments))
+
+$ ciel -s simplehttpserver 4242
+only has 4242 as free argument, but
+
+$ ./simpleHTTPserver.lisp 4242
+under the hood equals to
+$ ciel simpleHTTPserver.lisp 4242
+and this has two free arguments: simplehttpserver.lisp and 4242.
+
+To fix this, to make it always coherent so we can run this script with
+-s <name> or with the shebang, CIEL sets *script-args* to always have
+the script name.
+
+|#
+
 ;; Call the main function only when running this as a script,
 ;; not when developing on the REPL.
 #+ciel
-(simplehttpserver)
+(clingon:run (cli/command) *script-args*)

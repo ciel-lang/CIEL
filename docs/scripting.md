@@ -90,21 +90,40 @@ Let's define an alias to run shell commands with '!'. This gives:
 ciel-user>
 ```
 
+### Run (interactive) shell commands
+
+Use [cmd](https://github.com/ruricolist/cmd):
+
+~~~lisp
+(cmd:cmd "shell command")
+~~~
+
+For interactive commands, do:
+
+~~~lisp
+(cmd:cmd "sudo htop" :<> :interactive)
+;; aka (uiop:run-program '("sudo" "htop") :output :interactive :input :interactive)
+~~~
+
+this works for `sudo`, `htop`, `vim`, `ncdu`… but not for bi-directional interactive
+commands such as `less` or `fzf`.
+
+
 ## Command line arguments
 
 Access them with `ciel-user:*script-args*`. It is a list of strings that
 contains your script name as first argument.
 
-This list of arguments is modified by us (especially if you call
-scripts with the `-s` option). You can always check the full original
-list with `(uiop:command-line-arguments)`.
+This list of arguments is modified by us, so that it only contains
+arguments for your script, and so that it is the same list wether you
+call the script with `-s` or with the shebang line. You can always
+check the full original list with `(uiop:command-line-arguments)`.
 
 You can use CL built-ins to look what's into this list, such as `(member "-h" *script-args* :test #'equal)`.
 
-<!-- todo: show example. -->
-You can use a proper command-line options parser, which is shipped with CIEL: [Clingon](https://github.com/dnaeon/clingon). This top-notch library supports:
+You can also use a proper command-line options parser, which is shipped with CIEL: [Clingon](https://github.com/dnaeon/clingon). This top-notch library supports:
 
-- Short and long option names support
+- Short and long option names
 - Automatic generation of help/usage information for commands and sub-commands
 - Support for various kinds of options like *string*, *integer*, *boolean*, *switches*, *enums*, *list*, *counter*, *filepath*, etc.
 - Out of the box support for `--version` and `--help` flags
@@ -113,7 +132,92 @@ You can use a proper command-line options parser, which is shipped with CIEL: [C
 - Support for Bash and Zsh shell completions
 - and more.
 
-All *unknown* free arguments coming after your script name are passed along to the script in the `*script-args*` variable. This works:
+See below for an example on how to use Clingon. For more, see its README and [the Cookbook: scripting page](https://lispcookbook.github.io/cl-cookbook/scripting.html#parsing-command-line-arguments).
+
+### Parse command-line arguments with Clingon
+
+Here's a quick example.
+
+~~~lisp
+(defparameter *cli/options*
+  (list
+   (clingon:make-option
+    :flag                     ;; <-- option kind: a flag. Doesn't expect a parameter.
+    :description "show help"
+    :short-name #\h
+    ;; :long-name "help"      ;; <-- already handled by Clingon for CIEL.
+    :key :help))
+  "Our script's options.")
+~~~
+
+Our option kinds include: `:counter`, `:string`, `:integer`, `:boolean`… and more.
+
+Write a handler, that reads the arguments and does something with them:
+
+~~~lisp
+(defun cli/handler (cmd)
+  "Look at our CLI args and eventually start the web server."
+  (let* ((help (clingon:getopt cmd :help))  ;; <-- getopt, using the :key
+         (freeargs (rest (clingon:command-arguments cmd))))  ;; discard the script name.
+    (when help
+      ;; This funcall is to avoid a style warning: the cli/command function
+      ;; is not yet defined.
+      (clingon:print-usage (funcall 'cli/command) t)
+      (return-from cli/handler))
+    (when freeargs
+      (log:info "you provided free arguments: " freeargs))
+    ;; Run some main function:
+    (main)))
+~~~
+
+We have to create a top-level command:
+
+~~~lisp
+(defun cli/command ()
+  "A command example"
+  (clingon:make-command
+   :name "command-example"
+   :description "only has a -h option, and it accepts free arguments."
+   :version "0.1.0"
+   :authors '("John Doe <john.doe@example.org")
+   :license "AGPLv3"
+   :options *cli/options* ;; <-- our options
+   :handler #'cli/handler))      ;; <-- our handler.
+~~~
+
+Now, run everything:
+
+~~~lisp
+#+ciel
+(clingon:run (cli/command) *script-args*)
+~~~
+
+An example usage:
+
+```
+$ ./myscript -h
+NAME:
+  example command - only has a -h option, and it accepts free arguments.
+
+USAGE:
+  command-example [options] [arguments ...]
+
+OPTIONS:
+      --help          display usage information and exit
+      --version       display version and exit
+  -h                  show help
+
+AUTHORS:
+  John Doe <john.doe@example.org
+
+LICENSE:
+  AGPL
+```
+
+
+### Options in both CIEL and your script
+
+All free arguments *unknown to the CIEL command* coming after your script name are passed along to the script in the `*script-args*` variable. This works:
 
     $ ./simpleHTTPserver.lisp -b 4242
 

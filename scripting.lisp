@@ -203,10 +203,14 @@
            ;; ditch the "-s" option, must not be seen by the script.
            (pop uiop:*command-line-arguments*)
            (let ((dir (uiop:getcwd))
-                 ;; Here args is a list of remaining CLI parameters, sans the script name.
-                 ;; We want to pass it along the script too, to be coherent with loading
-                 ;; a file directly.
-                 ;; Scripts will rely on the arguments order (see simpleHTTPserver.lisp).
+                 ;; Here args, the free args, is a list of remaining CLI parameters, sans the script name.
+                 ;; We want to pass it along to the script too, to be coherent with loading
+                 ;; a file directly. Indeed, calling
+                 ;; $ ./simpleHTTPserver.lisp 4242
+                 ;; is equal to "ciel simpleHTTPserver.lisp 4242" under the hood,
+                 ;; which is 2 free args, with the script name.
+                 ;; It's important because scripts could rely on the arguments order
+                 ;; and we want to be able to parse this script's args with Clingon, in both cases.
                  (ciel-user:*script-args* (push script-name args)))
              (uiop:with-current-directory (dir)
                (run-script script-name)))
@@ -240,7 +244,6 @@
            ;; Add a symbol in the feature list, so a script knows when it is being executed.
            (push :ciel ciel-user::*features*)
 
-           ;; (uiop:format! t "~&what are the free args? ~s" args)
            ;; The remaining free args are passed along to our script's arguments.
            ;; Here the file name is already a free arg, so args equals something like
            ;; '("simpleHTTPserver.lisp" "4242") aka it has the file name.
