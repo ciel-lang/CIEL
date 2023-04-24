@@ -87,6 +87,15 @@ Debian system):
 
     libmagic-dev libc6-dev gcc  # from magicffi
 
+On Linux:
+
+    inotify-tools
+
+On MacOS:
+
+    fsevent
+
+
 ## With Quicklisp
 
 You need a Lisp implementation and Quicklisp installed.

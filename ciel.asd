@@ -44,6 +44,7 @@
                :cl-json-pointer/synonyms
                :dissect
                :fset
+               :file-notify  ;; needs inotify (linux) or fsevent (macos)
                :generic-cl
 
                ;; web

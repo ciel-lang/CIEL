@@ -356,7 +356,7 @@ $ ciel -e "(-> (http:get \"https://fakestoreapi.com/products/1\") (json:read-jso
 
 Call built-in scripts with `--script <scriptname>` or `-s`.
 
-Call `ciel --scripts` to list the available scripts.
+Call `ciel --scripts` to list the available ones.
 
 Those are for demo purposes and are subject to evolve. Ideas and contributions welcome.
 
@@ -467,3 +467,75 @@ We welcome more capable, expanded scripts!
 ---
 
 Now, let us iron out the details ;)
+
+### Simple web app with routes
+
+See [`scr/scripts/webapp.lisp`](https://github.com/ciel-lang/CIEL/blob/master/src/scripts/webapp.lisp) for inspiration.
+
+This creates one route on `/` with an optional `name` parameter. Go to `localhost:4567/?name=you` and see.
+
+```lisp
+#!/usr/bin/env ciel
+;;;
+;;; Run with:
+;;; $ ./webapp.lisp
+;;;
+
+(in-package :ciel-user)
+
+(routes:defroute route-root "/" (&get name)
+  (format nil "Hello ~a!" (or name (os:getenv "USER") "lisper")))
+
+(defvar *server* nil)
+
+(defun start-webapp ()
+  (setf *server* (make-instance 'routes:easy-routes-acceptor :port 4567))
+  (hunchentoot:start *server*))
+
+(defun stop-webapp ()
+  (hunchentoot:stop *server*))
+
+#+ciel
+(progn
+  (start-webapp)
+  (format t "~&App started on localhost:4567…~&")
+  (sleep most-positive-fixnum))
+```
+
+At this point you'll certainly want to live-reload your changes.
+
+### Auto-reload
+
+In this snippet:
+[`webapp-notify.lisp`](https://github.com/ciel-lang/CIEL/blob/master/src/scripts/webapp-notify.lisp),
+we use the [file-notify](https://github.com/shinmera/file-notify)
+library (shipped in CIEL) to watch write changes to our lisp file, and load
+it again.
+
+This allows you to have a dumb "live reload" workflow with a simple editor and a terminal.
+
+> WARNING: This does NOT take advantage of Common Lisp's image-based-development features at all. Install yourself a Common Lisp IDE to enjoy the interactive debugger, compiling one function at a time, trying things out in the REPL, autocompletion, code navigation…
+
+> INFO: you need `inotify` on Linux and `fsevent` on MacOS.
+
+~~~lisp
+(defun simple-auto-reload ()
+  (notify:watch "webapp.lisp")
+    (notify:with-events (file change :timeout T)
+      ;; Print the available list of events:
+      ;; (print (list file change))
+      (when (equal change :close-write)
+        (format! t "~%~%Reloading ~a…~&" file)
+        (handler-case
+            (ciel::load-without-shebang "webapp.lisp")
+          (reader-error ()
+            ;; Catch some READ errors, such as parenthesis not closed, etc. 
+            (format! t "~%~%read error, waiting for change…~&"))))))
+
+#+ciel
+(unless *server*
+  (start-webapp)
+  (format t "~&App started on localhost:4567…~&")
+  (simple-auto-reload)
+  (sleep most-positive-fixnum))
+~~~

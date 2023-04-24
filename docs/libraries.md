@@ -735,6 +735,23 @@ But typing `os:` and TAB in SLIME doesn't help very much with
 auto-discovery, so we also added a `/os` local nickname, so that we
 see the available symbols earlier in the autocompletion list.
 
+We include [file-notify](https://github.com/shinmera/file-notify) to watch changes to files (using `inotify` on Linux and `fsevent` on MacOS). It is available with the `notify:` local nickname.
+
+~~~lisp
+  (notify:watch "webapp.lisp")
+    (notify:with-events (file change :timeout T)
+      ;; Print the available list of events:
+      ;; (print (list file change))
+      (when (equal change :close-write)
+        (format! t "~%~%Reloading ~a…~&" file)
+        (handler-case
+            (ciel::load-without-shebang "webapp.lisp")
+          (reader-error ()
+            ;; Catch some READ errors, such as parenthesis not closed, etc.
+            (format! t "~%~%read error, waiting for change…~&"))))))
+~~~
+
+
 
 ## Regular expressions
 
@@ -945,12 +962,23 @@ Learn more with:
 
 We include
 [Quicksearch](https://github.com/lisp-maintainers/quicksearch), a
-simple search utility for Common Lisp libraries:
+simple search utility for Common Lisp libraries that searches on
+GitHub, Quickdocs and Cliki.
+
+You can call it with CIEL's binary:
+
+    $ ciel -s quicksearch ciel
+
+or by calling its wrapper script directly:
+
+    $ quicksearch.lisp ciel  # according you have it in your PATH
+
+or from the Lisp REPL:
 
     (qs:? "ciel" :u)
 
-this will search on GitHub, Quickdocs and Cliki for "ciel", and it
-will print the URL of search results.
+this will search for the "ciel" keyword and it will print the URL of
+search results (`:u`).
 
 ```
 SEARCH-RESULTS: "ciel"

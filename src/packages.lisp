@@ -15,6 +15,7 @@
                     (:os :uiop/os)
                     ;; This other uiop module is always useful:
                     (:filesystem :uiop/filesystem)
+                    (:notify :org.shirakumo.file-notify)
 
                     (:alex :alexandria)
                     (:csv :cl-csv)
