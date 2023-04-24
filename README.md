@@ -100,7 +100,13 @@ On MacOS:
 
 You need a Lisp implementation and Quicklisp installed.
 
-CIEL is not yet on Quicklisp, but it is on [Ultralisp](https://ultralisp.org).
+You need the system dependencies above.
+
+You need a CL implementation with a recent enough version of ASDF to support package-local nicknames. As of March, 2023, this is not the case with SBCL 2.2.9. Here's a one-liner to update ASDF:
+
+    $ ( cd ~/common-lisp/ && wget https://asdf.common-lisp.dev/archives/asdf-3.3.5.tar.gz  && tar -xvf asdf-3.3.5.tar.gz && mv asdf-3.3.5 asdf )
+
+CIEL is not on Quicklisp yet, but it is on [Ultralisp](https://ultralisp.org).
 
 So, either clone this repository:
 
@@ -123,6 +129,17 @@ and enter the `ciel-user` package:
 ```lisp
 (in-package :ciel-user)
 ```
+
+To build CIEL's binary and core image, use
+
+    $ make build
+
+This creates the `bin/` directory with the `ciel` binary.
+
+    $ make image
+
+This creates the `ciel-core` Lisp image.
+
 
 ## With a core image
 
