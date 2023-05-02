@@ -288,7 +288,6 @@
 
 (defun main ()
   "Entry point for the binary. Parse options."
-  (uiop:format! t "main & recompiled++…")
   (let ((app (top-level/command)))
     (clingon:run app)))
 
