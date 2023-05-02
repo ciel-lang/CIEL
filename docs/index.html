@@ -11,7 +11,43 @@
 </head>
 
 <body>
-  <div id="app"></div>
+  <div id="app">
+
+    <!-- You need JavaScript. -->
+
+    <div class="cover-main">
+      <h1 id="ciel-00-dev">
+        <a href="#/?id=ciel-00-dev" data-id="ciel-00-dev" class="anchor">
+          <span>CIEL <small>0.0-dev</small>
+          </span>
+        </a>
+      </h1>
+      <blockquote>
+
+        <p>CIEL Is an Extended Lisp</p></blockquote>
+      <ul>
+        <li>100% Common Lisp</li><li>batteries included</li>
+      </ul>
+      <p>
+        <a href="https://github.com/ciel-lang/CIEL" target="_blank" rel="noopener">GitHub</a>
+        <a href="#/?id=ciel">Show me</a></p> <!-- background color -->
+    </div>
+
+   <pre v-pre="" data-lang="lisp"><code class="lang-lisp">#!/usr/bin/env ciel
+
+<span class="token punctuation">(</span><span class="token car">print</span>
+  <span class="token punctuation">(</span><span class="token car">json</span><span class="token lisp-property property">:read-json</span>
+    <span class="token punctuation">(</span><span class="token car">http</span><span class="token lisp-property property">:get</span> <span class="token string">"https://fakestoreapi.com/products?limit=5"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+
+   <p>
+     <pre v-pre="" data-lang="markup"><code class="lang-markup">$ ./myscript.lisp</code></pre>
+   </p>
+
+   <p>
+     <div>You need JavaScript to see the rest of the doc :( Just look at the GitHub repository. Cheers, EWW user maybe?</div>
+   </p>
+
+  </div>
   <script>
     window.$docsify = {
       name: 'CIEL',
