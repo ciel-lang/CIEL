@@ -138,6 +138,8 @@ See below for an example on how to use Clingon. For more, see its README and [th
 
 Here's a quick example.
 
+First, we define our options:
+
 ~~~lisp
 (defparameter *cli/options*
   (list
@@ -152,29 +154,10 @@ Here's a quick example.
 
 Our option kinds include: `:counter`, `:string`, `:integer`, `:boolean`… and more.
 
-Write a handler, that reads the arguments and does something with them:
+Then, we define a top-level command:
 
 ~~~lisp
-(defun cli/handler (cmd)
-  "Look at our CLI args and eventually start the web server."
-  (let* ((help (clingon:getopt cmd :help))  ;; <-- getopt, using the :key
-         (freeargs (rest (clingon:command-arguments cmd))))  ;; discard the script name.
-    (when help
-      ;; This funcall is to avoid a style warning: the cli/command function
-      ;; is not yet defined.
-      (clingon:print-usage (funcall 'cli/command) t)
-      (return-from cli/handler))
-    (when freeargs
-      (log:info "you provided free arguments: " freeargs))
-    ;; Run some main function:
-    (main)))
-~~~
-
-We have to create a top-level command:
-
-~~~lisp
-(defun cli/command ()
-  "A command example"
+(defparameter *cli/command*
   (clingon:make-command
    :name "command-example"
    :description "only has a -h option, and it accepts free arguments."
@@ -182,14 +165,31 @@ We have to create a top-level command:
    :authors '("John Doe <john.doe@example.org")
    :license "AGPLv3"
    :options *cli/options* ;; <-- our options
-   :handler #'cli/handler))      ;; <-- our handler.
+   :handler 'cli/handler) ;; <-- our handler function
+  "Our main command definition.")
+~~~
+
+Finally, we write a handler function, that reads the arguments and does something with them:
+
+~~~lisp
+(defun cli/handler (cmd)
+  "Look at our CLI args and eventually start the web server."
+  (let* ((help (clingon:getopt cmd :help))  ;; <-- getopt, using the :key
+         (freeargs (rest (clingon:command-arguments cmd))))  ;; discard the script name.
+    (when help
+      (clingon:print-usage *cli/command* t)
+      (return-from cli/handler))
+    (when freeargs
+      (log:info "you provided free arguments: " freeargs))
+    ;; Run some main function:
+    (main)))
 ~~~
 
 Now, run everything:
 
 ~~~lisp
 #+ciel
-(clingon:run (cli/command) *script-args*)
+(clingon:run *cli/command* *script-args*)
 ~~~
 
 An example usage:
