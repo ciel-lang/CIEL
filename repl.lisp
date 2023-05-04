@@ -8,7 +8,7 @@
   (:use :common-lisp :trivial-package-local-nicknames)
   (:import-from :magic-ed
                 :magic-ed)
-  (:export sbcli help what *repl-version* *repl-name* *prompt* *prompt2* *result-indicator* *config-file*
+  (:export sbcli help what *repl-version* *repl-name* *prompt* *prompt2* *result-indicator* *init-file*
            *hist-file* *special*
            *syntax-highlighting* *pygmentize* *pygmentize-options*))
 
@@ -48,7 +48,7 @@
 (defvar *prompt*       (format nil "~a" (cl-ansi-text:green "ciel-user> ")))
 (defvar *prompt2*       "....> ")
 (defvar *result-indicator*          "=> ")
-(defvar *config-file*  "~/.cielrc")
+(defvar *init-file*  "~/.cielrc")
 (defvar *hist-file*    "~/.ciel_history")
 (defvar *hist*         (list))
 (defvar *syntax-highlighting* nil)
@@ -86,6 +86,11 @@
                        :if-exists :append
                        :if-does-not-exist :create)
     (write-line str out)))
+
+(defun load-init-file (&optional (init-file *init-file*))
+  "Load the ~/.cielrc init file.
+  Defaults to `*init-file*'."
+  (load init-file))
 
 (defun end ()
   "Ends the session."
@@ -524,12 +529,13 @@ strings to match candidates against (for example in the form \"package:sym\")."
     (rl:redisplay)
     ))
 
-(defun repl (&key noinform)
+(defun repl (&key noinform no-usernit)
   "Toplevel REPL.
 
   CLI options:
   - -h, --help
   - --noinform: don't print the welcome banner.
+  - --no-userinit: don't load the user's cielrc init file.
   "
 
   (let ((argv (uiop:command-line-arguments)))
@@ -556,10 +562,8 @@ strings to match candidates against (for example in the form \"package:sym\")."
   (rl:bind-keyseq "\\C-x\\C-e" #'edit-current-input)
   (rl:set-paren-blink-timeout 500)
 
-  (if (probe-file *config-file*)
-      (load *config-file*))
-
   ;; Print a banner and system info.
+  ;; Checking a CLI arg this way is an old, done before our use of Clingon.
   (unless (or noinform
               (member "--noinform" (uiop:command-line-arguments) :test #'string-equal))
     (princ *banner*)
@@ -569,6 +573,12 @@ strings to match candidates against (for example in the form \"package:sym\")."
     (help)
     (write-char #\linefeed)
     (finish-output nil))
+
+  ;; Load CIEL's user init file.
+  (unless (or no-usernit
+              (member "--no-userinit" (uiop:command-line-arguments) :test #'string-equal))
+    (when (uiop:file-exists-p *init-file*)
+      (load-init-file)))
 
   (when *hist-file* (read-hist-file))
 

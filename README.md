@@ -210,6 +210,8 @@ This REPL is more user friendly than the default SBCL one:
 %q => Ends the session.
 ```
 
+The CIEL terminal REPL loads the `~/.cielrc` init file at start-up if present. Don't load with `--no-userinit`.
+
 See more in [*the documentation*](https://ciel-lang.github.io/CIEL/#/).
 
 # Usage

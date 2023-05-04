@@ -13,4 +13,9 @@
 
 (in-package :ciel-user)
 
+;; XXX: we would like to read our ~/.cielrc init file when resuming the core
+;; in Slime.
+;; Currently we load it only when starting the terminal REPL.
+;; See the :toplevel option.
+
 (sb-ext:save-lisp-and-die "ciel-core")

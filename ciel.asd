@@ -136,6 +136,7 @@
                         ((:file "packages")
                          (:file "json-pointer-minus")
                          (:file "ciel")))
+               (:file "utils")
                (:module "src/more-docstrings"
                         :components
                         ((:file "docstrings"))))
@@ -152,6 +153,7 @@
                :lisp-critic  ;; it would be nice to integrate it with Slime.
                :magic-ed)
   :components ((:file "repl")
+               (:file "utils")
                (:file "scripting")
                (:file "shell-utils")
                (:file "repl-utils")

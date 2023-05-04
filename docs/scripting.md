@@ -539,3 +539,27 @@ This allows you to have a dumb "live reload" workflow with a simple editor and a
   (simple-auto-reload)
   (sleep most-positive-fixnum))
 ~~~
+
+## Misc
+
+### Load your scripts in the REPL
+
+Calling your scripts from the shell is pretty cool, what if you could
+*also* have them available at your fingertips in a Lisp REPL?
+
+TLDR;
+
+```lisp
+;; in ~/.cielrc
+(ciel::load-without-shebang "~/path/to/yourscript.lisp")
+```
+
+As the name suggests, this `load` function works even if your file starts with a shebang line (which is not valid Lisp code, so the default `LOAD` function would fail).
+
+Y'know, sometimes you live longer in a Lisp REPL than in a shell
+without noticing. Or simply, manipulating real objects in a text
+buffer can be more practical than copy-pasting text in a rigid
+terminal (even though Emacs'
+[vterm](https://github.com/akermu/emacs-libvterm) is an excellent improvement too).
+
+> INFO: the `~/.cielrc` file is loaded at start-up of the terminal REPL (called with `ciel`), not yet when you start the core image in your IDE.

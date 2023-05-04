@@ -1,5 +1,7 @@
 LISP ?= sbcl
 
+all: build
+
 # Install some Quicklisp dependencies.
 ql-deps:
 	# 2023-03: we want str:ensure-suffix, not yet in Quicklisp.
