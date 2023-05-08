@@ -563,3 +563,40 @@ terminal (even though Emacs'
 [vterm](https://github.com/akermu/emacs-libvterm) is an excellent improvement too).
 
 > INFO: the `~/.cielrc` file is loaded at start-up of the terminal REPL (called with `ciel`), not yet when you start the core image in your IDE.
+
+### Searching files
+
+We use the File Object Finder library
+([`fof`](https://gitlab.com/ambrevar/fof), a new library meant to
+supersede `find`, `ls`, `stat`, `chown`, `chmod`, `du`, `touch` and
+the Osicat library) to search for files recursively:
+
+~~~lisp
+(defun find-on-directory (root params)
+  (fof:finder*
+   :root root
+   :predicates (apply #'fof/p:path~ (ensure-list params))))
+
+(find-on-directory "~/Music/" "mp3")
+~~~
+
+and this returns a list of `fof:file` objects. Get their real name as
+a string with `fof:path`.
+
+Of course, you can also outsource the work to Unix commands, with
+`cmd:cmd` (prints to standard output) or `cmd:$cmd` (returns a
+string):
+
+~~~lisp
+(-> (cmd:$cmd "find . -iname \"*mp3\"")
+    str:lines)
+
+;; With find alternative fd:
+;; https://github.com/sharkdp/fd
+;; apt install fd-find
+(-> (cmd:$cmd "fdfind mp3")
+    str:lines)
+
+;; Play music:
+(cmd:cmd "fdfind mp3 -X mpv")
+~~~
