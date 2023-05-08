@@ -27,6 +27,7 @@ build:
 		--eval '(ql:quickload :deploy)' \
 		--eval '(ql:quickload "cl+ssl")' \
 		--load ciel.asd \
+		--load build-config.lisp \
 		--eval '(ql:quickload :swank)' \
 	     --eval '(push :deploy-console *features*)' \
 	     --eval '(ql:quickload :ciel)' \

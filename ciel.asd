@@ -4,14 +4,6 @@
 
 (require "asdf")  ;; for CI
 
-;; We need to load cl+ssl before we can load and compile this .asd file.
-;; We need it to build the binary with asdf:make, using Deploy
-;; (see its use below).
-(unless (find-package :cl+ssl)
-  (warn "Loading ciel.asd: we don't find the package CL+SSL. You need to install it before loading this .asd file. Let's install it with Quicklisp now.~&")
-  (ql:quickload "cl+ssl"))
-(require "cl+ssl")
-
 (asdf:defsystem "ciel"
   :description "CIEL Is an Extended Lisp (Common Lisp, batteries included)."
   :version "0.1"
@@ -174,19 +166,6 @@
   :build-pathname "ciel"
   :entry-point "ciel::main")
 
-;; Don't ship libssl, rely on the target OS'.
-#+linux (deploy:define-library cl+ssl::libssl :dont-deploy T)
-#+linux (deploy:define-library cl+ssl::libcrypto :dont-deploy T)
-
-;; Use compression: from 114M, 0.02s startup time to 27M and 0.42s (SBCL 2.0.10).
-#+sb-core-compression
-(defmethod asdf:perform ((o asdf:image-op) (c asdf:system))
-  (uiop:dump-image (asdf:output-file o c) :executable t :compression t))
-
-;; Even with the binary, ASDF wants to update itself and crashes
-;; if it doesn't find an ASDF directory, like on a user's system.
-;; Thanks again to Shinmera.
-(deploy:define-hook (:deploy asdf) (directory)
-  (declare (ignorable directory))
-  #+asdf (asdf:clear-source-registry)
-  #+asdf (defun asdf:upgrade-asdf () nil))
+;;; This defines ciel.asd. It is enough to quickload CIEL.
+;;; But to build a binary,
+;;; see build-config.lisp for extra config.
