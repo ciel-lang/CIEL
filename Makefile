@@ -5,7 +5,11 @@ all: build
 # Install some Quicklisp dependencies.
 ql-deps:
 	# 2023-03: we want str:ensure-suffix, not yet in Quicklisp.
-	git clone https://github.com/vindarel/cl-str/ ~/quicklisp/local-projectsi
+	git clone https://github.com/vindarel/cl-str/ ~/quicklisp/local-projects/cl-str
+	# 2023-05: log4cl doesn't compile on SBCL v2.3.4
+	# See issue https://github.com/ciel-lang/CIEL/issues/24
+	# This has been fixed upstream, not yet in Quicklisp
+	git clone https://github.com/sharplispers/log4cl ~/quicklisp/local-projects/log4cl
 
 # Install some sytem dependencies.
 debian-deps:
