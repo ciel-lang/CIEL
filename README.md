@@ -112,7 +112,11 @@ So, either clone this repository:
 
     git clone https://github.com/ciel-lang/CIEL ~/quicklisp/local-projects/CIEL
 
-either install the Ultralisp distribution and pull the library from
+And install dependencies missing or outdated from Quicklisp:
+
+    $ ( cd ~/quicklisp/local-projects/CIEL && make ql-deps )
+
+Or install the Ultralisp distribution and pull the library from
 there:
 
     (ql-dist:install-dist "http://dist.ultralisp.org/" :prompt nil)
