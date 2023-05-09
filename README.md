@@ -83,9 +83,15 @@ See *the documentation*.
 # Install
 
 You will probably need the following system dependencies (names for a
-Debian system):
+Debian Bullseye system):
 
     libmagic-dev libc6-dev gcc  # from magicffi
+    zlib1g-dev # from deploy for SBCL < 2.2.6
+
+If your SBCL version is >= 2.2.6 you might want to use the more
+performant `libzstd-dev` library instead of `zlib1g-dev`.
+
+    libzstd-dev # from deploy for SBCL >= 2.2.6
 
 On Linux:
 
