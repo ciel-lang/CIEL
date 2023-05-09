@@ -178,6 +178,9 @@ REPL. You need to build the core image yourself though.
   <https://gitlab.com/vindarel/ciel/-/pipelines>, download the latest
   artifacts, unzip the `ciel-v0.zip` archive and run `ciel-v0/ciel`.
 
+It is currently built on Debian Buster (released in 2019) and it
+should be compatible with newer Debian-ish systems.
+
 TODO: build it for different platforms.
 
 To build it, clone this repository and run `make build`.
