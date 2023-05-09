@@ -15,7 +15,10 @@
 (defun find-on-directory (root params)
   (fof:finder*
    :root root
-   :predicates (apply #'fof/p:every-path~ params)))
+   ;; "and" the params: needs ongoing PR.
+   ;; :predicates (apply #'fof/p:every-path~ params)))
+   ;; does a "or":
+   :predicates (apply #'fof/p:path~ params)))
 
 (defun find-files (&optional params)
   (unless params
