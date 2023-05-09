@@ -1,4 +1,11 @@
-image: clfoundation/sbcl
+# Build on Debian and SBCL.
+# We want to build CIEL in a sufficiently old Debian version:
+# the glibc will be compatible with lots of Debian and Ubuntu systems,
+# however building on the latest (Bullseye) would lead to incompatible glibc errors
+# when running on newer systems.
+# Buster: released in July, 2019.
+# Bullseye: released in August, 2021, supported until July, 2024.
+image: clfoundation/sbcl:2.1.5-buster
 
 # We need to install some system dependencies,
 # to clone libraries not in Quicklisp,
