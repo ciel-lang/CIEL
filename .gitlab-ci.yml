@@ -1,40 +1,40 @@
-# Build on Debian and SBCL.
-# We want to build CIEL in a sufficiently old Debian version:
-# the glibc will be compatible with lots of Debian and Ubuntu systems,
-# however building on the latest (Bullseye) would lead to incompatible glibc errors
-# when running on newer systems.
-# Buster: released in July, 2019.
-# Bullseye: released in August, 2021, supported until July, 2024.
-image: clfoundation/sbcl:2.1.5-buster
+build debian:
+  stage: build
 
-# We need to install some system dependencies,
-# to clone libraries not in Quicklisp,
-# and to update ASDF to >= 3.3.5 in order to use local-package-nicknames.
-before_script:
-  - apt-get update -qy
-  - apt-get install -y git-core tar
+  # Build on Debian and SBCL.
+  # We want to build CIEL in a sufficiently old Debian version:
+  # the glibc will be compatible with lots of Debian and Ubuntu systems,
+  # however building on the latest (Bullseye) would lead to incompatible glibc errors
+  # when running on newer systems.
+  # Buster: released in July, 2019.
+  # Bullseye: released in August, 2021, supported until July, 2024.
+  image: clfoundation/sbcl:2.1.5-buster 
 
-  # The image doesn't have Quicklisp installed by default.
-  - QUICKLISP_ADD_TO_INIT_FILE=true /usr/local/bin/install-quicklisp
+  # We need to install some system dependencies,
+  # to clone libraries not in Quicklisp,
+  # and to update ASDF to >= 3.3.5 in order to use local-package-nicknames.
+  before_script:
+    - apt-get update -qy
+    - apt-get install -y git-core tar
 
-  # Upgrade ASDF (UIOP) to 3.3.5 because we want package-local-nicknames.
-  - mkdir -p ~/common-lisp/asdf/
-  - ( cd ~/common-lisp/ && wget https://asdf.common-lisp.dev/archives/asdf-3.3.5.tar.gz  && tar -xvf asdf-3.3.5.tar.gz && mv asdf-3.3.5 asdf )
-  - echo "Content of ~/common-lisp/asdf/:" && ls ~/common-lisp/asdf/
+    # The image doesn't have Quicklisp installed by default.
+    - QUICKLISP_ADD_TO_INIT_FILE=true /usr/local/bin/install-quicklisp
 
-  # Install system dependencies
-  - make debian-deps
-  # Clone upstream QL libraries.
-  - make ql-deps
+    # Upgrade ASDF (UIOP) to 3.3.5 because we want package-local-nicknames.
+    - mkdir -p ~/common-lisp/asdf/
+    - ( cd ~/common-lisp/ && wget https://asdf.common-lisp.dev/archives/asdf-3.3.5.tar.gz  && tar -xvf asdf-3.3.5.tar.gz && mv asdf-3.3.5 asdf )
+    - echo "Content of ~/common-lisp/asdf/:" && ls ~/common-lisp/asdf/
 
-build:
-  # stage: build
+    # Install system dependencies
+    - make debian-deps
+    # Clone upstream QL libraries.
+    - make ql-deps
   script:
     - make build
     # - make image
-    - mv bin ciel-v0
+    - mv bin ciel-v0-debian
 
   artifacts:
-    name: "ciel-v0"
+    name: "ciel-v0-debian"
     paths:
-      - ciel-v0/
+      - ciel-v0-debian/
