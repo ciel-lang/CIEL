@@ -174,14 +174,19 @@ images, you must build it yourself.
 You don't need anything, just download the CIEL executable and run its
 REPL. You need to build the core image yourself though.
 
-- we provide an experimental binary for Debian systems: go to
+- we provide an experimental binary for some systems: go to
   <https://gitlab.com/vindarel/ciel/-/pipelines>, download the latest
-  artifacts, unzip the `ciel-v0.zip` archive and run `ciel-v0/ciel`.
+  artifacts, unzip the `ciel-v0-{platform}.zip` archive and run `ciel-v0-{platform}/ciel`.
 
-It is currently built on Debian Buster (released in 2019) and it
-should be compatible with newer Debian-ish systems.
+CIEL is currently built for the following platforms:
 
-TODO: build it for different platforms.
+| Platform | System Version (release date) |
+|----------|-------------------------------|
+| debian   | Debian Buster (2019)          |
+| void     | Void Linux glibc (2023-05)    |
+
+
+TODO: build it for more platforms.
 
 To build it, clone this repository and run `make build`.
 
