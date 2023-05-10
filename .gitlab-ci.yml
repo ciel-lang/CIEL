@@ -38,3 +38,31 @@ build debian:
     name: "ciel-v0-debian"
     paths:
       - ciel-v0-debian/
+
+build void:
+  stage: build
+  # Use custom docker image since the official ones
+  # can't be used in gitlab CI pipelines
+  image: cinerion/ciel-sbcl-voidlinux
+
+  # We need to install some system dependencies,
+  # to clone libraries not in Quicklisp,
+  # and to update ASDF to >= 3.3.5 in order to use local-package-nicknames.
+  before_script:
+    - xbps-install -Syu
+
+    # Upgrade ASDF (UIOP) to 3.3.5 because we want package-local-nicknames.
+    - mkdir -p ~/common-lisp/asdf/
+    - ( cd ~/common-lisp/ && wget https://asdf.common-lisp.dev/archives/asdf-3.3.5.tar.gz  && tar -xvf asdf-3.3.5.tar.gz && mv asdf-3.3.5 asdf )
+    - echo "Content of ~/common-lisp/asdf/:" && ls ~/common-lisp/asdf/
+
+    # Clone upstream QL libraries.
+    - make ql-deps
+  script:
+    - make build
+    - mv bin ciel-v0-void
+
+  artifacts:
+    name: "ciel-v0-void"
+    paths:
+      - ciel-v0-void/
