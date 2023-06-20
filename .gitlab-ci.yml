@@ -51,6 +51,9 @@ build void:
   before_script:
     - xbps-install -Syu
 
+    # The image doesn't have Quicklisp installed by default.
+    - QUICKLISP_ADD_TO_INIT_FILE=true /usr/local/bin/install-quicklisp
+
     # Upgrade ASDF (UIOP) to 3.3.5 because we want package-local-nicknames.
     - mkdir -p ~/common-lisp/asdf/
     - ( cd ~/common-lisp/ && wget https://asdf.common-lisp.dev/archives/asdf-3.3.5.tar.gz  && tar -xvf asdf-3.3.5.tar.gz && mv asdf-3.3.5 asdf )
