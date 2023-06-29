@@ -48,7 +48,7 @@
                :spinneret   ;; lispy templates. Used in simpleHTTPserver.lisp
 
                ;; GUI
-               :ltk
+               :nodgui  ;; ltk fork with built-in themes and more widgets.
 
                ;; CLI
                :clingon  ;; args parsing
@@ -127,7 +127,8 @@
                         :components
                         ((:file "packages")
                          (:file "json-pointer-minus")
-                         (:file "ciel")))
+                         (:file "ciel")
+                         (:file "gui")))
                (:file "utils")
                (:module "src/more-docstrings"
                         :components

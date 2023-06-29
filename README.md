@@ -39,7 +39,7 @@ mundane tasks -by today standards. As such, we ship libraries to handle
 **JSON** or **CSV**, as well as others to ease string
 manipulation, to do pattern matching, to bring regular expressions, for
 threads and jobs scheduling, for **HTTP** and URI handling, to
-create simple GUIs with Ltk, and so on. You can of course do all this
+create simple GUIs with nodgui (Tk-based, nice theme), and so on. You can of course do all this
 without CIEL, but then you have to install the library manager first and
 load these libraries into your Lisp image every time you start it. Now,
 you have them at your fingertips whenever you start CIEL.

@@ -545,36 +545,42 @@ The object is a STANDARD-OBJECT of type FOF/FILE:FILE.
 >
 ~~~
 
-## GUI (ltk)
+## GUI (tk)
 
-We ship [ltk](http://www.peter-herth.de/ltk/ltkdoc/).
+We ship [nodgui](https://lispcookbook.github.io/cl-cookbook/gui.html#tk-ltk-and-nodgui).
 
-The Tk toolkit is nearly ubiquitous and simple to use. It doesn't have a great deal of widgets, but it helps anyways for utility GUIs. Moreover, it doesn't look aweful (as it did back), it has themes to look nearly native on the different platforms.
+The Tk toolkit is nearly ubiquitous and simple to use. It doesn't have a great deal of widgets, but it helps anyways for many kind of uses, from utility GUIs to industrial applications. Moreover, it doesn't look aweful (as it did decades ago), it has themes to look surprisingly good on the different platforms.
 
-Here's how it looks like on Mac:
+nodgui is a fork of Ltk, with a built-in theme and more widget.
+
+Here's how nodgui looks in CIEL, with the Yaru them loaded by default:
+
+!["nodgui simple window with the yaru theme"](https://lispcookbook.github.io/cl-cookbook/assets/gui/nodgui-feet2meters-yaru.png)
+
+Here's how it can look on Mac:
 
 ![](https://lispcookbook.github.io/cl-cookbook/assets/gui/ltk-on-macos.png)
 
-You have other GUI options a quickload away (Qt4, Gtk, IUP, not mentioning LispWorks CAPI…): <https://lispcookbook.github.io/cl-cookbook/gui.html>
+You have other GUI options a quickload away (Gtk, Qt4, IUP, not mentioning LispWorks CAPI…): <https://lispcookbook.github.io/cl-cookbook/gui.html>
 
-Here's how to start with Ltk:
+Here's how to start with nodgui:
 
--   either put yourself in the `ltk-user` package:
+-   either put yourself in the `nodgui-user` package:
 
 ```lisp
-(in-package :ltk-user)
+(in-package :nodgui-user)
 ```
 
--   either `use` ltk:
+-   either `use` nodgui:
 
 ```lisp
-(use-package :ltk)
+(use-package :nodgui)
 ```
 
-Use the `with-ltk` macro to define your GUI, use `make-instance` + a widget name to create it, and use the `grid` to position widgets.
+Use the `with-nodgui` macro to define your GUI, use `make-instance` + a widget name to create it, and use the `grid` to position widgets.
 
 ```lisp
-(with-ltk ()
+(with-nodgui ()
   (let ((button (make-instance 'button :text "hello")))
     (grid button 0 0)))
 ```

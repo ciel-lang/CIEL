@@ -24,7 +24,7 @@ Consequently, **we ship libraries** to
 handle JSON and CSV, as well as others to ease string manipulation,
 to have regular expressions out of the box, for threads and
 jobs scheduling, for HTTP and URI handling, to create simple GUIs with
-Ltk, and so on. You can of course do all this without CIEL, but
+nodgui (Tk-based, nice theme), and so on. You can of course do all this without CIEL, but
 then you'd have to install the library manager (Quicklisp) first and load these libraries
 into your Lisp image every time you start it. Now, you have them at
 your fingertips whenever you start CIEL. Some of the libraries we bring in are for extending the language

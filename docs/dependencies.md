@@ -39,7 +39,7 @@ See: http://www.ergy.com/FSet.html
 - log4cl: NIL
 - lparallel: Parallelism for Common Lisp
 - lquery: A library to allow jQuery-like HTML/DOM manipulation.
-- ltk: LTK
+- nodgui: Tck-Tk graphical user interfaces. nodgui is a fork of Ltk with a built-in theme and more widgets.
 - metabang-bind: Bind is a macro that generalizes multiple-value-bind, let, let*, destructuring-bind, structure and slot accessors, and a whole lot more.
 - modf: A SETF like macro for functional programming
 - moira: Monitor and restart background threads.
