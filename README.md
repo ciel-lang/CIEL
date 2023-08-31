@@ -392,7 +392,7 @@ See `src/ciel.lisp` and run `(generate-dependencies-page-reference)`.
 
 # Contributors
 
-Special big thanks to @cinerion and [@themarcelor](https://github.com/themarcelor).
+Special big thanks to @cinerion, [@themarcelor](https://github.com/themarcelor) and everyone who helped (@agam, @patrixl, @bo-tato…).
 
 
 # Lisp?!
