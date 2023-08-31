@@ -204,19 +204,19 @@ The executable is built in `/usr/local/bin/ciel` of the Docker image.
 
 Get a CIEL REPL:
 
-    docker run -it ciel /usr/local/bin/ciel
+    docker run --rm -it ciel /usr/local/bin/ciel
 
-Call a script on your filesystem:
+Run a script on your filesystem:
 
-    docker run -it ciel /usr/local/bin/ciel path/to/your/lisp/script.lisp
+    docker run --rm -it ciel /usr/local/bin/ciel path/to/your/lisp/script.lisp
 
-Call a built-in script:
+Run a built-in script:
 
-    docker run -it ciel /usr/local/bin/ciel -s simpleHTTPserver
+    docker run --rm -it ciel /usr/local/bin/ciel -s simpleHTTPserver
 
 So, save you some typing with a shell alias:
 
-    alias ciel="sudo docker run -it ciel /usr/local/bin/ciel"
+    alias ciel="sudo docker run --rm -it ciel /usr/local/bin/ciel"
 
 
 # Usage
