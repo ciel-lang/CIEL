@@ -32,6 +32,8 @@ It comes in 3 forms:
 
 Questions, doubts? See the [FAQ](docs/FAQ.md).
 
+NEW: we now have a Docker file.
+
 ## Rationale
 
 One of our goals is to make Common Lisp useful out of the box for
@@ -171,8 +173,8 @@ images, you must build it yourself.
 
 ## With a binary. Use CIEL's custom REPL.
 
-You don't need anything, just download the CIEL executable and run its
-REPL. You need to build the core image yourself though.
+You don't need anything, just download the CIEL executable and run it.
+You need to build the core image yourself though.
 
 - we provide an experimental binary for some systems: go to
   <https://gitlab.com/vindarel/ciel/-/pipelines>, download the latest
@@ -186,51 +188,36 @@ CIEL is currently built for the following platforms:
 | void     | Void Linux glibc (2023-05)    |
 
 
-TODO: build it for more platforms.
-
 To build it, clone this repository and run `make build`.
 
 Start it with `./ciel`.
 
-You are dropped into a custom Lisp REPL, freely based on
-[sbcli](https://github.com/hellerve/sbcli).
+## With Docker
 
-This REPL is more user friendly than the default SBCL one:
+We have a Dockerfile.
 
-- it has readline capabilities, meaning that the arrow keys work by
-  default (wouhou!) and there is a persistent history, like in any
-  shell.
-- it has **multiline input**.
-- it has **TAB completion**.
-- it handles errors gracefully: you are not dropped into the debugger
-  and its sub-REPL, you simply see the error message.
-- it has optional **syntax highlighting**.
-- it has an optional **lisp critic** that scans the code you enter at
-  the REPL for instances of bad practices.
-- it has a **shell pass-through**: try `!ls`.
+Build your CIEL image:
 
-- it has **documentation lookup** shorthands: use `:doc symbol` or `?`
-  after a symbol to get its documentation: `ciel-user> (dict ?`.
+    docker build -t ciel .
 
-- it has **developer friendly** macros: use `(printv code)` for an
-  annotated trace output.
+The executable is built in `/usr/local/bin/ciel` of the Docker image.
 
-- and it defines more helper commands:
+Get a CIEL REPL:
 
-```txt
-%help => Prints this general help message
-%doc => Prints the available documentation for this symbol
-%? => Inspect a symbol: %? str
-%w => Writes the current session to a file <filename>
-%d => Dumps the disassembly of a symbol <sym>
-%t => Prints the type of a expression <expr>
-%lisp-critic => Toggles the lisp-critic
-%q => Ends the session.
-```
+    docker run --rm -it ciel /usr/local/bin/ciel
 
-The CIEL terminal REPL loads the `~/.cielrc` init file at start-up if present. Don't load with `--no-userinit`.
+Run a script on your filesystem:
 
-See more in [*the documentation*](https://ciel-lang.github.io/CIEL/#/).
+    docker run --rm -it ciel /usr/local/bin/ciel path/to/your/lisp/script.lisp
+
+Run a built-in script:
+
+    docker run --rm -it ciel /usr/local/bin/ciel -s simpleHTTPserver
+
+So, save you some typing with a shell alias:
+
+    alias ciel="sudo docker run --rm -it ciel /usr/local/bin/ciel"
+
 
 # Usage
 
@@ -254,33 +241,38 @@ See available built-in scripts with `--scripts`.
 
 See [the scripts documentation](https://ciel-lang.github.io/CIEL/#/scripting).
 
-## Shell REPL
+## Terminal REPL
+
+CIEL ships a terminal REPL for the terminal which is more user friendly than the default SBCL one:
+
+- it has readline capabilities, meaning that the arrow keys work by
+  default (woohoo!) and there is a persistent history, like in any
+  shell.
+- it has **multiline input**.
+- it has **TAB completion**.
+- it handles errors gracefully: you are not dropped into the debugger
+  and its sub-REPL, you simply see the error message.
+- it has optional **syntax highlighting**.
+- it has an optional **lisp critic** that scans the code you enter at
+  the REPL for instances of bad practices.
+- it has a **shell pass-through**: try `!ls`.
+- it has **documentation lookup** shorthands: use `:doc symbol` or `?`
+  after a symbol to get its documentation: `ciel-user> (dict ?`.
+- it has **developer friendly** macros: use `(printv code)` for an
+  annotated trace output.
+- it integrates the **lisp critic**.
+- and it defines some more helper commands.
+
+The CIEL terminal REPL loads the `~/.cielrc` init file at start-up if present. Don't load it with `--no-userinit`.
+
+See more in [*the documentation*](https://ciel-lang.github.io/CIEL/#/).
+
 
 Run `ciel` with no arguments:
 
 ```bash
 $ ciel
 
-       _..._
-    .-'_..._''.                         .---.
-  .' .'      '..--.      __.....__     |   |
- / .'           |__|  .-''         '.   |   |
-. '             .--. /     .-''''-.  `. |   |
-| |             |  |/     /________   |   |
-| |             |  ||                  ||   |
-. '             |  |    .-------------'|   |
-  '.          .|  |     '-.____...---.|   |
-  '. `._____.-'/|__|  `.             .' |   |
-    `-.______ /         `''-...... -'   '---'
-             `
-
-
---------------------------------------------------------------------------------
-OS: Linux 5.4.0-124-generic
-Lisp: SBCL 2.0.1.debian
-ASDF: 3.3.4.15
-Quicklisp: (#<DIST quicklisp 2022-07-08>)
---------------------------------------------------------------------------------
 CIEL's REPL version 0.1.5
 Read more on packages with readme or summary. For example: (summary :str)
 Special commands:
@@ -296,8 +288,10 @@ Special commands:
 Press CTRL-D or type :q to exit
 
 ciel-user>
-
 ```
+
+It is freely based on [sbcli](https://github.com/hellerve/sbcli).
+
 
 ## Lisp library
 
@@ -395,6 +389,11 @@ and now:
 # Misc: how to generate the documentation
 
 See `src/ciel.lisp` and run `(generate-dependencies-page-reference)`.
+
+# Contributors
+
+Special big thanks to @cinerion, [@themarcelor](https://github.com/themarcelor) and everyone who helped (@agam, @patrixl, @bo-tato…).
+
 
 # Lisp?!
 
