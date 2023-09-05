@@ -11,7 +11,7 @@ ql-deps:
 	# This has been fixed upstream, not yet in Quicklisp
 	git clone https://github.com/sharplispers/log4cl ~/quicklisp/local-projects/log4cl
 
-# Install some sytem dependencies.
+# Install some system dependencies.
 debian-deps:
 	apt-get install -y libmagic-dev	libinotifytools0
 
