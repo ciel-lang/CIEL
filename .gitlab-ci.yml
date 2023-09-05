@@ -49,6 +49,7 @@ build void:
   # to clone libraries not in Quicklisp,
   # and to update ASDF to >= 3.3.5 in order to use local-package-nicknames.
   before_script:
+    - xbps-install -uy xbps
     - xbps-install -Syu
 
     # The image doesn't have Quicklisp installed by default.
