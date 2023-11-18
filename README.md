@@ -223,7 +223,8 @@ So, save you some typing with a shell alias:
 
 ## Scripting
 
-NOTE: this is brand new! Expect limitations and changes.
+> [!NOTE]
+> this is brand new! Expect limitations and changes.
 
 Get the `ciel` binary and call it with your .lisp script:
 

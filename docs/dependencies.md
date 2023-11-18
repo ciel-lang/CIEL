@@ -26,7 +26,8 @@ variables and and function return values.
 - easy-routes: Yet another routes handling utility on top of Hunchentoot
 - fiveam: A simple regression testing framework
 - fn: Some macros for lambda brevity
-- fof: File-object finder. Enable rapid file search, inspection and manipulation.
+<!-- currently removed: -->
+<!-- - fof: File-object finder. Enable rapid file search, inspection and manipulation. -->
 - for: An extensible iteration macro library.
 - fset: A functional set-theoretic collections library.
 See: http://www.ergy.com/FSet.html
@@ -42,7 +43,8 @@ See: http://www.ergy.com/FSet.html
 - nodgui: Tck-Tk graphical user interfaces. nodgui is a fork of Ltk with a built-in theme and more widgets.
 - metabang-bind: Bind is a macro that generalizes multiple-value-bind, let, let*, destructuring-bind, structure and slot accessors, and a whole lot more.
 - modf: A SETF like macro for functional programming
-- moira: Monitor and restart background threads.
+<!-- currently removed: -->
+<!-- - moira: Monitor and restart background threads. -->
 - named-readtables: Library that creates a namespace for readtables akin
   to the namespace of packages.
 - parse-float: Parse floating point values in strings.

@@ -20,12 +20,22 @@
                :access
                :alexandria
                :arrow-macros
-               :fof  ;; file-object-finder
+
+               ;; Those are two dependencies that we like,
+               ;; but that depend on osicat, hence complicate deployment of binaries.
+               ;; check with (ql:who-depends-on "osicat")
+               ;; Maybe create a sub-system with them.
+               ;;
+               ;; :fof  ;; concise file-object finder.
+               ;; :moira  ;; monitor and restart background threads.
+               ;;
+               ;; see
+               ;; https://gitlab.com/ambrevar/fof/-/issues/6
+               ;; https://github.com/ruricolist/moira/issues/1
 
                ;; threads
                :bordeaux-threads
                :trivial-monitored-thread
-               :moira
                :lparallel
                :cl-cron
 

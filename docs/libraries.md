@@ -487,7 +487,7 @@ filesystem:truenamize
 filesystem:with-current-directory
 ```
 
-We include the [FOF (File-object finder)](https://gitlab.com/ambrevar/fof/) library, which is very useful to:
+We'd like to mention the [FOF (File-object finder)](https://gitlab.com/ambrevar/fof/) library, which is very useful to:
 
 - search for files, recursively or not, and filter with our predicates,
 - inspect the file objects with the regular `inspect` or `describe`
@@ -511,6 +511,8 @@ In practice, it mostly supersedes:
 
 Note that FOF is not meant to manipulate arbitrary paths of non-existing files.
 Consider using [ppath](https://github.com/fourier/ppath) instead.
+
+> Note: `fof` isn't shipped by default in CIEL anymore since 2023, Nov 18th, you should `quickload`. While still useful, it complicates a little bit the deployment of executables because of its dependency on Osicat, which depends on its own `libosicat.so` shared library.
 
 Quick examples:
 
@@ -773,7 +775,8 @@ We ship:
 
 [Lparallel](https://lparallel.org/)
 
-[Moira](https://github.com/ruricolist/moira) (monitor and restart background threads)
+<!-- currently removed: <2023-11-18 Sat> see .asd -->
+<!-- [Moira](https://github.com/ruricolist/moira) (monitor and restart background threads) -->
 
 [trivial-monitored-thread](http://quickdocs.org/trivial-monitored-thread/)
 
