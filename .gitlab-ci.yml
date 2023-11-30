@@ -49,8 +49,9 @@ build void:
   # to clone libraries not in Quicklisp,
   # and to update ASDF to >= 3.3.5 in order to use local-package-nicknames.
   before_script:
+    - xbps-install -S
     - xbps-install -uy xbps
-    - xbps-install -Syu
+    - xbps-install -uy
 
     # The image doesn't have Quicklisp installed by default.
     - QUICKLISP_ADD_TO_INIT_FILE=true /usr/local/bin/install-quicklisp
