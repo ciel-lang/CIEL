@@ -11,6 +11,14 @@ ql-deps:
 	# This has been fixed upstream, not yet in Quicklisp
 	git clone https://github.com/sharplispers/log4cl ~/quicklisp/local-projects/log4cl
 
+	# 2023-11: The symbol SB-INT:TRULY-DYNAMIC-EXTENT is absent since at least
+	# SBCL v2.3.10, which was required in older versions of cl-environments
+	# and cl-form-types.
+	# See issue https://github.com/ciel-lang/CIEL/issues/38
+	# This has been fixed upstream, not yet in Quicklisp
+	git clone https://github.com/alex-gutev/cl-environments ~/quicklisp/local-projects/cl-environments
+	git clone https://github.com/alex-gutev/cl-form-types ~/quicklisp/local-projects/cl-form-types
+
 # Install some system dependencies.
 debian-deps:
 	apt-get install -y libmagic-dev	libinotifytools0
