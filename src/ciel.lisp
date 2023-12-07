@@ -139,6 +139,7 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
 (defparameter *deps/alexandria/hash-tables*
   '(:hash-table-keys
     :hash-table-values
+    :hash-table-alist
     :ensure-gethash))
 (cl-reexport:reexport-from :alexandria
                            :include
