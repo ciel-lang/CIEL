@@ -181,6 +181,7 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
     :partition
     :partitions
     :split-sequence
+    :frequencies
 
     :count-cpus
 
