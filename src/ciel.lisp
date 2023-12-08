@@ -276,6 +276,13 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
                                       :defparameter*
                                       :defvar*))
 
+;; ppcre
+(serapeum:defalias apropos-regex #'ppcre:regex-apropos)
+(serapeum:defalias apropos-regex-list #'ppcre:regex-apropos-list)
+
+(export '(apropos-regex
+          apropos-regex-list))
+
 ;;;
 ;;; Conveniently add type declarations.
 ;;; Straight from Serapeum, only it is -> thus it conflicts with our arrow-macro.
