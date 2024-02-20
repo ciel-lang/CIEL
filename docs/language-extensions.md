@@ -494,7 +494,7 @@ Defstar can add them automatically if `defstar:*check-argument-types-explicitly?
 
 In theory, such declarations don't guarantee that Lisp will do type checking but in practice the implementations, and in particular SBCL, perform type checking.
 
-We use the [defstar](https://github.com/lisp-maintainers/defstar) library. Its README has many more examples, more features (adding assertions, `:pre` and `:post` clauses) and even an alternative notation (`(defun* (foo -> integer) …)`).
+We use the [defstar](https://github.com/lisp-maintainers/defstar) library. Its README has many more examples and even more features (adding assertions, `:pre` and `:post` clauses).
 
 > Note: we are not talking thorough ML-like type checking here (maybe the [Coalton](https://github.com/stylewarning/coalton) library will bring it to Common Lisp). But in practice, the compiler warnings and errors are helpful during development, "good enough", and SBCL keeps improving in that regard.
 
