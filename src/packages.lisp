@@ -1,7 +1,18 @@
 (in-package :cl-user)
 
 (uiop:define-package ciel
-  (:use :cl)
+    (:use :cl)
+  ;; xxx: nicknames copied from ciel-user below.
+  (:local-nicknames (:/os :uiop/os)
+                    (:os :uiop/os)
+                    (:filesystem :uiop/filesystem)
+                    (:notify :org.shirakumo.file-notify)
+                    (:alex :alexandria)
+                    (:csv :cl-csv)
+                    (:http :dexador)
+                    (:json :shasht)
+                    (:json-pointer :cl-json-pointer/synonyms)
+                    (:routes :easy-routes))
   (:export #:enable-shell-passthrough
            #:disable-shell-passthrough
            #:-->))
