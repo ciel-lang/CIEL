@@ -217,6 +217,16 @@ We use [pythonic-string-reader](https://github.com/smithzvk/pythonic-string-read
 too, even only internally. It happens with the Jonathan library.
 
 
+## Lambda shortcut
+
+`^` is a synonym macro for `lambda`.
+
+```lisp
+(^ (x) (+ x 10))
+=>
+(lambda (x) (+ x 10))
+```
+
 Pattern matching
 ----------------
 

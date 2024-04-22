@@ -4,7 +4,8 @@
   (:use :cl)
   (:export #:enable-shell-passthrough
            #:disable-shell-passthrough
-           #:-->))
+           #:-->
+           #:^))
 
 (uiop:define-package ciel-user
   (:use :cl :ciel)
