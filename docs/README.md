@@ -12,7 +12,25 @@ It comes in 3 forms:
 
 Questions, doubts? See the [FAQ](FAQ.md).
 
-Status: it's a work in progress. I use it for clients' projects.
+Status: it's a work in progress. I deployed it for client projects.
+
+```lisp
+#!/usr/bin/env ciel
+
+(-> "https://fakestoreapi.com/products?limit=5"
+  http:get
+  json:read-json
+  (elt 0)
+  (access "title"))
+```
+
+```bash
+$ chmodx +x getproduct.lisp
+$ time ./getproduct.lisp
+"Fjallraven - Foldsack No…ckpack, Fits 15 Laptops"
+./getproduct.lisp  0.10s user 0.02s system 24% cpu 0.466 total
+```
+
 
 
 ## Rationale
