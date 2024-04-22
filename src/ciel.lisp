@@ -305,6 +305,16 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
   `(declaim (ftype (--> ,args ,values) ,function)))
 
 
+;; from Bard.
+(defmacro ^ (&rest forms)
+  "^ is a synonym macro for lambda.
+
+(^ (x) (+ x 10))
+=>
+(lambda (x) (+ x 10))"
+  `(lambda ,@forms))
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun symbol-documentation (symbol &key (stream t))
