@@ -8,7 +8,6 @@
 - cl-cron: A simple tool that provides cron like facilities directly inside of common lisp. For this to work properly note that your lisp implementation should have support for threads
 - cl-csv: Facilities for reading and writing CSV format files
 - cl-ppcre: Perl-compatible regular expression library
-- cl-punch: Scala-like anonymous lambda literal
 - cl-reexport: Reexport external symbols in other packages.
 - clesh: Clesh is a very short program that provides
   mechanisms for running and composing Unix shell commands and
@@ -25,7 +24,6 @@ variables and and function return values.
 - dissect: A lib for introspecting the call stack and active restarts.
 - easy-routes: Yet another routes handling utility on top of Hunchentoot
 - fiveam: A simple regression testing framework
-- fn: Some macros for lambda brevity
 <!-- currently removed: -->
 <!-- - fof: File-object finder. Enable rapid file search, inspection and manipulation. -->
 - for: An extensible iteration macro library.
