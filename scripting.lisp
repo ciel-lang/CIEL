@@ -230,7 +230,8 @@
            ;; The remaining free args are passed along to our script's arguments.
            ;; Here the file name is already a free arg, so args equals something like
            ;; '("simpleHTTPserver.lisp" "4242") aka it has the file name.
-           (let ((ciel-user:*script-args* args))
+           (let ((ciel-user:*script-args* args)
+                 (*package* (find-package :ciel-user)))
              (if (has-shebang (first args))
                  ;; I was a bit cautious about this function.
                  ;; (mostly, small issues when testing at the REPL because of packages and local nicknames,

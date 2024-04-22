@@ -33,7 +33,8 @@ $ ciel -s simpleHTTPserver 9000
 #!/usr/bin/env ciel
 ;; optional shebang line, only for the short ./script call)
 
-;; Start your script with this to access all CIEL goodies:
+;; Start your script with this to access all CIEL goodies.
+;; It is now also optional.
 (in-package :ciel-user)
 
 (defun hello (name)
