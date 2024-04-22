@@ -105,10 +105,6 @@
                :for
                :trivial-do
 
-               ;; lambda shorthands
-               :fn
-               :cl-punch
-
                :cmd
                :serapeum
                :shlex

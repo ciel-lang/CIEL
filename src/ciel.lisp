@@ -48,11 +48,6 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
                            :include
                            '(:enable-pythonic-string-syntax
                              :disable-pythonic-string-syntax))
-(cl-reexport:reexport-from :cl-punch
-                           :include
-                           '(:enable-punch-syntax
-                             ;; no disable
-                             ))
 
 ;; Pattern matching.
 (cl-reexport:reexport-from :trivia
