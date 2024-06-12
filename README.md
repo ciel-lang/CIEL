@@ -18,6 +18,7 @@ STATUS: ~~highly~~ WIP, the API WILL change, but it is usable.
 
 I am dogfooding it in public and private projects.
 
+
 ## What is this ?
 
 CIEL is a ready-to-use collection of libraries.
@@ -33,6 +34,24 @@ It comes in 3 forms:
 Questions, doubts? See the [FAQ](docs/FAQ.md).
 
 NEW: we now have a Docker file.
+
+```lisp
+#!/usr/bin/env ciel
+
+(-> "https://fakestoreapi.com/products?limit=5"
+  http:get
+  json:read-json
+  (elt 0)
+  (access "title"))
+```
+
+```bash
+$ chmodx +x getproduct.lisp
+$ time ./getproduct.lisp
+"Fjallraven - Foldsack No…ckpack, Fits 15 Laptops"
+./getproduct.lisp  0.10s user 0.02s system 24% cpu 0.466 total
+```
+
 
 ## Rationale
 
