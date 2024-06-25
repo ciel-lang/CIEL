@@ -28,7 +28,7 @@ variables and and function return values.
 <!-- - fof: File-object finder. Enable rapid file search, inspection and manipulation. -->
 - for: An extensible iteration macro library.
 - fset: A functional set-theoretic collections library.
-See: http://www.ergy.com/FSet.html
+See: https://gitlab.common-lisp.net/fset/fset/-/wikis/home
 - generic-cl: Standard Common Lisp functions implemented using generic functions.
 - hunchentoot: Hunchentoot is a HTTP server based on USOCKET and
   BORDEAUX-THREADS.  It supports HTTP 1.1, serves static files, has a
