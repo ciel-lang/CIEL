@@ -52,6 +52,17 @@ case.
 ;;; Now use it.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;; Variables
+
+(docstring-append '*default-pathname-defaults* "
+
+An implementation-dependent pathname, typically in the working directory that was current when Common Lisp was started up.
+
+Read more:
+
+- https://cl-community-spec.github.io/pages/002adefault_002dpathname_002ddefaults_002a.html"
+                  'variable)
+
 ;;; mapcar
 (docstring-append 'mapcar "
 
@@ -275,3 +286,35 @@ Read more:
 
 - https://cl-community-spec.github.io/pages/find.html
 - https://lispcookbook.github.io/cl-cookbook/data-structures.html")
+
+(docstring-append 'with-open-file "
+Example:
+
+write to a file:
+
+(with-open-file (f \"/path/to/file.txt\" :direction :output
+                                     :if-exists :supersede
+                                     :if-does-not-exist :create)
+    (write-sequence \"hello file\" f))
+
+This binds a stream to the `f' variable and we write content to it.
+
+You can read files with :direction :input as well as UIOP: uiop:read-file-string, uiop:read-file-lines etc.
+
+Read more:
+
+- https://lispcookbook.github.io/cl-cookbook/files.html
+- https://cl-community-spec.github.io/pages/with_002dopen_002dfile.html
+")
+
+(docstring-append 'round "
+
+See also:
+
+- `fround', that returns the rounded value as a float
+- `ceiling', `floor' and `truncate' (and their f… equivalent).
+
+Read more:
+
+- https://lispcookbook.github.io/cl-cookbook/numbers.html
+- https://cl-community-spec.github.io/pages/floor.html")
