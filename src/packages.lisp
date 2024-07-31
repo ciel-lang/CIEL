@@ -12,6 +12,7 @@
                     (:http :dexador)
                     (:json :shasht)
                     (:json-pointer :cl-json-pointer/synonyms)
+                    (:time :local-time)
                     (:routes :easy-routes))
   (:export #:enable-shell-passthrough
            #:disable-shell-passthrough
@@ -34,7 +35,7 @@
                     (:http :dexador)
                     (:json :shasht)
                     (:json-pointer :cl-json-pointer/synonyms)
-
+                    (:time :local-time)
                     (:routes :easy-routes))
   (:export
    #:*script-args*))
