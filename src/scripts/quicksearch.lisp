@@ -13,7 +13,7 @@
 
 (unless (second uiop:*command-line-arguments*)
   (format! t "Quicksearch: search for Lisp libraries on Quicklisp, Cliki and Github.~&")
-  (format! t "Usage: ciel quicksearch.lisp keyword~&")
+  (format! t "Usage: ciel -s quicksearch keyword~&")
   (uiop:quit))
 
 ;; We use a "feature flag" kind of like a "file == __main__" check:
