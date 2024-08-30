@@ -442,4 +442,7 @@ Special big thanks to @cinerion, [@themarcelor](https://github.com/themarcelor) 
   - [these years in Lisp: 2022 in review](https://lisp-journey.gitlab.io/blog/these-years-in-common-lisp-2022-in-review/)
   - [Python VS Common Lisp, workflow and ecosystem](https://lisp-journey.gitlab.io/pythonvslisp/)
   - [A road to Common Lisp](https://stevelosh.com/blog/2018/08/a-road-to-common-lisp/)
+- 🎥 [Youtube showcases](https://www.youtube.com/@vindarel):
+  - [Debugging Lisp: fix and resume a program from any point in the stack](https://www.youtube.com/watch?v=jBBS4FeY7XM)
+  - [How to call a REST API in Common Lisp: HTTP requests, JSON parsing, CLI arguments, binaries](https://www.youtube.com/watch?v=TAtwcBh1QLg)
 - 🎥 my [Common Lisp course in videos: from novice to efficient programmer](https://www.udemy.com/course/common-lisp-programming/?referralCode=2F3D698BBC4326F94358), on the Udemy platform.
