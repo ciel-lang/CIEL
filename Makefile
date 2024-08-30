@@ -4,11 +4,6 @@ all: build
 
 # Install some Quicklisp dependencies.
 ql-deps:
-	# 2023-05: log4cl doesn't compile on SBCL v2.3.4
-	# See issue https://github.com/ciel-lang/CIEL/issues/24
-	# This has been fixed upstream, not yet in Quicklisp
-	git clone https://github.com/sharplispers/log4cl ~/quicklisp/local-projects/log4cl
-
 	# 2023-11: The symbol SB-INT:TRULY-DYNAMIC-EXTENT is absent since at least
 	# SBCL v2.3.10, which was required in older versions of cl-environments
 	# and cl-form-types.
