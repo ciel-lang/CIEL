@@ -140,61 +140,68 @@ So, either clone this repository:
 
     git clone https://github.com/ciel-lang/CIEL ~/quicklisp/local-projects/CIEL
 
-And install dependencies missing or outdated from Quicklisp:
+and install missing dependencies or the outdated ones:
 
-    $ ( cd ~/quicklisp/local-projects/CIEL && make ql-deps )
+    cd ~/quicklisp/local-projects/CIEL
+    make ql-deps
 
 Or install the Ultralisp distribution and pull the library from
 there:
 
     (ql-dist:install-dist "http://dist.ultralisp.org/" :prompt nil)
 
-Then, load the .asd file (with `asdf:load-asd` or `C-c C-k` in Slime),
-quickload "ciel":
+Now, in both cases, you can load the .asd file (with `asdf:load-asd`
+or `C-c C-k` in Slime) and quickload "ciel":
 
 ```lisp
 (ql:quickload "ciel")
 ```
 
-and enter the `ciel-user` package:
+be sure to enter the `ciel-user` package:
 
 ```lisp
 (in-package :ciel-user)
 ```
 
-To build CIEL's binary and core image, use
+you now have access to all CIEL's packages and functions.
+
+## Build a CIEL binary and core image
+
+To build CIEL's binary, use:
 
     $ make build
 
 This creates the `bin/` directory with the `ciel` binary.
 
+To create a Lisp image:
+
     $ make image
+    # or
+    $ sbcl --load build-image.lisp
 
 This creates the `ciel-core` Lisp image.
 
 
-## With a core image
+## Use the core image
 
 You need a Lisp implementation, but you don't need Quicklisp.
 
-Build a *core image* for your lisp with all CIEL's dependencies:
-
-    sbcl --load build-image.lisp
-
-and use it:
+Build a *core image* for your lisp with all CIEL's dependencies as
+seen above, and use it like this:
 
     sbcl --core ciel-core --eval '(in-package :ciel-user)'
 
-Then you can configure Slime to have the choice of the Lisp image to
+This loads SBCL with everything CIEL baked in, and it loads fast.
+
+Then you'll have to configure your editor, like Slime, to have the choice of the Lisp image to
 start. See below in *\*Use CIEL at startup*
 
 We ~~will distribute ready-to-use core images~~ can not distribute core
 images, you must build it yourself.
 
-## With a binary. Use CIEL's custom REPL.
+## Install a binary. Use CIEL's custom REPL.
 
-You don't need anything, just download the CIEL executable and run it.
-You need to build the core image yourself though.
+In that case you don't need anything, just download the CIEL executable and run it.
 
 - we provide an experimental binary for some systems: go to
   <https://gitlab.com/vindarel/ciel/-/pipelines>, download the latest
@@ -208,9 +215,14 @@ CIEL is currently built for the following platforms:
 | void     | Void Linux glibc (2023-05)    |
 
 
-To build it, clone this repository and run `make build`.
+To build it, see above.
 
 Start it with `./ciel`.
+
+With no arguments, you enter CIEL's terminal REPL.
+
+You can give a CIEL script as first argument, or call a built-in one. See the scripting section.
+
 
 ## With Docker
 
