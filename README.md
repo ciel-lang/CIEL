@@ -126,7 +126,7 @@ You can run: `make debian-deps` or `make macos-deps`.
 
 ## With Quicklisp
 
-You need a Lisp implementation and Quicklisp installed.
+You need a Lisp implementation and [Quicklisp installed](https://quicklisp.org/beta/).
 
 You need the system dependencies above.
 
@@ -142,8 +142,8 @@ So, either clone this repository:
 
 and install missing dependencies or the outdated ones:
 
-    cd ~/quicklisp/local-projects/CIEL
     make ql-deps
+    # this will clone libraries to ~/quicklisp/local-projects/
 
 Or install the Ultralisp distribution and pull the library from
 there:
@@ -166,6 +166,10 @@ be sure to enter the `ciel-user` package:
 you now have access to all CIEL's packages and functions.
 
 ## Build a CIEL binary and core image
+
+Be sure you installed and updated our lisp dependencies:
+
+    $ make ql-deps
 
 To build CIEL's binary, use:
 
@@ -212,7 +216,7 @@ CIEL is currently built for the following platforms:
 | Platform | System Version (release date) |
 |----------|-------------------------------|
 | debian   | Debian Buster (2019)          |
-| void     | Void Linux glibc (2023-05)    |
+| void     | Void Linux glibc (2023-05), using [cinerion's Docker image](https://github.com/cinerion/sbcl-voidlinux-docker)  |
 
 
 To build it, see above.
