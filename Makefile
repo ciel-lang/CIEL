@@ -25,6 +25,10 @@ ql-deps:
 	# 2024-08: not in Quicklisp
 	git clone https://github.com/lisp-maintainers/file-finder ~/quicklisp/local-projects/file-finder
 
+	# <2024-08-30> error with SBCL: Lock on package SB-DI violated…
+	# fixed https://github.com/Shinmera/dissect/issues/18 on March, 2024 (not in Quicklisp…)
+	git clone https://github.com/Shinmera/dissect/ ~/quicklisp/local-projects/dissect
+
 # Install some system dependencies.
 debian-deps:
 	apt-get install -y libinotifytools0
