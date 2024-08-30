@@ -58,6 +58,7 @@ simple string literal definition that doesn't require escaping characters.
 - shasht: JSON reading and writing for the Kzinti.
 - shlex: Lexical analyzer for simple shell-like syntax.
 - spinneret: Common Lisp HTML5 generator.
+- secret-values: reduce the risk of accidentally revealing secret values such as passwords.
 - str: Modern, consistent and terse Common Lisp string manipulation library.
 - sxql: A SQL generator
 - trivia: NON-optimized pattern matcher compatible with OPTIMA, with extensible optimizer interface and clean codebase

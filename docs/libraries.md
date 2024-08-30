@@ -782,6 +782,29 @@ Use `ppcre`.
 
 See <https://common-lisp-libraries.readthedocs.io/cl-ppcre> and <https://lispcookbook.github.io/cl-cookbook/regexp.html>
 
+## Security
+
+We ship [secret-values](https://github.com/rotatef/secret-values) that
+helps in reducing the risk of accidentally revealing secret values,
+such as passwords.
+
+When you read a password, you can hide it behind a `secret-values` object:
+
+```lisp
+(secret-values:conceal-value "secret")
+;; => #<SECRET-VALUES:SECRET-VALUE {100F2EC9E3}>
+```
+
+To reveal it, at the last moment, use:
+
+```lisp
+(secret-value:reveal-value *)
+;; => "secret"
+```
+
+See also what `ensure-value-revealed` does on their documentation.
+
+
 ## Threads, monitoring, scheduling
 
 We ship:

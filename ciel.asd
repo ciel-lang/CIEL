@@ -101,6 +101,9 @@
                ;; string manipulation
                :str
 
+               ;; security
+               :secret-values
+
                ;;;
                ;;; Language extensions.
                ;;;
