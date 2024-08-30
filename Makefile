@@ -14,7 +14,7 @@ ql-deps:
 
 # Install some system dependencies.
 debian-deps:
-	apt-get install -y libmagic-dev	libinotifytools0
+	apt-get install -y libinotifytools0
 
 macos-deps:
 	echo "fsevent (for file-notify)"

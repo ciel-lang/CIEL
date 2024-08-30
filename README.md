@@ -106,7 +106,6 @@ See *the documentation*.
 You will probably need the following system dependencies (names for a
 Debian Bullseye system):
 
-    libmagic-dev libc6-dev gcc  # from magicffi
     zlib1g-dev # from deploy for SBCL < 2.2.6
 
 If your SBCL version is >= 2.2.6 you might want to use the more
@@ -121,6 +120,8 @@ On Linux:
 On MacOS:
 
     fsevent
+
+You can run: `make debian-deps` or `make macos-deps`.
 
 
 ## With Quicklisp
