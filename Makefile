@@ -32,6 +32,7 @@ ql-deps:
 	# fix fset on latest SBCL
 	# "Lock on package SB-EXT violated when interning ONCE-ONLY while in package FSET"
 	# see https://github.com/slburson/fset/pull/46
+	git clone https://gitlab.common-lisp.net/misc-extensions/misc-extensions ~/quicklisp/local-projects/misc-extensions
 	git clone https://github.com/slburson/fset/ ~/quicklisp/local-projects/fset
 
 # Install some system dependencies.
