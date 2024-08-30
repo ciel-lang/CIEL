@@ -12,12 +12,16 @@ ql-deps:
 	git clone https://github.com/alex-gutev/cl-environments ~/quicklisp/local-projects/cl-environments
 	git clone https://github.com/alex-gutev/cl-form-types ~/quicklisp/local-projects/cl-form-types
 
+	# 2024-08: Moira needs moira/light, added <2023-11-23 Thu>, not on Quicklisp…
+	# moira/light doesn't depend on Osicat.
+	git clone https://github.com/ruricolist/moira/ ~/quicklisp/local-projects/moira
+
 # Install some system dependencies.
 debian-deps:
 	apt-get install -y libinotifytools0
 
 macos-deps:
-	echo "fsevent (for file-notify)"
+	echo "please install fsevent (for file-notify)"
 
 run:
 	$(LISP) --load ciel.asd \

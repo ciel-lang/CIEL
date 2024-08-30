@@ -28,6 +28,8 @@
                ;;
                ;; :fof  ;; concise file-object finder.
                ;; :moira  ;; monitor and restart background threads.
+               ;; This system doesn't depend on Osicat:
+               :moira/light  ;; since <2023-11-23 Thu> and still not in Quicklisp…
                ;;
                ;; see
                ;; https://gitlab.com/ambrevar/fof/-/issues/6
