@@ -578,9 +578,15 @@ And there is more, check file-finder's documentation.
 > WARN: file-finder is still experimental.
 
 
-## GUI (tk)
+## GUI (tk) (removed)
 
-We ship [nodgui](https://lispcookbook.github.io/cl-cookbook/gui.html#tk-ltk-and-nodgui).
+Previous versions of CIEL shipped [nodgui](https://lispcookbook.github.io/cl-cookbook/gui.html#tk-ltk-and-nodgui) which, in its default form, is featureful but heavy in dependencies for us.
+
+As of August of 2024, a lightweight [`nodgui-lite` system was made available](https://www.autistici.org/interzona/nodgui.html#nodgui-lite).
+
+It is not yet included in CIEL.
+
+We leave nonetheless the presentation of the library.
 
 The Tk toolkit is nearly ubiquitous and simple to use. It doesn't have a great deal of widgets, but it helps anyways for many kind of uses, from utility GUIs to industrial applications. Moreover, it doesn't look aweful (as it did decades ago), it has themes to look surprisingly good on the different platforms.
 

@@ -65,7 +65,13 @@
                :cl-ftp  ;; depends on only: split-sequence and usocket.
 
                ;; GUI
-               :nodgui  ;; ltk fork with built-in themes and more widgets.
+               ;; We remove nodgui as of <2024-08-30>
+               ;; because it was too heavy in dependencies, see
+               ;; https://github.com/ciel-lang/CIEL/issues/56
+               ;; We'll test again with its lightweight nodgui-lite system.
+               ;; :nodgui  ;; ltk fork with built-in themes and more widgets.
+               ;; to test:
+               ;; :nodgui-lite
 
                ;; CLI
                :clingon  ;; args parsing

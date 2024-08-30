@@ -59,8 +59,8 @@ One of our goals is to make Common Lisp useful out of the box for
 mundane tasks -by today standards. As such, we ship libraries to handle
 **JSON** or **CSV**, as well as others to ease string
 manipulation, to do pattern matching, to bring regular expressions, for
-threads and jobs scheduling, for **HTTP** and URI handling, to
-create simple GUIs with nodgui (Tk-based, nice theme), and so on. You can of course do all this
+threads and jobs scheduling, for **HTTP** and URI handling,
+and so on. You can of course do all this
 without CIEL, but then you have to install the library manager first and
 load these libraries into your Lisp image every time you start it. Now,
 you have them at your fingertips whenever you start CIEL.
@@ -393,7 +393,7 @@ you won't wait for the quicklisp libraries to load.
 
 We import, use and document libraries to fill various use cases: generic
 access to data structures, functional data structures, string
-manipulation, JSON, database access, web, URI handling, GUI, iteration
+manipulation, JSON, database access, web, URI handling, iteration
 helpers, type checking helpers, syntax extensions, developer utilities,
 etc.
 

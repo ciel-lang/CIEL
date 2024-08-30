@@ -1,3 +1,4 @@
 (in-package :ciel)
 
-(setf nodgui:*default-theme* "yaru")
+;; let's try nodgui-lite
+;; (setf nodgui:*default-theme* "yaru")
