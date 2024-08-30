@@ -425,22 +425,37 @@ Connect to a database with cl-dbi:
 ~~~lisp
  (defvar *connection*
   (dbi:connect :sqlite3
-               :database-name "/home/gt/test.sqlite3"))
+               :database-name "/home/user/test.sqlite3"))
 ~~~
 
-and execute queries.
+`dbi` will install the required database driver on the fly.
 
-Use SXQL to generate SQL from a lispy DSL:
+> Attention: if you build a binary and plan to use it on another
+> machine, you must add the driver as a system dependency. It is one
+> of `:dbd-sqlite3`, `:dbd-mysql` or `:dbd-postgres`.
+
+Now you can execute queries.
+
+Either use SXQL to generate SQL from a lispy DSL:
 
 ~~~lisp
-(select (:id :name :sex)
+(select (:id :name )
   (from (:as :person :p))
   (where (:and (:>= :age 18)
                (:< :age 65)))
   (order-by (:desc :age)))
 ~~~
 
-If you want an ORM, see [Mito](https://github.com/fukamachi/mito/) or [clsql](http://clsql.kpe.io/manual/). You also have things like [cl-yesql](https://github.com/ruricolist/cl-yesql). For more choices, see https://github.com/CodyReichert/awesome-cl#database
+or use in-line SQL:
+
+```lisp
+(dbi:fetch-all
+  (dbi:execute
+    (dbi:prepare *connection* "select id, name from person where age < ?"
+         (list max-age))))
+```
+
+If you want an ORM, see [Mito](https://github.com/fukamachi/mito/). You also have things like [cl-yesql](https://github.com/ruricolist/cl-yesql). For more choices, see https://github.com/CodyReichert/awesome-cl#database
 
 And for a tutorial, see <https://lispcookbook.github.io/cl-cookbook/databases.html>
 

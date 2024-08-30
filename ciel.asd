@@ -71,8 +71,21 @@
                :parse-number
 
                ;; database
-               :dbi  ;; connects and executes queries.
+               :dbi  ; connects and executes queries.
+               ;; dbi users must reference the driver's dependency
+               ;; when building a binary.
+               ;; If not, dbi wants to install a system on the fly,
+               ;; calls to ASDF, which fails with a useless message.
+               ;;
+               ;; Can we suppose sqlite3 is ubiquitous?
+               ;; This would require libsqlite3 (libsqlite3-dev on Debian).
+               ;; :dbd-sqlite3
+               ;; With those:
+               ;; :dbd-mysql  ;; requires libmysqlclient
+               ;; :dbd-postgres
+
                :sxql ;; SQL generator from lispy syntax.
+               ;; I recently removed Mito. Why? lol.
 
                ;; numerical
                :vgplot
