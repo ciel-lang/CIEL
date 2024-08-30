@@ -59,6 +59,9 @@
                :lquery
                :spinneret   ;; lispy templates. Used in simpleHTTPserver.lisp
 
+               ;; other networking:
+               :cl-ftp  ;; depends on only: split-sequence and usocket.
+
                ;; GUI
                :nodgui  ;; ltk fork with built-in themes and more widgets.
 

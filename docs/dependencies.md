@@ -7,6 +7,7 @@
 - cl-ansi-text: ANSI control string characters, focused on color
 - cl-cron: A simple tool that provides cron like facilities directly inside of common lisp. For this to work properly note that your lisp implementation should have support for threads
 - cl-csv: Facilities for reading and writing CSV format files
+- cl-ftp: send or receive files from FTP.
 - cl-ppcre: Perl-compatible regular expression library
 - cl-reexport: Reexport external symbols in other packages.
 - clesh: Clesh is a very short program that provides

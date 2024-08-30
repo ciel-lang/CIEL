@@ -842,6 +842,25 @@ We ship:
 
 <https://lispcookbook.github.io/cl-cookbook/web.html>
 
+## Networking
+
+We ship:
+
+- [cl-ftp](https://github.com/pinterface/cl-ftp). This is a typical Lisp library that looks abandoned, but just works©.
+
+It is available under the `ftp` package name. Here's a quick snippet:
+
+```lisp
+(ftp:with-ftp-connection (conn :hostname (get-hostname)
+                               :username (get-ftp-username)
+                               :password (get-password)
+                               :passive-ftp-p t)
+      (ftp:store-file conn in-filename out-filanem))
+```
+
+and that's it!
+
+
 ## Development
 
 ### Defining packages
