@@ -106,6 +106,10 @@ We bring **scripting capabilities**. Just run `ciel myscript.lisp`, and use all 
 
 Let's get started. See the [installation instructions](install.md).
 
+# Scripting & libraries
+
+Then, have a look at CIEL's [scripting capabilies](scripting.md), and on the [libraries](libraries.md) we ship.
+
 
 # Final words
 
