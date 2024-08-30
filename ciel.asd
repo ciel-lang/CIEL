@@ -104,6 +104,9 @@
                ;; security
                :secret-values
 
+               ;; other utilities
+               :progressons  ;; simple progress bar. Not in Quicklisp as of <2024-08-30>.
+
                ;;;
                ;;; Language extensions.
                ;;;

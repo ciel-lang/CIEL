@@ -883,6 +883,25 @@ It is available under the `ftp` package name. Here's a quick snippet:
 
 and that's it!
 
+## Other utilities
+
+We ship [progressons](https://github.com/vindarel/progressons), a simple progress bar.
+
+You can use it inside your editor, including Emacs and Slime, as well as on the terminal.
+
+Example usage:
+
+```lisp
+(loop for elt in (progressons:progressbar (list 1 2 3 4 5))
+   do (do-something-with elt)
+      (sleep 0.1)
+      (progressons:step!))
+```
+
+As you can see, it needs a manual `step!` to make it progress.
+
+> WARN: progressons in its present form adds significant overhead. You shouldn't use it with a large dataset.
+
 
 ## Development
 

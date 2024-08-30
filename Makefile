@@ -16,6 +16,9 @@ ql-deps:
 	# moira/light doesn't depend on Osicat.
 	git clone https://github.com/ruricolist/moira/ ~/quicklisp/local-projects/moira
 
+	# 2024-08: simple progress bar, not in Quicklisp.
+	git clone https://github.com/vindarel/progressons ~/quicklisp/local-projects/progressons
+
 # Install some system dependencies.
 debian-deps:
 	apt-get install -y libinotifytools0
