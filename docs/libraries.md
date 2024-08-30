@@ -902,6 +902,9 @@ As you can see, it needs a manual `step!` to make it progress.
 
 > WARN: progressons in its present form adds significant overhead. You shouldn't use it with a large dataset.
 
+Use [termp](https://github.com/vindarel/termp) if you want to check
+wether you are inside a dumb terminal, like Slime's REPL, or a real
+one. This check is done by looking at the `TERM` environment variable.
 
 ## Development
 

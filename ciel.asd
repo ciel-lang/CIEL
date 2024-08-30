@@ -105,7 +105,8 @@
                :secret-values
 
                ;; other utilities
-               :progressons  ;; simple progress bar. Not in Quicklisp as of <2024-08-30>.
+               :progressons  ;; no deps. Simple progress bar. Not in Quicklisp as of <2024-08-30>.
+               :termp  ;; no deps. Are we in a dumb terminal like Slime's REPL?
 
                ;;;
                ;;; Language extensions.
