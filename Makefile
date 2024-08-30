@@ -19,6 +19,9 @@ ql-deps:
 	# 2024-08: simple progress bar, not in Quicklisp.
 	git clone https://github.com/vindarel/progressons ~/quicklisp/local-projects/progressons
 
+	# termp, little utility
+	git clone https://github.com/vindarel/termp ~/quicklisp/local-projects/termp
+
 	# 2024-08: not in Quicklisp
 	git clone https://github.com/lisp-maintainers/file-finder ~/quicklisp/local-projects/file-finder
 
