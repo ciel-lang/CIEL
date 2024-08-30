@@ -29,6 +29,11 @@ ql-deps:
 	# fixed https://github.com/Shinmera/dissect/issues/18 on March, 2024 (not in Quicklisp…)
 	git clone https://github.com/Shinmera/dissect/ ~/quicklisp/local-projects/dissect
 
+	# fix fset on latest SBCL
+	# "Lock on package SB-EXT violated when interning ONCE-ONLY while in package FSET"
+	# see https://github.com/slburson/fset/pull/46
+	git clone https://github.com/slburson/fset/ ~/quicklisp/local-projects/fset
+
 # Install some system dependencies.
 debian-deps:
 	apt-get install -y libinotifytools0
