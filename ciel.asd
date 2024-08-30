@@ -26,7 +26,9 @@
                ;; check with (ql:who-depends-on "osicat")
                ;; Maybe create a sub-system with them.
                ;;
-               ;; :fof  ;; concise file-object finder.
+               ;; :fof  ;; concise file-object finder
+               ;; lightweight fork, not in Quicklisp as of <2024-08-30>:
+               :file-finder
                ;; :moira  ;; monitor and restart background threads.
                ;; This system doesn't depend on Osicat:
                :moira/light  ;; since <2023-11-23 Thu> and still not in Quicklisp…

@@ -6,6 +6,7 @@
   (:local-nicknames (:/os :uiop/os)
                     (:os :uiop/os)
                     (:filesystem :uiop/filesystem)
+                    (:finder :file-finder)
                     (:notify :org.shirakumo.file-notify)
                     (:alex :alexandria)
                     (:csv :cl-csv)
@@ -28,6 +29,7 @@
                     (:os :uiop/os)
                     ;; This other uiop module is always useful:
                     (:filesystem :uiop/filesystem)
+                    (:finder :file-finder)
                     (:notify :org.shirakumo.file-notify)
 
                     (:alex :alexandria)

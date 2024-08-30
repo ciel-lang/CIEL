@@ -462,13 +462,20 @@ And for a tutorial, see <https://lispcookbook.github.io/cl-cookbook/databases.ht
 
 ## Files and directories
 
-CL has built-in functions to deal with files and directories, and UIOP provides more. See [https://lispcookbook.github.io/cl-cookbook/files.html](https://lispcookbook.github.io/cl-cookbook/files.html).
+CL has built-in functions to deal with files and directories, and UIOP (built-in) provides more.
+
+Please refer to:
+
+* [https://lispcookbook.github.io/cl-cookbook/files.html](https://lispcookbook.github.io/cl-cookbook/files.html)
 
 See some functions under `uiop`, especially under `uiop/filesystem` (`filesystem` for short) like `filesystem:file-exists-p`, and some more under `uiop/os` (or just `os`) like `os:getcwd`.
 
 Example functions (not exhaustive):
 
+> NB: you cane use the `finder` local nickname in the `ciel-user` package.
+
 ```
+;; filesystem is a nickname for UIOP, that includes a few more functions.
 filesystem:call-with-current-directory
 filesystem:collect-sub*directories
 filesystem:delete-directory-tree
@@ -502,65 +509,74 @@ filesystem:truenamize
 filesystem:with-current-directory
 ```
 
-We'd like to mention the [FOF (File-object finder)](https://gitlab.com/ambrevar/fof/) library, which is very useful to:
+We also ship [file-finder](https://github.com/lisp-maintainers/file-finder), which is very handy to:
 
 - search for files, recursively or not, and filter with our predicates,
+  - exclude hidden linux directories and `node_modules/` by
+    default. Furnish the `*exclude-directories*` variable to exclude more.
 - inspect the file objects with the regular `inspect` or `describe`
   tools and see at a glance metadata such as permissions, last access
   time, etc,
 - change metada: the class slots have setters that write to disk,
 - manipulate paths and avoid common pitfalls from the built-in and UIOP functions.
 
-In practice, it mostly supersedes:
-
-- Common Lisp pathnames (at least for existing files).
-- Many Unix tools:
-  - `find` for recursive and programmable file search. Unlike `find`, `finder`'s predicates are extensible.
-  - `stat`
-  - `chown`
-  - `chmod`
-  - `du`
-  - `touch`
-
-*(when you want to reach to these tools, you can also use CIEL's shell passthrough)*
-
-Note that FOF is not meant to manipulate arbitrary paths of non-existing files.
+Note that file-finder is not meant to manipulate arbitrary paths of non-existing files.
 Consider using [ppath](https://github.com/fourier/ppath) instead.
 
-> Note: `fof` isn't shipped by default in CIEL anymore since 2023, Nov 18th, you should `quickload`. While still useful, it complicates a little bit the deployment of executables because of its dependency on Osicat, which depends on its own `libosicat.so` shared library.
+> Note: file-finder is a lightweight fork of `fof` which is still a bit richer.
 
 Quick examples:
 
 ~~~lisp
-;; List all files in the current directory, recursively.
-CIEL-USER> (fof:finder)
+;; List all files in the current directory, recursively:
+CIEL-USER> (file-finder:finder)
 (#F"~/projets/ciel/.git/" #F"~/projets/ciel/.github/" #F"~/projets/ciel/docs/" ...)
 
-CIEL-USER> (fof:finder* :root (fof:file "src/"))
+;; List all files under the src/ directory, recursively:
+CIEL-USER> (file-finder:finder* :root (file-finder:file "src/"))
 (#F"~/projets/ciel/src/ciel.fasl" #F"~/projets/ciel/src/ciel.lisp"
  #F"~/projets/ciel/src/cl-cron.log" #F"~/projets/ciel/src/test-5am.lisp"
  #F"~/projets/ciel/src/utils.lisp")
 
-CIEL-USER> (fof:file "ciel.asd")
+;; List all files with a lisp extension, still recursively:
+CIEL-USER> (file-finder:finder (file-finder:extension= "lisp"))
+(#F"~/projets/ciel/src/ciel.lisp" …)
+
+;; List all files containing a string on their path (full pathname):
+CIEL-USER> (file-finder:finder "foo")
+…
+
+;; List all files whose filename fully matches, case insensitive:
+CIEL-USER> (file-finder:finder (file-finder:iname= "ciel"))
+…
+
+;; Get the filenames as strings, not #F objects:
+CIEL-USER> (mapcar #'path *)
+…
+
+;; Create file objects and inspect their attributes:
+CIEL-USER> (file-finder:file "ciel.asd")
 #F"~/projets/ciel/ciel.asd"
 
 CIEL-USER> (inspect *)
 
-The object is a STANDARD-OBJECT of type FOF/FILE:FILE.
+The object is a STANDARD-OBJECT of type FILE-FINDER/FILE:FILE.
 0. PATH: "/home/vince/projets/ciel/ciel.asd"
 1. INODE: 5287804
 2. LINK-COUNT: 1
 3. KIND: :REGULAR-FILE
 4. SIZE: 3135
 5. DISK-USAGE: 12288
-6. USER-ID: 1000
-7. GROUP-ID: 1000
-8. CREATION-DATE: @2021-08-10T14:39:36.000000+02:00
-9. MODIFICATION-DATE: @2021-08-10T14:39:36.000000+02:00
-10. ACCESS-DATE: @2021-08-10T14:47:24.000000+02:00
-11. PERMISSIONS: (:USER-READ :USER-WRITE :GROUP-READ :GROUP-WRITE :OTHER-READ)
+6. CREATION-DATE: @2021-08-10T14:39:36.000000+02:00
+7. MODIFICATION-DATE: @2021-08-10T14:39:36.000000+02:00
+8. ACCESS-DATE: @2021-08-10T14:47:24.000000+02:00
 >
 ~~~
+
+And there is more, check file-finder's documentation.
+
+> WARN: file-finder is still experimental.
+
 
 ## GUI (tk)
 

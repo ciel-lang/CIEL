@@ -19,6 +19,9 @@ ql-deps:
 	# 2024-08: simple progress bar, not in Quicklisp.
 	git clone https://github.com/vindarel/progressons ~/quicklisp/local-projects/progressons
 
+	# 2024-08: not in Quicklisp
+	git clone https://github.com/lisp-maintainers/file-finder ~/quicklisp/local-projects/file-finder
+
 # Install some system dependencies.
 debian-deps:
 	apt-get install -y libinotifytools0
