@@ -103,6 +103,14 @@ See *the documentation*.
 
 # Install
 
+To build CIEL, both the binary and the core image, you need a couple
+system dependencies and you have to check a couple things on the side
+of lisp before proceeding.
+
+## Dependencies
+
+### System dependencies
+
 You will probably need the following system dependencies (names for a
 Debian Bullseye system):
 
@@ -124,15 +132,66 @@ On MacOS:
 You can run: `make debian-deps` or `make macos-deps`.
 
 
-## With Quicklisp
+### ASDF >= 3.3.4 (local-nicknames)
 
-You need a Lisp implementation and [Quicklisp installed](https://quicklisp.org/beta/).
+ASDF is the de-facto system definition facility of Common Lisp, that
+lets you define your system's metadata (author, dependencies, sources,
+modules…).
 
-You need the system dependencies above.
+Please ensure that you have ASDF >= 3.3.4.
 
-You need a CL implementation with a recent enough version of ASDF to support package-local nicknames. As of March, 2023, this is not the case with SBCL 2.2.9. Here's a one-liner to update ASDF:
+It is for instance not the case with SBCL 2.2.9.
 
+Ask the version with `(asdf:asdf-version)` on a Lisp REPL, or with
+this one-liner from a terminal:
+
+    $ sbcl  --eval '(and (print (asdf:asdf-version)) (quit))'
+
+Here's a one-liner to update ASDF:
+
+    $ mkdir ~/common-lisp/
     $ ( cd ~/common-lisp/ && wget https://asdf.common-lisp.dev/archives/asdf-3.3.5.tar.gz  && tar -xvf asdf-3.3.5.tar.gz && mv asdf-3.3.5 asdf )
+
+
+### Install Quicklisp
+
+To build CIEL on your machine, you need the [Quicklisp library
+manager](https://quicklisp.org/beta/). Quicklisp downloads and
+installs a library and its dependencies on your machine. It's very
+slick, we can install everything from the REPL without restarting our
+Lisp process. It follows a "distrubution" approach, think Debian
+releases, where libraries are tested to load.
+
+It isn't the only library manager nowadays. See [https://github.com/CodyReichert/awesome-cl#library-manager](https://github.com/CodyReichert/awesome-cl#library-manager).
+
+Install it:
+
+```sh
+curl -O https://beta.quicklisp.org/quicklisp.lisp
+sbcl --load quicklisp.lisp --eval "(quicklisp-quickstart:install)" --quit
+sbcl --load ~/quicklisp/setup.lisp --eval "(ql:add-to-init-file)" --quit
+```
+
+It creates a `~/quicklisp/` directory. Read its installation instructions to know more.
+
+### Install our Lisp dependencies [MANDATORY]
+
+Even if you have a Lisp setup with Quicklisp installed, the current
+distribution of Quicklisp is quite old (as of August, 2024) and you
+need to pull recent dependencies.
+
+We'll clone the required ones into your `~/quicklisp/local-projects/`.
+
+    make ql-deps
+
+Other tools exist for this (Qlot, ocicl…), we are just not using them yet.
+
+
+## How to load CIEL with Quicklisp
+
+You need the dependencies above: Quicklisp, a good ASDF version, our up-to-date Lisp dependencies.
+
+This shows you how to load CIEL and all its goodies, in order to use it in your current editor.
 
 CIEL is not on Quicklisp yet, but it is on [Ultralisp](https://ultralisp.org).
 
@@ -140,21 +199,15 @@ So, either clone this repository:
 
     git clone https://github.com/ciel-lang/CIEL ~/quicklisp/local-projects/CIEL
 
-and install missing dependencies or the outdated ones:
-
-    make ql-deps
-    # this will clone libraries to ~/quicklisp/local-projects/
-
-Or install the Ultralisp distribution and pull the library from
-there:
+or install the Ultralisp distribution and pull the library from there:
 
     (ql-dist:install-dist "http://dist.ultralisp.org/" :prompt nil)
 
-Now, in both cases, you can load the .asd file (with `asdf:load-asd`
+Now, in both cases, you can load the `ciel.asd` file (with `asdf:load-asd`
 or `C-c C-k` in Slime) and quickload "ciel":
 
 ```lisp
-(ql:quickload "ciel")
+CL-USER> (ql:quickload "ciel")
 ```
 
 be sure to enter the `ciel-user` package:
@@ -162,20 +215,18 @@ be sure to enter the `ciel-user` package:
 ```lisp
 (in-package :ciel-user)
 ```
-
 you now have access to all CIEL's packages and functions.
 
-## Build a CIEL binary and core image
 
-Be sure you installed and updated our lisp dependencies:
+## How to build a CIEL binary and a core image
 
-    $ make ql-deps
+You need the dependencies above: Quicklisp, a good ASDF version, our up-to-date Lisp dependencies.
 
 To build CIEL's binary, use:
 
     $ make build
 
-This creates the `bin/` directory with the `ciel` binary.
+This creates a `ciel` binary in the current directory.
 
 To create a Lisp image:
 
@@ -186,12 +237,10 @@ To create a Lisp image:
 This creates the `ciel-core` Lisp image.
 
 
-## Use the core image
-
-You need a Lisp implementation, but you don't need Quicklisp.
+## How to use the core image
 
 Build a *core image* for your lisp with all CIEL's dependencies as
-seen above, and use it like this:
+seen above, and load it at startup like this:
 
     sbcl --core ciel-core --eval '(in-package :ciel-user)'
 
@@ -207,7 +256,8 @@ images, you must build it yourself.
 
 In that case you don't need anything, just download the CIEL executable and run it.
 
-- we provide an experimental binary for some systems: go to
+- check our releases on https://github.com/ciel-lang/CIEL/releases/
+- we provide a binary from a CI for some systems: go to
   <https://gitlab.com/vindarel/ciel/-/pipelines>, download the latest
   artifacts, unzip the `ciel-v0-{platform}.zip` archive and run `ciel-v0-{platform}/ciel`.
 
@@ -228,7 +278,7 @@ With no arguments, you enter CIEL's terminal REPL.
 You can give a CIEL script as first argument, or call a built-in one. See the scripting section.
 
 
-## With Docker
+## Use CIEL with Docker
 
 We have a Dockerfile.
 
@@ -303,6 +353,9 @@ CIEL ships a terminal REPL for the terminal which is more user friendly than the
 The CIEL terminal REPL loads the `~/.cielrc` init file at start-up if present. Don't load it with `--no-userinit`.
 
 See more in [*the documentation*](https://ciel-lang.github.io/CIEL/#/).
+
+> [!NOTE]
+> Our terminal readline REPL does NOT replace a good Common Lisp editor. You have more choices than Emacs. Check them out! https://lispcookbook.github.io/cl-cookbook/editor-support.html
 
 
 Run `ciel` with no arguments:
