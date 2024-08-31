@@ -112,6 +112,8 @@ We'll clone the required ones into your `~/quicklisp/local-projects/`.
 
     make ql-deps
 
+If everything is installed, `./find-dependencies.lisp` should run successfully.
+
 Other tools exist for this (Qlot, ocicl…), we are just not using them yet.
 
 

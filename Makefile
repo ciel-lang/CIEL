@@ -65,6 +65,9 @@ ql-deps: check-asdf-version
 	# and commands like "emacs -nw" now work, in addition of sudo, vim or htop that were handled separately.
 	$(call git-clone-pull,https://github.com/lisp-maintainers/clesh)
 
+	# <2024-08-31> also need alexandria-2 in make build
+	git clone https://gitlab.common-lisp.net/alexandria/alexandria.git
+
 # Install some system dependencies.
 debian-deps:
 	apt-get install -y libinotifytools0
