@@ -266,21 +266,16 @@ To create a Lisp image:
 
 This creates the `ciel-core` Lisp image.
 
+Unlike a binary, we can not distribute core images. It is dependent on the machine it was built on.
 
-## How to use the core image
-
-Build a *core image* for your lisp with all CIEL's dependencies as
-seen above, and load it at startup like this:
+The way we use a core image is to load it at startup like this:
 
     sbcl --core ciel-core --eval '(in-package :ciel-user)'
 
-This loads SBCL with everything CIEL baked in, and it loads fast.
+It loads fast and you have all CIEL libraries and goodies at your disposal.
 
-Then you'll have to configure your editor, like Slime, to have the choice of the Lisp image to
-start. See below in *\*Use CIEL at startup*
-
-We ~~will distribute ready-to-use core images~~ can not distribute core
-images, you must build it yourself.
+Then you have to configure your editor, like Slime, to have the choice of the Lisp image to
+start. See below.
 
 
 ## Docker
@@ -388,7 +383,7 @@ ciel-user>
 It is freely based on [sbcli](https://github.com/hellerve/sbcli).
 
 
-## Lisp library
+## CIEL as a library: "use" :ciel in your Lisp packages
 
 You can install and `quickload` CIEL like any other Common Lisp library.
 
@@ -412,28 +407,15 @@ generic-ciel is less tested at the moment).
 generic-cl allows us to define our `+` or `equalp` methods for our own
 objects (and more).
 
-## Core image: use CIEL in your current developer setup
+## Core image: configure your editor
 
-You can enter the `CIEL-USER` package when you start your Lisp image
-from your editor.
+The advantage of a core image is that it loads instantly, faster than
+a `(ql:quickload "ciel")`. We'll ask our editor to start SBCL with our
+CIEL core image.
 
-A working, but naive and slow-ish approach would be to add this in your
-`~/.sbclrc`:
+We'll configure SLIME for [multiple Lisps](https://common-lisp.net/project/slime/doc/html/Multiple-Lisps.html#Multiple-Lisps).
 
-```lisp
-(ql:quickload "ciel")
-(in-package :ciel-user)
-(ciel-user-help)
-```
-
-A faster way is to use CIEL's core image and to use SLIME's or your
-editor's feature to [configure multiple
-Lisps](https://common-lisp.net/project/slime/doc/html/Multiple-Lisps.html#Multiple-Lisps).
-
-You need to:
-
-- build CIEL's core image for your machine (`make image`),
-- add this to your Emacs init file:
+You need to add this to your Emacs init file:
 
 ```lisp
 (setq slime-lisp-implementations
@@ -442,14 +424,15 @@ You need to:
 (setq slime-default-lisp 'ciel-sbcl)
 ```
 
-- and start a new Lisp process.
-- optional: if you didn't set it as default with `slime-default-lisp`,
-  then start a new Lisp process with `M-- M-x slime` (alt-minus
-  prefix), and choose ciel-sbcl. You can start more than one Lisp
-  process from SLIME.
+and start a Lisp process with `M-x slime`.
+
+If you didn't set `ciel-sbcl` as the default, then start the Lisp
+process with `M-- M-x slime` (alt-minus prefix), and choose
+`ciel-sbcl`. You can start more than one Lisp process from SLIME.
 
 The Lisp process should start instantly, as fast as the default SBCL,
 you won't wait for the quicklisp libraries to load.
+
 
 ## Libraries
 
