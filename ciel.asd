@@ -199,10 +199,8 @@
                          (:static-file "simpleHTTPserver")))
                )
 
-  ;; Build a binary with Deploy, ship foreign libraries (and ignore libssl).
-  :defsystem-depends-on (:deploy)  ;; need to (ql:quickload "deploy") before building.
-  ;; :build-operation "program-op"
-  :build-operation "deploy-op"
+  :build-operation "program-op"
+  :build-operation "program-op"
   :build-pathname "ciel"
   :entry-point "ciel::main")
 
