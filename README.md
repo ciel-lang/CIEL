@@ -103,6 +103,36 @@ See *the documentation*.
 
 # Install
 
+## Download a binary. For scripting and the custom REPL.
+
+Getting a binary allows you to run scripts, to play around in its
+terminal readline REPL. A binary doesn't allow you to use CIEL in your
+existing Common Lisp editor (which still offers the most interactive
+and fast development experience).
+
+To download a CIEL binary:
+
+- check our releases on https://github.com/ciel-lang/CIEL/releases/
+- we provide a binary from a CI for some systems: go to
+  <https://gitlab.com/vindarel/ciel/-/pipelines>, download the latest
+  artifacts, unzip the `ciel-v0-{platform}.zip` archive and run `ciel-v0-{platform}/ciel`.
+
+CIEL is currently built for the following platforms:
+
+| Platform | System Version (release date) |
+|----------|-------------------------------|
+| debian   | Debian Buster (2019)          |
+| void     | Void Linux glibc (2023-05), using [cinerion's Docker image](https://github.com/cinerion/sbcl-voidlinux-docker)  |
+
+
+Start it with `./ciel`.
+
+With no arguments, you enter CIEL's terminal REPL.
+
+You can give a CIEL script as first argument, or call a built-in one. See the scripting section.
+
+# Build
+
 To build CIEL, both the binary and the core image, you need a couple
 system dependencies and you have to check a couple things on the side
 of lisp before proceeding.
@@ -252,33 +282,8 @@ start. See below in *\*Use CIEL at startup*
 We ~~will distribute ready-to-use core images~~ can not distribute core
 images, you must build it yourself.
 
-## Install a binary. Use CIEL's custom REPL.
 
-In that case you don't need anything, just download the CIEL executable and run it.
-
-- check our releases on https://github.com/ciel-lang/CIEL/releases/
-- we provide a binary from a CI for some systems: go to
-  <https://gitlab.com/vindarel/ciel/-/pipelines>, download the latest
-  artifacts, unzip the `ciel-v0-{platform}.zip` archive and run `ciel-v0-{platform}/ciel`.
-
-CIEL is currently built for the following platforms:
-
-| Platform | System Version (release date) |
-|----------|-------------------------------|
-| debian   | Debian Buster (2019)          |
-| void     | Void Linux glibc (2023-05), using [cinerion's Docker image](https://github.com/cinerion/sbcl-voidlinux-docker)  |
-
-
-To build it, see above.
-
-Start it with `./ciel`.
-
-With no arguments, you enter CIEL's terminal REPL.
-
-You can give a CIEL script as first argument, or call a built-in one. See the scripting section.
-
-
-## Use CIEL with Docker
+## Docker
 
 We have a Dockerfile.
 
