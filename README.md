@@ -231,7 +231,9 @@ So, either clone this repository:
 
 or install the Ultralisp distribution and pull the library from there:
 
-    (ql-dist:install-dist "http://dist.ultralisp.org/" :prompt nil)
+~~~lisp
+(ql-dist:install-dist "http://dist.ultralisp.org/" :prompt nil)
+~~~
 
 Now, in both cases, you can load the `ciel.asd` file (with `asdf:load-asd`
 or `C-c C-k` in Slime) and quickload "ciel":
@@ -383,7 +385,7 @@ ciel-user>
 It is freely based on [sbcli](https://github.com/hellerve/sbcli).
 
 
-## CIEL as a library: "use" :ciel in your Lisp packages
+## CIEL as a library: "use" :ciel in your Lisp systems
 
 You can install and `quickload` CIEL like any other Common Lisp library.
 
