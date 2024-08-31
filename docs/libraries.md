@@ -6,7 +6,7 @@ To see the full list of dependencies, see the `ciel.asd` project definition or t
 
 ### Generic and nested access to datastructures (access)
 
-From [Access](https://github.com/AccelerationNet/access/%0A), we import `access` and `accesses` (plural).
+From [Access](https://github.com/AccelerationNet/access/), we import `access` and `accesses` (plural).
 
 It's always
 
