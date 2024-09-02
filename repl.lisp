@@ -493,6 +493,8 @@ strings to match candidates against (for example in the form \"package:sym\")."
        (sbcli::symbol-documentation (last-nested-expr text)))
 
       ;; Handle visual commands: run in their own terminal window.
+      ;; XXX: we can do better, see
+      ;; https://lispcookbook.github.io/cl-cookbook/os.html#running-interactive-and-visual-commands-htop
       ((visual-command-p text)
        (run-visual-command text))
 
