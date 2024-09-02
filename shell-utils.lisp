@@ -93,12 +93,8 @@ not in `*command-wrappers*'."
   ;; remove blank strings, in case we wrote "! command".
   (remove-if #'str:blankp command))
 
-(defun visual-command-p (command)
-  "Return true if COMMAND runs one of the programs in `*visual-commands*'.
-  COMMAND is either a list of strings or a string.
-`*command-wrappers*' are supported, i.e. the following works:
-
-  env FOO=BAR sudo -i powertop"
+(defun %visual-command-p (command)
+  ;; probably from shlex.
   (setf command (shell-ensure-clean-command-list command))
   (let ((cmd (shell-first-positional-argument command)))
     (when cmd
@@ -106,51 +102,21 @@ not in `*command-wrappers*'."
             *visual-commands*
             :test #'string=))))
 
-(defparameter *lisp-symbol-identifiers* (list #\( #\* #\# #\: #\-))
+(defun visual-command-p (command)
+  "Return true if COMMAND starts with '!' (clesh syntax)
+  and runs one of the programs in `*visual-commands*'.
 
-(defun lisp-command-p (text)
-  "Is considered a lisp command if it starts with a *lisp-symbol-identifiers* character.
-  If it starts with a parenthesis, it is sure a lisp command."
-  (let ((tokens (shlex:split text)))
-    (cond
-      ;; Starts with a ( => lisp, definitely.
-      ((str:starts-with-p "(" text)
-       t)
-      ;; Starts with a special character: lisp.
-      ((some (lambda (char)
-               (str:starts-with-p (string char) text))
-             *lisp-symbol-identifiers*)
-       t)
+  COMMAND is either a list of strings or a string. `*command-wrappers*' are supported, i.e. the following works:
 
-      ;; We have one token that contains a ":": lisp symbol.
-      ((and (= 1 (length tokens))
-            (str:contains? ":" text))
-       t)
+  env FOO=BAR sudo -i powertop
 
-      ;; We have space-separated tokens, but the command doesn't start with a paren: NOT lisp.
-      ;; Exple:
-      ;; uiop featurep
-      ;; is not (uiop:featurep) and is a shell command.
-      ((and (not (str:starts-with-p "(" text))
-            (< 1 (length tokens)))
-       nil)
-
-      ;; If we didn't recognize lisp here: it's a shell command.
-      (t
-       ;; (format t "default: shell command!~&")
-       nil))))
-
-#+(or)
-(progn
-  (assert (lisp-command-p "(uiop:featurep"))
-  (assert (lisp-command-p "uiop:*foo*"))
-  (assert (lisp-command-p "*foo"))
-  (assert (lisp-command-p "#foo"))
-  (assert (lisp-command-p "-foo"))
-  (assert (not (lisp-command-p "uiop featurep")))
-  (assert (not (lisp-command-p "ls")))
-  (assert (not (lisp-command-p "ls -l")))
-  (assert (not (lisp-command-p "foo --arg=1:1"))))
+  Changed  <2024-09-02>: shell commands must always start with a !, following the clesh syntax, that is enabled by default."
+  (and (str:starts-with-p "!" command)
+       ;; The shell lexer can fail, the top level would catch the error
+       ;; and we'll see like:
+       ;; !echo "
+       ;; Error: Missing closing quotation in string
+       (%visual-command-p command)))
 
 (defun run-shell-command (text)
   "Run this shell command."

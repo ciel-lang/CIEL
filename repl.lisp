@@ -3,8 +3,7 @@
 
 (let ((*standard-output* (make-broadcast-stream)))
   (ql:quickload "cl-readline"))
-
-(defpackage :sbcli
+(uiop:define-package :sbcli
   (:use :common-lisp :trivial-package-local-nicknames)
   (:import-from :magic-ed
                 :magic-ed)
@@ -497,12 +496,8 @@ strings to match candidates against (for example in the form \"package:sym\")."
       ((visual-command-p text)
        (run-visual-command text))
 
-      ;; Handle shell commands: everything that doesn't start with a lisp special
-      ;; symbol is considered a shell command
-      ((and (not (str:starts-with-p "!" text)) ;; that's clesh syntax.
-            (not (special-command-p text))     ;; starts with %
-            (not (lisp-command-p text)))
-       (run-shell-command text))
+      ;; shell command? No need to check for a "!" in the input here,
+      ;; it's done with the clesh readtable later when handling lisp.
 
       ;; Default: run the lisp command (with the lisp-critic, the shell passthrough
       ;; and other add-ons).
