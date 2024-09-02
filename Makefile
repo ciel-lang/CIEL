@@ -47,6 +47,12 @@ run:
 	     --eval '(asdf:load-system :ciel)' \
 	     --eval '(in-package :ciel-user)'
 
+run-repl:
+	$(LISP) --load ciel.asd \
+		--eval '(asdf:load-system :ciel)' \
+		--eval '(asdf:load-system :ciel/repl)' \
+		--eval '(sbcli:repl)'
+
 image:
 	$(LISP) --load build-image.lisp
 

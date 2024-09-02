@@ -8,7 +8,8 @@
   (:use :common-lisp :trivial-package-local-nicknames)
   (:import-from :magic-ed
                 :magic-ed)
-  (:export sbcli help what *repl-version* *repl-name* *prompt* *prompt2* *result-indicator* *init-file*
+  (:export repl sbcli help what *repl-version* *repl-name* *prompt* *prompt2* *result-indicator* *init-file*
+           *quicklisp*
            *hist-file* *special*
            *syntax-highlighting* *pygmentize* *pygmentize-options*))
 
