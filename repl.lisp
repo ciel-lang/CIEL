@@ -420,13 +420,59 @@ strings to match candidates against (for example in the form \"package:sym\")."
                   (select-completions "str:con" (list "str:containsp" "str:concat" "str:constant-case"))
                   :test #'string-equal)))
 
+(defun complete-filename-p (text start end &key (line-buffer rl:*line-buffer*))
+  "Return T if we should feed the tab completion candidates filenames, instead of the regular Lisp symbols.
+  We answer yes when we are tab-completing a secord word on the prompt and a quote comes before it.
+
+  TEXT, START and END: see `custom-complete'.
+
+ Ex:
+
+  !ls \"test TAB   => yes return files instead of lisp symbols for completion.
+  !\"tes TAB       => well, no.
+  (load \"test TAB => yes
+  (load (test TAB  => no
+"
+  (declare (ignore end))
+  (and (not (shell-passthrough-p text))
+       (> start 1)  ;; 1 is an opening parenthesis.
+       (char-equal #\" (elt line-buffer (1- start))) ;; after an opening quote.
+       ))
+
+#+test-ciel
+(progn
+  (assert (complete-filename-p "test" 7 10 :line-buffer "(load \"test"))
+  (assert (complete-filename-p "test" 7 10 :line-buffer "(!foo \"test"))
+  (assert (not (complete-filename-p "test" 1 5 :line-buffer "\"test")))
+  )
+
+(defun find-file-completions (text)
+  "Return a list of files (strings) in the current directory that start with TEXT."
+  ;; yeah, this calls for more features. Hold on a minute will you.
+  (remove-if #'null
+             (mapcar (lambda (path)
+                       (let ((namestring (file-namestring path)))
+                         (when (str:starts-with-p text namestring)
+                           namestring)))
+                     (uiop:directory-files "."))))
+
 (defun custom-complete (text &optional start end)
   "Custom completer function for readline, triggered when we press TAB.
 
-  START and END are required in the lambda list but are not used. We
-  only complete package and function names, they would help to
-  complete arguments."
-  (declare (ignore start end))
+  Complete filenames on the current directory when appropriate (after a quote).
+
+  TEXT is the current word being type. Not the full command line.
+
+  START is the start of this word. If we type the first word of the command
+  and TAB-complete it, then START equals 0. For a second word, START != 0.
+
+  Ex:
+
+   !ls te TAB
+
+  TEXT is \"te\", START is 4 and END is 6.
+
+  That way we give other completion candidates depending on START."
   (when (string-equal text "")
     (return-from custom-complete nil))
   (destructuring-bind (sym-name pkg-name external-p)
@@ -437,6 +483,10 @@ strings to match candidates against (for example in the form \"package:sym\")."
     (select-completions
      (str:downcase text)
      (cond
+       ((complete-filename-p text start end :line-buffer rl:*line-buffer*)
+        ;; complete file names on the current directory.
+        ;; Yes we could complete both: lisp symbols AND files. See with usage.
+        (find-file-completions text))
        ((zerop (length pkg-name))
         (list-symbols-and-packages sym-name))
        (external-p

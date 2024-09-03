@@ -58,6 +58,13 @@
     (when arg
       (namestring (pathname-name arg)))))
 
+(defun shell-passthrough-p (arg)
+  "Return t if arg (string) starts with \"!\".
+
+  This is used to offer custom TAB completion, not to launch shell commands.
+  The Clesh readtable is responsible of that."
+  (str:starts-with-p "!" arg))
+
 (defun shell-command-wrapper-p (command)
   "Is this command (string) a shell wrapper? (such as sudo or env)
 
