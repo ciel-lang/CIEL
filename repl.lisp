@@ -446,7 +446,7 @@ strings to match candidates against (for example in the form \"package:sym\")."
   (assert (not (complete-filename-p "test" 1 5 :line-buffer "\"test")))
   )
 
-(defun find-file-completions (text)
+(defun filter-candidates (text file-candidates)
   "Return a list of files (strings) in the current directory that start with TEXT."
   ;; yeah, this calls for more features. Hold on a minute will you.
   (remove-if #'null
@@ -454,7 +454,31 @@ strings to match candidates against (for example in the form \"package:sym\")."
                        (let ((namestring (file-namestring path)))
                          (when (str:starts-with-p text namestring)
                            namestring)))
-                     (uiop:directory-files "."))))
+                     file-candidates)))
+
+(defun complete-binaries-from-path-p (text start end &key (line-buffer rl:*line-buffer*))
+  "Return T if we should TAB-complete shell executables, and search them on the PATH.
+
+  START must be 0: we are writing the first word on the readline prompt,
+  TEXT must start with ! the mark of the shell pass-through."
+  (declare (ignore end line-buffer))
+  (and (zerop start)
+       (str:starts-with-p "!" text)))
+
+(defun find-binaries-candidates (text)
+  "Find binaries starting with TEXT in PATH.
+
+  Return: a list of strings."
+  (loop with s = (string-left-trim "!" text)
+        for dir in (uiop:getenv-absolute-directories "PATH")
+        for res = (filter-candidates s (uiop:directory-files dir))
+        collect res into candidates
+        finally (return
+                  ;; we got "!text", we have to return candidates
+                  ;; with the "!" prefix, so that readline agrees they are completions.
+                  (mapcar (lambda (bin)
+                            (str:concat "!" bin))
+                          (alexandria:flatten candidates)))))
 
 (defun custom-complete (text &optional start end)
   "Custom completer function for readline, triggered when we press TAB.
@@ -480,13 +504,16 @@ strings to match candidates against (for example in the form \"package:sym\")."
     (when (and pkg-name
                (not (find-package pkg-name)))
       (return-from custom-complete nil))
+
     (select-completions
      (str:downcase text)
      (cond
+       ((complete-binaries-from-path-p text start end :line-buffer rl:*line-buffer*)
+        (find-binaries-candidates text))
        ((complete-filename-p text start end :line-buffer rl:*line-buffer*)
         ;; complete file names on the current directory.
         ;; Yes we could complete both: lisp symbols AND files. See with usage.
-        (find-file-completions text))
+        (filter-candidates text (uiop:directory-files ".")))
        ((zerop (length pkg-name))
         (list-symbols-and-packages sym-name))
        (external-p
