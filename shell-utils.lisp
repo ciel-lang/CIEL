@@ -19,11 +19,38 @@
     "mpv" "mplayer"
     "ipython" "irb" "iex"               ;; TBC
     ;; last but not least
-    "ciel")
-  "List of visual/interactive/ncurses-based programs.")
+    "ciel-repl")
+  "List of visual/interactive/ncurses-based programs that will be run in their own terminal window.")
+
+(defun vterm-terminal (cmd)
+  "Build a command (string) to send to emacsclient to open CMD with Emacs' vterm."
+  (list
+   "emacsclient" "--eval"
+   (let ((*print-case* :downcase))
+     (write-to-string
+      `(progn
+         (vterm)
+         (vterm-insert ,cmd)
+         (vterm-send-return))))))
+
+(defparameter *visual-terminal-emulator-choices*
+  '("terminator" "x-terminal-emulator" "xterm" "gnome-terminal"
+    #'vterm-terminal)
+  "List of terminals emulators, either a string or a function (that returns a more complete command, as a string).
+  Used only from a dumb terminal. The goal is to use this on the Slime REPL.")
+
+(defparameter *visual-terminal-switches* '("-e")
+  "Default options to the terminal. `-e' aka `--command'.")
 
 (defvar *command-wrappers* '("sudo" "env"))
-;; thanks @ambrevar: https://github.com/ruricolist/cmd/issues/10
+
+(defun find-terminal ()
+  "Return the first terminal emulator found on the system from the `*visual-terminal-emulator-choices*' list."
+  (loop for program in *visual-terminal-emulator-choices*
+     if (and (stringp program)
+             (which:which program))
+     return program
+     else if (functionp program) return program))
 
 (defun basename (arg)
   ;; ARG can be any string. This fails with "(qs:?" (note the "?").
@@ -99,11 +126,37 @@ not in `*command-wrappers*' (sudo etc)."
   (ignore-errors
     (cmd:cmd text)))
 
+(defun run-shell-command-in-external-terminal (text)
+  "Launch a new terminal emulator window to run this command (string, sans \"!\" prefix\").
+
+ The goal is to use the same \"!\" syntax for visual commands in Slime.
+ TODO: We have to contribute this to Clesh."
+  (let* ((cmd (string-left-trim "!" text))
+         (terminal (find-terminal)))
+    (if (str:emptyp terminal)
+        (format *error-output* "Could not find a terminal emulator amongst the list ~a: ~s"
+                '*visual-terminal-emulator-choices*
+                *visual-terminal-emulator-choices*)
+        (cond
+          ((stringp terminal)
+           (uiop:launch-program `(,terminal
+                                  ;; flatten the list of switches
+                                  ,@*visual-terminal-switches*
+                                  ,cmd)))
+          ((functionp terminal)
+           (uiop:launch-program (funcall terminal cmd)))
+          (t
+           (format *error-output* "We cannot use a terminal designator of type ~a. Please use a string (\"xterm\") or a function that returns a string." (type-of terminal)))))))
+
 (defun run-visual-command (text)
-  "Run this command (string) in another terminal window."
-  (uiop:run-program (shell-ensure-clean-command-list text)
-                    :output :interactive
-                    :input :interactive))
+  "Run this visual command (string, sans \"!\" prefix).
+
+  If we are in a \"DUMB\" terminal, run it in another terminal window."
+  (if (termp:termp)
+      (uiop:run-program (shell-ensure-clean-command-list text)
+                        :output :interactive
+                        :input :interactive)
+      (run-shell-command-in-external-terminal text)))
 
 #+test-ciel
 (assert (string-equal "htop"
