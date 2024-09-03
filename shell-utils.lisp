@@ -1,17 +1,14 @@
 (in-package :sbcli)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Run visual / interactive / ncurses commands in their terminal window.
+;;; Run visual / interactive / ncurses commands.
 ;;;
 ;;; How to guess a program is interactive?
 ;;; We currently look from a hand-made list (à la Eshell).
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; thanks @ambrevar: https://github.com/ruricolist/cmd/issues/10
-;; for handling command wrappers (sudo) and vterm.
-
 (defparameter *visual-commands*
-  '(;; "emacs -nw" ;; in eshell, see concept of visual-subcommands.
+  '(;; "emacs -nw" ;; unsupported. In eshell, see the concept of visual-subcommands.
     "vim" "vi"
     "nano"
     "htop" "top"
@@ -22,37 +19,11 @@
     "mpv" "mplayer"
     "ipython" "irb" "iex"               ;; TBC
     ;; last but not least
-    "ciel-repl")
-  "List of visual/interactive/ncurses-based programs that will be run in their own terminal window.")
-
-(defun vterm-terminal (cmd)
-  "Build a command (string) to send to emacsclient to open CMD with Emacs' vterm."
-  (list
-   "emacsclient" "--eval"
-   (let ((*print-case* :downcase))
-     (write-to-string
-      `(progn
-         (vterm)
-         (vterm-insert ,cmd)
-         (vterm-send-return))))))
-
-(defparameter *visual-terminal-emulator-choices*
-  '("terminator" "x-terminal-emulator" "xterm" "gnome-terminal"
-    #'vterm-terminal)
-  "List of terminals, either a string or a function (that returns a more complete command, as a string).")
-
-(defparameter *visual-terminal-switches* '("-e")
-  "Default options to the terminal. `-e' aka `--command'.")
+    "ciel")
+  "List of visual/interactive/ncurses-based programs.")
 
 (defvar *command-wrappers* '("sudo" "env"))
-
-(defun find-terminal ()
-  "Return the first terminal emulator found on the system from the `*visual-terminal-emulator-choices*' list."
-  (loop for program in *visual-terminal-emulator-choices*
-     if (and (stringp program)
-             (which:which program))
-     return program
-     else if (functionp program) return program))
+;; thanks @ambrevar: https://github.com/ruricolist/cmd/issues/10
 
 (defun basename (arg)
   ;; ARG can be any string. This fails with "(qs:?" (note the "?").
@@ -61,21 +32,25 @@
       (namestring (pathname-name arg)))))
 
 (defun shell-command-wrapper-p (command)
-  "Is this command (string) a shell wrapper?"
+  "Is this command (string) a shell wrapper? (such as sudo or env)
+
+  See `*command-wrappers*'."
   (find (basename command)
         *command-wrappers*
         :test #'string-equal))
 
 (defun shell-flag-p (arg)
+  "Is this string a shell CLI flag? It starts with \"-\"."
   (str:starts-with-p "-" arg))
 
 (defun shell-variable-p (arg)
+  "Is this string a shell variable? It contains a \"=\" such as in \"foo=1\"."
   (and (< 1 (length arg))
        (str:contains? "=" (subseq arg 1))))
 
 (defun shell-first-positional-argument (command)
   "Recursively find the first command that's not a flag, not a variable setting and
-not in `*command-wrappers*'."
+not in `*command-wrappers*' (sudo etc)."
   (when command
     (if (or (shell-flag-p (first command))
             (shell-variable-p (first command))
@@ -88,9 +63,9 @@ not in `*command-wrappers*'."
   (unless (consp command)
     (setf command (shlex:split command)))
   ;; remove optional ! clesh syntax.
+  ;; and remove blank strings of the first word, in case we wrote "! command".
   (setf (first command)
         (string-left-trim "!" (first command)))
-  ;; remove blank strings, in case we wrote "! command".
   (remove-if #'str:blankp command))
 
 (defun %visual-command-p (command)
@@ -126,26 +101,13 @@ not in `*command-wrappers*'."
 
 (defun run-visual-command (text)
   "Run this command (string) in another terminal window."
-  (let* ((cmd (string-left-trim "!" text))
-         (terminal (find-terminal)))
-    (if (str:emptyp terminal)
-        (format *error-output* "Could not find a terminal emulator amongst the list ~a: ~s"
-                '*visual-terminal-emulator-choices*
-                *visual-terminal-emulator-choices*)
-        (cond
-          ((stringp terminal)
-           (uiop:launch-program `(,terminal
-                                  ;; flatten the list of switches
-                                  ,@*visual-terminal-switches*
-                                  ,cmd)))
-          ((functionp terminal)
-           (uiop:launch-program (funcall terminal cmd)))
-          (t
-           (format *error-output* "We cannot use a terminal designator of type ~a. Please use a string (\"xterm\") or a function that returns a string." (type-of terminal)))))))
+  (uiop:run-program (shell-ensure-clean-command-list text)
+                    :output :interactive
+                    :input :interactive))
 
-#+(or)
+#+test-ciel
 (assert (string-equal "htop"
-                      (visual-command-p "env rst=ldv sudo htop")))
+                      (visual-command-p "!env rst=ldv sudo htop")))
 
 (defun maybe-run-visual-command (cmd)
   (if (visual-command-p cmd)

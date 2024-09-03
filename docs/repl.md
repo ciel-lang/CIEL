@@ -9,6 +9,7 @@ CIEL's REPL is more user friendly than the default SBCL one. In particular:
 -  it has optional **syntax highlighting**.
 
 - it has a **shell pass-through**: try `!ls` (available in the `ciel-user` package)
+  - it runs **interactive commands**: try `!htop`, `!vim test.lisp`, `!emacsclient test.lisp` or `!env FOO=BAR sudo -i powertop`.
 - it has a quick **edit and load file** command: calling `%edit file.lisp` will open the file with the editor of the EDITOR environment variable. When you close it, the file is loaded and evaluated.
 
 -  it defines more **helper commands**:

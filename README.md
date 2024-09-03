@@ -345,6 +345,7 @@ CIEL ships a terminal REPL for the terminal which is more user friendly than the
 - it has an optional **lisp critic** that scans the code you enter at
   the REPL for instances of bad practices.
 - it has a **shell pass-through**: try `!ls`.
+  - it runs **interactive commands**: try `!htop`, `!vim test.lisp`, `!emacsclient test.lisp` or `!env FOO=BAR sudo -i powertop`.
 - it has **documentation lookup** shorthands: use `:doc symbol` or `?`
   after a symbol to get its documentation: `ciel-user> (dict ?`.
 - it has **developer friendly** macros: use `(printv code)` for an
