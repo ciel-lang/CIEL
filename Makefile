@@ -54,6 +54,11 @@ ql-deps: $(QLDIR)/asdf
 	$(call git-clone-pull,https://github.com/slburson/fset)
 
 
+	# updated Clesh for a shell pass-through that handles all shell commands interactively.
+	# So we now see the output in real time (instead of at the end of the execution),
+	# and commands like "emacs -nw" now work, in addition of sudo, vim or htop that were handled separately.
+	git clone https://github.com/lisp-maintainers/clesh ~/quicklisp/local-projects/clesh
+
 # Install some system dependencies.
 debian-deps:
 	apt-get install -y libinotifytools0

@@ -342,20 +342,21 @@ CIEL ships a terminal REPL for the terminal which is more user friendly than the
 - it handles errors gracefully: you are not dropped into the debugger
   and its sub-REPL, you simply see the error message.
 - it has optional **syntax highlighting**.
-- it has an optional **lisp critic** that scans the code you enter at
-  the REPL for instances of bad practices.
 - it has a **shell pass-through**: try `!ls`.
-  - it runs **interactive commands**: try `!htop`, `!vim test.lisp`, `!emacsclient test.lisp` or `!env FOO=BAR sudo -i powertop`.
+  - you can mix and match shell and Lisp: try `!echo ?(+ 1/3 1/3)` (look, a fraction)
+  - it runs **interactive commands**: try `!htop`, `!vim test.lisp`, `!emacs -nw test.lisp` or `!env FOO=BAR sudo -i powertop`.
 - it has **documentation lookup** shorthands: use `:doc symbol` or `?`
   after a symbol to get its documentation: `ciel-user> (dict ?`.
 - it has **developer friendly** macros: use `(printv code)` for an
   annotated trace output.
-- it integrates the **lisp critic**.
+- it has an optional **lisp critic** that scans the code you enter at
+  the REPL for instances of bad practices.
 - and it defines some more helper commands.
+- it works on Slime (to a certain extent)
 
 The CIEL terminal REPL loads the `~/.cielrc` init file at start-up if present. Don't load it with `--no-userinit`.
 
-See more in [*the documentation*](https://ciel-lang.github.io/CIEL/#/).
+See more in [*the documentation*](https://ciel-lang.github.io/CIEL/#/repl).
 
 > [!NOTE]
 > Our terminal readline REPL does NOT replace a good Common Lisp editor. You have more choices than Emacs. Check them out! https://lispcookbook.github.io/cl-cookbook/editor-support.html

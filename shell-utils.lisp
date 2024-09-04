@@ -3,12 +3,24 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Run visual / interactive / ncurses commands.
 ;;;
+;;; update <2024-09-04>: now all shell commands are run interactively.
+;;; It works for htop, vim, sudo, emacs -nw…
+;;;
+;;; except in Slime, where the interactivity doesn't work.
+;;; That means that the command is run synchronously and we see the output at once at the end.
+;;; So this code is meant to be used in Slime:
+;;; - guess a program is interactive
+;;; - run it on a new and dedicated terminal emulator (xterm or even Emacs' vterm).
+;;;
+;;; So,
 ;;; How to guess a program is interactive?
 ;;; We currently look from a hand-made list (à la Eshell).
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; all this is unused as of <2024-09-04> for the terminal CIEL repl
+;; but is to be used to support visual commands in Slime.
 (defparameter *visual-commands*
-  '(;; "emacs -nw" ;; unsupported. In eshell, see the concept of visual-subcommands.
+  '(;; "emacs -nw" ;; unsupported in Slime, works on the terminal. In eshell, see the concept of visual-subcommands.
     "vim" "vi"
     "nano"
     "htop" "top"
@@ -17,10 +29,13 @@
     "lynx" "links" "mutt" "pine" "tin" "elm" "ncftp" "ncdu"
     "ranger"
     "mpv" "mplayer"
-    "ipython" "irb" "iex"               ;; TBC
+    "ipython" "irb" "iex" ;; TBC
     ;; last but not least
     "ciel-repl")
-  "List of visual/interactive/ncurses-based programs that will be run in their own terminal window.")
+  "List of visual/interactive/ncurses-based programs that will be run in their own terminal window.
+
+  Visual commands work by default in the terminal REPL.
+  This would be useful only in Slime.")
 
 (defun vterm-terminal (cmd)
   "Build a command (string) to send to emacsclient to open CMD with Emacs' vterm."
@@ -57,13 +72,6 @@
   (ignore-errors
     (when arg
       (namestring (pathname-name arg)))))
-
-(defun shell-passthrough-p (arg)
-  "Return t if arg (string) starts with \"!\".
-
-  This is used to offer custom TAB completion, not to launch shell commands.
-  The Clesh readtable is responsible of that."
-  (str:starts-with-p "!" arg))
 
 (defun shell-command-wrapper-p (command)
   "Is this command (string) a shell wrapper? (such as sudo or env)

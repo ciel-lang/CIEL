@@ -420,6 +420,13 @@ strings to match candidates against (for example in the form \"package:sym\")."
                   (select-completions "str:con" (list "str:containsp" "str:concat" "str:constant-case"))
                   :test #'string-equal)))
 
+(defun shell-passthrough-p (arg)
+  "Return t if arg (string) starts with \"!\".
+
+  This is used to offer custom TAB completion, not to launch shell commands.
+  The Clesh readtable is responsible of that."
+  (str:starts-with-p "!" arg))
+
 (defun complete-filename-p (text start end &key (line-buffer rl:*line-buffer*))
   "Return T if we should feed the tab completion candidates filenames, instead of the regular Lisp symbols.
   We answer yes when we are tab-completing a secord word on the prompt and a quote comes before it.
@@ -569,14 +576,12 @@ strings to match candidates against (for example in the form \"package:sym\")."
       ((str:ends-with-p " ?" text)
        (sbcli::symbol-documentation (last-nested-expr text)))
 
-      ;; Handle visual commands: run in their own terminal window.
-      ;; XXX: we can do better, see
-      ;; https://lispcookbook.github.io/cl-cookbook/os.html#running-interactive-and-visual-commands-htop
-      ((visual-command-p text)
-       (run-visual-command text))
+      ;; Interactive and visual shell command?
+      ;; They are now handled by Clesh.
+      ;; When on a non "dumb" terminal, all shell commands are run interactively.
 
-      ;; shell command? No need to check for a "!" in the input here,
-      ;; it's done with the clesh readtable later when handling lisp.
+      ;; No need to check for a "!" in the input here,
+      ;; it's done with the clesh readtable when handling lisp.
 
       ;; Default: run the lisp command (with the lisp-critic, the shell passthrough
       ;; and other add-ons).
