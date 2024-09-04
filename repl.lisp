@@ -68,7 +68,7 @@
   #+quicklisp
   (format stream "~&Quicklisp: ~a~&" (ql-dist:all-dists))
   #-quicklisp
-  (format stream "!! Quicklisp is not installed !!"))
+  (format stream "Quicklisp is not installed~&"))
 
 (defun read-hist-file ()
   (with-open-file (in *hist-file* :if-does-not-exist :create)
