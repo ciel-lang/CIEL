@@ -30,14 +30,13 @@ build debian:
     # Clone upstream QL libraries.
     - make ql-deps
   script:
+    # build a ciel binary on cwd:
     - make build
-    # - make image
-    - mv bin ciel-v0-debian
 
   artifacts:
-    name: "ciel-v0-debian"
+    name: "ciel"
     paths:
-      - ciel-v0-debian/
+      - ciel
 
 build void:
   stage: build
@@ -64,10 +63,10 @@ build void:
     # Clone upstream QL libraries.
     - make ql-deps
   script:
+    # build a ciel binary on cwd:
     - make build
-    - mv bin ciel-v0-void
 
   artifacts:
-    name: "ciel-v0-void"
+    name: "ciel"
     paths:
-      - ciel-v0-void/
+      - ciel
