@@ -20,8 +20,14 @@ $(QLDIR)/asdf:
 		tar -xvzf - && \
 		mv asdf-3.3.5 asdf
 
+asdf: $(QLDIR)/asdf
+	@echo "New ASDF version installed to " $(QLDIR)
+
+check-asdf-version:
+	sbcl --script check-asdf-version.lisp || echo "Your ASDF version is too old. You can update it with 'make asdf'. It will be downloaded to " $(QLDIR) ". You can set QLDIR."
+
 # Install some Quicklisp dependencies.
-ql-deps: $(QLDIR)/asdf
+ql-deps: check-asdf-version
 	# 2023-11: The symbol SB-INT:TRULY-DYNAMIC-EXTENT is absent since at least
 	# SBCL v2.3.10, which was required in older versions of cl-environments
 	# and cl-form-types.
@@ -57,7 +63,7 @@ ql-deps: $(QLDIR)/asdf
 	# updated Clesh for a shell pass-through that handles all shell commands interactively.
 	# So we now see the output in real time (instead of at the end of the execution),
 	# and commands like "emacs -nw" now work, in addition of sudo, vim or htop that were handled separately.
-	git clone https://github.com/lisp-maintainers/clesh ~/quicklisp/local-projects/clesh
+	$(call git-clone-pull,https://github.com/lisp-maintainers/clesh)
 
 # Install some system dependencies.
 debian-deps:
