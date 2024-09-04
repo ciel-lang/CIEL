@@ -101,6 +101,38 @@ Moreover, we bring:
 
 See *the documentation*.
 
+<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
+**Table of Contents**
+
+- [CIEL Is an Extended Lisp](#ciel-is-an-extended-lisp)
+    - [What is this ?](#what-is-this-)
+    - [Rationale](#rationale)
+- [Install](#install)
+    - [Download a binary. For scripting and the custom REPL.](#download-a-binary-for-scripting-and-the-custom-repl)
+- [Build](#build)
+    - [Dependencies](#dependencies)
+        - [System dependencies](#system-dependencies)
+        - [ASDF >= 3.3.4 (local-nicknames)](#asdf--334-local-nicknames)
+        - [Install Quicklisp](#install-quicklisp)
+        - [Install our Lisp dependencies [MANDATORY]](#install-our-lisp-dependencies-mandatory)
+    - [How to load CIEL with Quicklisp](#how-to-load-ciel-with-quicklisp)
+    - [How to build a CIEL binary and a core image](#how-to-build-a-ciel-binary-and-a-core-image)
+    - [Docker](#docker)
+- [Usage](#usage)
+    - [Scripting](#scripting)
+    - [Terminal REPL](#terminal-repl)
+    - [CIEL as a library: "use" :ciel in your Lisp systems](#ciel-as-a-library-use-ciel-in-your-lisp-systems)
+    - [Core image: configure your editor](#core-image-configure-your-editor)
+- [Libraries](#libraries)
+- [Language extensions](#language-extensions)
+- [Final words](#final-words)
+- [Misc: how to generate the documentation](#misc-how-to-generate-the-documentation)
+- [Contributors](#contributors)
+- [Lisp?!](#lisp)
+
+<!-- markdown-toc end -->
+
+
 # Install
 
 ## Download a binary. For scripting and the custom REPL.
@@ -339,6 +371,7 @@ CIEL ships a terminal REPL for the terminal which is more user friendly than the
   shell.
 - it has **multiline input**.
 - it has **TAB completion**.
+  - including for files (after a bracket) and binaries in the PATH.
 - it handles errors gracefully: you are not dropped into the debugger
   and its sub-REPL, you simply see the error message.
 - it has optional **syntax highlighting**.
@@ -438,7 +471,7 @@ The Lisp process should start instantly, as fast as the default SBCL,
 you won't wait for the quicklisp libraries to load.
 
 
-## Libraries
+# Libraries
 
 We import, use and document libraries to fill various use cases: generic
 access to data structures, functional data structures, string
@@ -451,7 +484,7 @@ See the documentation.
 To see the full list of dependencies, see the `ciel.asd` project
 definition or this [dependencies list](docs/dependencies.md).
 
-## Language extensions
+# Language extensions
 
 We provide arrow macros, easy type declaratons in the function lambda
 list, macros for exhaustiveness type checking, pattern matching, etc.
