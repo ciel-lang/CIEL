@@ -6,7 +6,7 @@
 
 (asdf:defsystem "ciel"
   :description "CIEL Is an Extended Lisp (Common Lisp, batteries included)."
-  :version "0.2-202408-QL202310"
+  :version "0.2.1"
   :author "vindarel"
   :license "MIT"
   :homepage "https://github.com/ciel-lang/CIEL/"

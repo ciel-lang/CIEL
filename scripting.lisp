@@ -1,7 +1,8 @@
 
 (in-package :ciel)
 
-(defparameter *ciel-version* "0.1" "Read from .asd or version.lisp-expr file.")
+(defparameter *ciel-version* #.(asdf:component-version (asdf:find-system :ciel))
+  "CIEL's version, read from the .asd.")
 
 (defparameter *scripts* (dict 'equalp)
   "Available scripts.
