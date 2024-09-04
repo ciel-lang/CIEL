@@ -12,6 +12,8 @@
   <a href="https://ko-fi.com/vindarel"> Buy me a coffee! </a>
 </p>
 
+<p align="center"><img src="https://avatars.githubusercontent.com/u/72611034?s=48&v=4" /></p>
+
 # CIEL Is an Extended Lisp
 
 STATUS: ~~highly~~ WIP, the API WILL change, but it is usable.
@@ -200,11 +202,13 @@ ASDF is the de-facto system definition facility of Common Lisp, that
 lets you define your system's metadata (author, dependencies, sources,
 modules…).
 
-Please ensure that you have ASDF >= 3.3.4.
+Please ensure that you have ASDF >= 3.3.4. It is for instance not the case with SBCL 2.2.9.
 
-It is for instance not the case with SBCL 2.2.9.
+Ask the version with our script:
 
-Ask the version with `(asdf:asdf-version)` on a Lisp REPL, or with
+    $ make check-asdf-version
+
+or yourself with`(asdf:asdf-version)` on a Lisp REPL, or with
 this one-liner from a terminal:
 
     $ sbcl  --eval '(and (print (asdf:asdf-version)) (quit))'

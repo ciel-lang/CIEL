@@ -1,5 +1,5 @@
 
-* [Home](/)
+* [CIEL](/)
 * [Install](install.md)
 * [Scripting](scripting.md)
 * [REPL and shell integration](repl.md)
