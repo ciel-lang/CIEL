@@ -14,6 +14,7 @@ To download a CIEL binary:
 - we provide a binary from a CI for some systems: go to
   <https://gitlab.com/vindarel/ciel/-/pipelines>, download the latest
   artifacts, unzip the `ciel-v0-{platform}.zip` archive and run `ciel-v0-{platform}/ciel`.
+- using the [Guix](https://guix.gnu.org/) package manager, install package `sbcl-ciel-repl`.
 
 CIEL is currently built for the following platforms:
 
@@ -150,7 +151,9 @@ you now have access to all CIEL's packages and functions.
 
 ## How to build a CIEL binary and a core image
 
-You need the dependencies above: Quicklisp, a good ASDF version, our up-to-date Lisp dependencies.
+If you use the [Guix](https://guix.gnu.org/) package manager, install package output `sbcl-ciel:image`. It contains a prebuilt image under `bin/ciel.image`.
+
+For all other setups, you have to build a core image yourself. You need the dependencies above: Quicklisp, a good ASDF version, our up-to-date Lisp dependencies.
 
 To build CIEL's binary, use:
 
@@ -208,7 +211,7 @@ So, save you some typing with a shell alias:
 
 ## "use" ciel in your Lisp systems
 
-You can install and `quickload` CIEL like any other Common Lisp library.
+You can install and `quickload` CIEL like any other Common Lisp library. It is also available via the [Guix](https://guix.gnu.org/) package manager, as a source code package (`cl-ciel`) or precompiled for SBCL (`sbcl-ciel`) and ECL (`ecl-ciel`).
 
 To use it in your project, create a package and "use" `ciel` in addition
 of `cl`:
