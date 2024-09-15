@@ -397,8 +397,6 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
 (defparameter *current-pprint-indentation* 1
   "We use custom indentation instead of the pretty printer, because it doesn't print correctly in the shell (indentations are way too large).")
 
-(pushnew :ciel *features*)
-
 ;; TEST
 (defun pretty-print-hash-table (ht &optional (stream *standard-output*))
   "Pretty print hash-table HT to STREAM.
