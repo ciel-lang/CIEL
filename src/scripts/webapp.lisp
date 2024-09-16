@@ -18,7 +18,7 @@
 (defun stop-webapp ()
   (hunchentoot:stop *server*))
 
-#+ciel
+#+ciel-script
 (progn
   (start-webapp)
   (format t "~&App started on localhost:4567…~&")

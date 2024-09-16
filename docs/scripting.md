@@ -189,7 +189,7 @@ Finally, we write a handler function, that reads the arguments and does somethin
 Now, run everything:
 
 ~~~lisp
-#+ciel
+#+ciel-script
 (clingon:run *cli/command* *script-args*)
 ~~~
 
@@ -277,7 +277,7 @@ How it works:
 
 ## Main function and interactive development
 
-TLDR: use the `#+ciel` feature flag as in:
+TLDR: use the `#+ciel-script` feature flag as in:
 
 ~~~lisp
 (in-package :ciel-user)
@@ -285,7 +285,7 @@ TLDR: use the `#+ciel` feature flag as in:
 (defun main ()
   …)
 
-#+ciel
+#+ciel-script
 (main)
 ~~~
 
@@ -320,7 +320,7 @@ list. The `#+foo` reader macro is the way to check if the feature
 always disable a piece of code, the pattern is `#+(or)`, that always
 evaluates to nil.
 
-Make sure you are "in" the `ciel-user` package when writing this `#+ciel` check.
+Make sure you are "in" the `ciel-user` package when writing this `#+ciel-script` check.
 
 
 ## Eval and one-liners
@@ -496,7 +496,7 @@ This creates one route on `/` with an optional `name` parameter. Go to `localhos
 (defun stop-webapp ()
   (hunchentoot:stop *server*))
 
-#+ciel
+#+ciel-script
 (progn
   (start-webapp)
   (format t "~&App started on localhost:4567…~&")
@@ -533,7 +533,7 @@ This allows you to have a dumb "live reload" workflow with a simple editor and a
             ;; Catch some READ errors, such as parenthesis not closed, etc. 
             (format! t "~%~%read error, waiting for change…~&"))))))
 
-#+ciel
+#+ciel-script
 (unless *server*
   (start-webapp)
   (format t "~&App started on localhost:4567…~&")

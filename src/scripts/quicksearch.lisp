@@ -18,5 +18,5 @@
 
 ;; We use a "feature flag" kind of like a "file == __main__" check:
 ;; don't run this when developing on the REPL, but yes run it when calling it with CIEL.
-#+ciel
+#+ciel-script
 (quicksearch:? (second uiop:*command-line-arguments*) :ud)  ;; url and details.

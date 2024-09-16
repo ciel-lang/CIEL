@@ -209,5 +209,5 @@ the script name.
 
 ;; Call the main function only when running this as a script,
 ;; not when developing on the REPL.
-#+ciel
+#+ciel-script
 (clingon:run (cli/command) *script-args*)

@@ -48,7 +48,7 @@
       (t
        ;; Run it!
        ;; We first add a symbol in the feature list, so a script nows when it is being executed.
-       (push :ciel ciel-user::*features*)
+       (push :ciel-script ciel-user::*features*)
        ;; We ignore the shebang line, if there is one.
        ;; We can call scripts either with ciel -s <name> or with ./script
        (load (maybe-ignore-shebang
@@ -226,7 +226,7 @@
           ((and (first args)
                 (uiop:file-exists-p (first args)))
            ;; Add a symbol in the feature list, so a script knows when it is being executed.
-           (push :ciel ciel-user::*features*)
+           (push :ciel-script ciel-user::*features*)
 
            ;; The remaining free args are passed along to our script's arguments.
            ;; Here the file name is already a free arg, so args equals something like

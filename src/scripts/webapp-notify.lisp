@@ -48,7 +48,7 @@
           (format! t "~%~%read error, waiting for change…~&"))))))
 
 
-#+ciel
+#+ciel-script
 (unless *server*
   (start-webapp)
   (format t "~&App started on localhost:4567…~&")

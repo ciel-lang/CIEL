@@ -35,7 +35,7 @@
 
 ;; Feature flag:
 ;; call our main function only when running the script, not when developing on the REPL.
-#+ciel
+#+ciel-script
 (main (second uiop:*command-line-arguments*) (third uiop:*command-line-arguments*))
-#-ciel
+#-ciel-script
 (format t "Usage: (main url pointer)~&")

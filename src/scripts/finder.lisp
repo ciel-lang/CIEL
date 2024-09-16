@@ -37,5 +37,5 @@
           list)
   (terpri))
 
-#+ciel
+#+ciel-script
 (pprint-for-shell (find-files (rest *script-args*)))
