@@ -126,7 +126,7 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
 (defparameter *deps/alexandria-2/sequences*
   '(:subseq*))
 
-(cl-reexport:reexport-from :alexandria-2
+(cl-reexport:reexport-from :alexandria
                            :include
                            *deps/alexandria-2/sequences*)
 
@@ -397,7 +397,7 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
 (defparameter *current-pprint-indentation* 1
   "We use custom indentation instead of the pretty printer, because it doesn't print correctly in the shell (indentations are way too large).")
 
-;TEST
+;; TEST
 (defun pretty-print-hash-table (ht &optional (stream *standard-output*))
   "Pretty print hash-table HT to STREAM.
 
