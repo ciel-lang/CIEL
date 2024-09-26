@@ -18,7 +18,8 @@
   (:export #:enable-shell-passthrough
            #:disable-shell-passthrough
            #:-->
-           #:^))
+           #:^
+           #:load-without-shebang))
 
 (uiop:define-package ciel-user
   (:use :cl :ciel)
