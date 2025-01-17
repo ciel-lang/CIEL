@@ -233,7 +233,8 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
 ;; serapeum: functions
 (cl-reexport:reexport-from :serapeum
                            :include
-                           '(:partial))
+                           '(:partial
+                             :juxt))
 ;;
 (cl-reexport:reexport-from :alexandria
                            :include
