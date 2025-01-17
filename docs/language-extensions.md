@@ -56,6 +56,20 @@ And there is more. All the available macros are:
 :some-<>>
 ```
 
+## Functions
+
+We import Serapeum's `partial` and Alexandria's `rcurry`. They allow
+partial application of functions.
+
+`partial` is similar to `alexandria:curry` but is always inlined.
+
+We import Serapeum's `juxt`.
+
+You can check [Serapeum's function helpers](https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#functions),
+the non-imported ones are only a `serapeum` package prefix away in CIEL if you need
+them. Other noticeable functions: `distinct`, `once`, `throttle`, `trampoline`, `do-nothing`…
+
+
 ## Bind, more destructuring in `let` (metabang-bind)
 
 We import the `bind` macro from [metabang-bind](https://common-lisp.net/project/metabang-bind/user-guide.html) ([GitHub](https://github.com/gwkkwg/metabang-bind)).
@@ -317,6 +331,7 @@ Above we use the `list` pattern, and we verify a predicate.
 Trivia has more tricks in its sleeve. See the [special patterns](https://github.com/guicho271828/trivia/wiki/Special-Patterns) (access and change objects), the [ppcre contrib](https://github.com/guicho271828/trivia/wiki/Contrib-packages), etc.
 
 You migth also be interested in exhaustiveness type checking explained just below.
+
 
 
 Type declarations

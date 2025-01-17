@@ -230,6 +230,16 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
                            :include
                            '(:defalias))
 
+;; serapeum: functions
+(cl-reexport:reexport-from :serapeum
+                           :include
+                           '(:partial))
+;;
+(cl-reexport:reexport-from :alexandria
+                           :include
+                           '(:rcurry))
+
+
 (cl-reexport:reexport-from :trivial-arguments
                            :include '(:arglist))
 
