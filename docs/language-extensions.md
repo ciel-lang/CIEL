@@ -183,6 +183,8 @@ And there is more. All the available macros are:
 
 ## Functions
 
+### Partial application
+
 We import Serapeum's `partial` and Alexandria's `rcurry`. They allow
 partial application of functions.
 
@@ -193,6 +195,25 @@ We import Serapeum's `juxt`.
 You can check [Serapeum's function helpers](https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#functions),
 the non-imported ones are only a `serapeum` package prefix away in CIEL if you need
 them. Other noticeable functions: `distinct`, `once`, `throttle`, `trampoline`, `do-nothing`…
+
+### Memoization
+
+We import `defcached` from
+[function-cache](https://github.com/AccelerationNet/function-cache), a
+library that provides extensible caching/memoization.
+
+For example:
+
+```lisp
+(defcached (foo :timeout 10) (arg)
+  (sleep 3)
+  arg)
+```
+
+Run `(foo 1)`, it sleeps 3 seconds and returns 1. Run `(foo 1)` again
+and it returns 1 immediately. Its result (for this argument) is cached
+for 10 seconds.
+
 
 
 ## Bind, more destructuring in `let` (metabang-bind)

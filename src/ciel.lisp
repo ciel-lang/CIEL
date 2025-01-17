@@ -290,6 +290,11 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
 (export '(apropos-regex
           apropos-regex-list))
 
+;; function-cache: memoization
+(cl-reexport:reexport-from :function-cache
+                           :include '(:defcached))  ;; not in binary??
+
+
 ;;;
 ;;; Conveniently add type declarations.
 ;;; Straight from Serapeum, only it is -> thus it conflicts with our arrow-macro.

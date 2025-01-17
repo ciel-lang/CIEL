@@ -142,6 +142,8 @@
                :serapeum
                :shlex
 
+               :function-cache  ;; memoization
+
                ;; tests
                :fiveam
 
