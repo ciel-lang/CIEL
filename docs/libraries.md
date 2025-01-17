@@ -2,131 +2,8 @@
 
 To see the full list of dependencies, see the `ciel.asd` project definition or this [dependencies list](dependencies.md).
 
-## Data structures
+To browse and find other Common Lisp libraries, please visite [awesome-cl](https://github.com/CodyReichert/awesome-cl). They are a `quickload` away.
 
-### Generic and nested access to datastructures (access)
-
-From [Access](https://github.com/AccelerationNet/access/), we import `access` and `accesses` (plural).
-
-It's always
-
-```lisp
-(access my-structure :elt)
-```
-
-for an alist, a hash-table, a struct, an object… Use `accesses` for nested access (specially useful with JSON). See also `json-pointer`.
-
-### Hash-table utilities (Alexandria and Serapeum)
-
-We import functions from [Alexandria](https://alexandria.common-lisp.dev/draft/alexandria.html#Hash-Tables) and [Serapeum](https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#hash-tables).
-
-To see their full list with their documentation, see [alexandria](alexandria.md) [serapeum](serapeum.md).
-
-```txt
-;; alexandria
-hash-table-keys
-hash-table-values
-ensure-gethash
-```
-
-``` txt
-;; serapeum
-:dict
-:do-hash-table ;; see also trivial-do
-:dict*
-:dictq  ;; quoted
-:href  ;; for nested lookup.
-:href-default
-:pophash
-:swaphash
-:hash-fold
-:maphash-return
-:merge-tables
-:flip-hash-table
-:set-hash-table
-:hash-table-set
-:hash-table-predicate
-:hash-table-function
-:make-hash-table-function
-:delete-from-hash-table
-:pairhash
-```
-
-Here's how we can create a hash-table with keys and values:
-
-``` lisp
-;; create a hash-table:
-(dict :a 1 :b 2 :c 3)
-;; =>
-(dict
- :A 1
- :B 2
- :C 3
-)
-```
-
-In default Common Lisp, you would do:
-
-```lisp
-  (let ((ht (make-hash-table :test 'equal)))
-    (setf (gethash :a ht) 1)
-    (setf (gethash :b ht) 2)
-    (setf (gethash :c ht) 3)
-    ht)
-;; #<HASH-TABLE :TEST EQUAL :COUNT 3 {1006CE5613}>
-```
-
-As seen above, hash-tables are pretty-printed by default.
-
-You can toggle the representation with `toggle-pretty-print-hash-table`, or by setting
-
-```lisp
-(setf *pretty-print-hash-tables* nil)
-```
-
-in your configuration file.
-
-### Sequences utilities (Alexandria, Serapeum)
-
-From [Serapeum](https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#sequences) we import:
-
-``` txt
-:assort
-:batches
-:filter
-:runs
-:partition
-:partitions
-:split-sequence
-```
-
-And from [Alexandria](https://common-lisp.net/project/alexandria/draft/alexandria.html):
-
-``` text
-:iota
-:flatten
-:shuffle
-:random-elt
-:length=
-:last-elt
-:emptyp
-```
-
-From `alexandria-2` we import:
-
-```text
-:subseq*  (the end argument can be larger than the sequence's length)
-```
-
-and some more.
-
-### String manipulation (str)
-
-Available with the `str` prefix.
-
-It provides functions such as: `trim`, `join`, `concat`, `split`, `repeat`, `pad`, `substring`, `replace-all`, `emptyp`, `blankp`, `alphanump`, `upcase`, `upcasep`, `remove-punctuation`, `from-file`, `to-file`…
-
-See <https://github.com/vindarel/cl-str/> and https://lispcookbook.github.io/cl-cookbook/strings.html
 
 Data formats
 ------------
@@ -410,6 +287,10 @@ A JSON pointer starts with a "/".
 <!-- A note on functions naming: [cl-json-pointer](https://github.com/y2q-actionman/cl-json-pointer/) has some lengthy function names by default (`get-by-json-pointer`), especially if we access them with the `json-pointer:` prefix. They provide very short ones (`get`), they live in another package name `cl-json-pointer/synonyms`. Our `json-pointer` is a nickname to it. If you want to import all the json-pointer functions with `use-package`, you can do so with `cl-json-pointer`. We created smaller function names, which you can import without conflicts (`get-by`). -->
 
 
+### YAML (not included)
+
+Please quickload `cl-yaml` (uses libyaml) or have a look at [nyaml](https://github.com/jasom/nyaml), a Lisp native parser and dumper
+
 
 ## Date and time
 
@@ -473,8 +354,6 @@ See some functions under `uiop`, especially under `uiop/filesystem` (`filesystem
 
 Example functions (not exhaustive):
 
-> NB: you cane use the `finder` local nickname in the `ciel-user` package.
-
 ```
 ;; filesystem is a nickname for UIOP, that includes a few more functions.
 filesystem:call-with-current-directory
@@ -521,10 +400,11 @@ We also ship [file-finder](https://github.com/lisp-maintainers/file-finder), whi
 - change metada: the class slots have setters that write to disk,
 - manipulate paths and avoid common pitfalls from the built-in and UIOP functions.
 
+> NB: you can use the `finder` local nickname in the `ciel-user` package.
+
+
 Note that file-finder is not meant to manipulate arbitrary paths of non-existing files.
 Consider using [ppath](https://github.com/fourier/ppath) instead.
-
-> Note: file-finder is a lightweight fork of `fof` which is still a bit richer.
 
 Quick examples:
 
@@ -626,26 +506,6 @@ Use the `with-nodgui` macro to define your GUI, use `make-instance` + a widget n
 ```
 
 Read more: <https://lispcookbook.github.io/cl-cookbook/gui.html#tk>
-
-## Iteration
-
-See <https://lispcookbook.github.io/cl-cookbook/iteration.html> for examples, including about the good old `loop`.
-
-We import macros from [trivial-do](https://github.com/yitzchak/trivial-do/), that provides `dolist`-like macro to iterate over more structures:
-
-- `dohash`: dohash iterates over the elements of an hash table and binds key-var to the key, value-var to the associated value and then evaluates body as a tagbody that can include declarations. Finally the result-form is returned after the iteration completes.
-
-- `doplist`: doplist iterates over the elements of an plist and binds key-var to the key, value-var to the associated value and then evaluates body as a tagbody that can include declarations. Finally the result-form is returned after the iteration completes.
-
-- `doalist`: doalist iterates over the elements of an alist and binds key-var to the car of each element, value-var to the cdr of each element and then evaluates body as a tagbody that can include declarations. Finally the result-form is returned after the iteration completes.
-
-- `doseq*`: doseq\* iterates over the elements of an sequence and binds position-var to the index of each element, value-var to each element and then evaluates body as a tagbody that can include declarations. Finally the result-form is returned after the iteration completes.
-
-- `doseq`: doseq iterates over the elements of an sequence and binds value-var to successive values and then evaluates body as a tagbody that can include declarations. Finally the result-form is returned after the iteration completes.
-
-- `dolist*`: dolist\* iterates over the elements of an list and binds position-var to the index of each element, value-var to each element and then evaluates body as a tagbody that can include declarations. Finally the result-form is returned after the iteration completes.
-
-We ship `for` so you can try it, but we don't import its symbols.
 
 
 ## Numerical and scientific
@@ -799,12 +659,6 @@ We include [file-notify](https://github.com/shinmera/file-notify) to watch chang
 
 
 
-## Regular expressions
-
-Use `ppcre`.
-
-See <https://common-lisp-libraries.readthedocs.io/cl-ppcre> and <https://lispcookbook.github.io/cl-cookbook/regexp.html>
-
 ## Security
 
 We ship [secret-values](https://github.com/rotatef/secret-values) that
@@ -883,10 +737,19 @@ See:
 
 We ship:
 
--   Hunchentoot
--   Easy-routes
+-   Hunchentoot (web server)
+-   Easy-routes (route facility and middleware)
 
-<https://lispcookbook.github.io/cl-cookbook/web.html>
+<https://web-apps-in-lisp.github.io/>
+
+More over, see our `simpleHTTPserver` script, built-in, to serve a local directory:
+
+    $ ciel -s simpleHTTPserver
+    Serving files on port 9000…
+    ⤷ http://127.0.0.1:9000
+
+*(the script name is case insensitive)*
+
 
 ## Networking
 
@@ -906,7 +769,12 @@ It is available under the `ftp` package name. Here's a quick snippet:
 
 and that's it!
 
+To connect to an SFTP server or to another protocol, have a look at our [lftp-wrapper](https://github.com/vindarel/lftp-wrapper). Or simply default out to shell commands with `uiop:run-command` or `cmd:cmd`.
+
+
 ## Other utilities
+
+### Progress bar
 
 We ship [progressons](https://github.com/vindarel/progressons), a simple progress bar.
 
@@ -930,16 +798,6 @@ wether you are inside a dumb terminal, like Slime's REPL, or a real
 one. This check is done by looking at the `TERM` environment variable.
 
 ## Development
-
-### Defining packages
-
-`defpackage` is nice and well, until you notice some shortcomings. That's why we import UIOP's `define-package`. You'll get:
-
-- less warnings when you remove an exported symbol
-- a `:reexport` option (as well as `:use-reexport` and `:mix-reeport`)
-- `:recycle` and `:mix` options.
-
-Here's [uiop:define-package documentation](https://asdf.common-lisp.dev/uiop.html#UIOP_002fPACKAGE).
 
 
 ### Testing (Fiveam)
