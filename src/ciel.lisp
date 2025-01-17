@@ -168,10 +168,11 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
             "Symbols imported from ALEXANDRIA for control flow.")
       *doc-pages*)
 
-;; serapeum: sequences/hash tables
+;; serapeum: sequences and hash tables
 (defparameter *deps/serapeum/sequences-hashtables*
   '(:assort
     :batches
+    :filter
     :iota
     :runs
     :partition

@@ -88,11 +88,12 @@ in your configuration file.
 
 ### Sequences utilities (Alexandria, Serapeum)
 
-From *Serapeum* we import:
+From [Serapeum](https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#sequences) we import:
 
 ``` txt
 :assort
 :batches
+:filter
 :runs
 :partition
 :partitions
