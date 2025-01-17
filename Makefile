@@ -86,7 +86,7 @@ run-repl:
 image:
 	$(LISP) --load build-image.lisp
 
-build:
+build: clean
 	$(LISP) --non-interactive \
 		--eval '(ql:quickload "cl+ssl")' \
 		--load ciel.asd \
@@ -101,3 +101,6 @@ gen-dependencies-list:
 
 serve-docs:
 	docsify serve docs/
+
+clean:
+	rm ciel
