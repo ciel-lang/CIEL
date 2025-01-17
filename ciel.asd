@@ -200,3 +200,9 @@
 ;;; This defines ciel.asd. It is enough to quickload CIEL.
 ;;; But to build a binary,
 ;;; see build-config.lisp for extra config.
+
+;; build a smaller executable with SBCL's core compression:
+;; from 119MB to 28MB, however startup time increases from 0.02 to 0.35s (noticeable).
+#+sb-core-compression
+(defmethod asdf:perform ((o asdf:image-op) (c asdf:system))
+  (uiop:dump-image (asdf:output-file o c) :executable t :compression t))
