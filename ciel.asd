@@ -21,26 +21,17 @@
                :alexandria
                :arrow-macros
 
-               ;; Those are two dependencies that we like,
-               ;; but that depend on osicat, hence complicate deployment of binaries.
-               ;; check with (ql:who-depends-on "osicat")
-               ;; Maybe create a sub-system with them.
+               ;; Previously, we had dependencies that depended on Osicat (fof, moira),
+               ;; hence complicating deployment of binaries.
+               ;; Check with (ql:who-depends-on "osicat") and ditch Osicat.
                ;;
-               ;; :fof  ;; concise file-object finder
-               ;; lightweight fork, not in Quicklisp as of <2024-08-30>:
-               :file-finder
-               ;; :moira  ;; monitor and restart background threads.
-               ;; This system doesn't depend on Osicat:
-               :moira/light  ;; since <2023-11-23 Thu> and still not in Quicklisp…
-               ;;
-               ;; see
-               ;; https://gitlab.com/ambrevar/fof/-/issues/6
-               ;; https://github.com/ruricolist/moira/issues/1
+               :file-finder  ;; file-object finder
 
                ;; threads
                :bordeaux-threads
                :trivial-monitored-thread
                :lparallel
+               :moira/light  ;; monitor background threads
                :cl-cron
 
                :closer-mop
