@@ -86,7 +86,7 @@ run-repl:
 image:
 	$(LISP) --load build-image.lisp
 
-build: clean
+build:
 	$(LISP) --non-interactive \
 		--eval '(ql:quickload "cl+ssl")' \
 		--load ciel.asd \
