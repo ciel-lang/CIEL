@@ -43,6 +43,30 @@
   (:export
    #:*script-args*))
 
+(uiop:define-package ciel-5am-user
+    (:use :cl :ciel
+          ;; one addition from ciel-user:
+          :5am)
+  (:local-nicknames (:/os :uiop/os)     ; let's try this nickname.
+                    ;; Simply :os doesn't help at auto-discovery with SLIME's autocompletion.
+                    ;; But let's add it anyways for correctness,
+                    ;; it's handy for the shell and scripts.
+                    (:os :uiop/os)
+                    ;; This other uiop module is always useful:
+                    (:filesystem :uiop/filesystem)
+                    (:finder :file-finder)
+                    (:notify :org.shirakumo.file-notify)
+
+                    (:alex :alexandria)
+                    (:csv :cl-csv)
+                    (:http :dexador)
+                    (:json :shasht)
+                    (:json-pointer :cl-json-pointer/synonyms)
+                    (:time :local-time)
+                    (:routes :easy-routes))
+  (:documentation "Same package as ciel-user, with the added symbols of fiveam, in order to define ad run unit tests."))
+
+
 ;TODO: a conflict between Serapeum and generic-cl
 (uiop:define-package generic-ciel
   (:use :generic-cl

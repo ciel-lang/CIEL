@@ -420,6 +420,36 @@ It is a drop-in replacement.
 
 Here's [uiop:define-package documentation](https://asdf.common-lisp.dev/uiop.html#UIOP_002fPACKAGE).
 
+### Packages local nicknames
+
+CIEL defines local nicknames for other libraries.
+
+For example, `csv` is a shorter nickname for `cl-csv`. `time` is a
+shorter nickname for `local-time`.
+
+They are available when you are "inside" the CIEL-USER package (when you do `(in-package :ciel-user)`).
+
+If you define a new package that "uses" CIEL, you might want to also
+get this set of nicknames. Here's the full list:
+
+~~~lisp
+(uiop:define-package myproject
+    (:use :cl :ciel)
+    (:local-nicknames (:/os :uiop/os)
+                      (:os :uiop/os)
+                      (:filesystem :uiop/filesystem)
+                      (:finder :file-finder)
+                      (:notify :org.shirakumo.file-notify)
+                      (:alex :alexandria)
+                      (:csv :cl-csv)
+                      (:http :dexador)
+                      (:json :shasht)
+                      (:json-pointer :cl-json-pointer/synonyms)
+                      (:time :local-time)
+                      (:routes :easy-routes))
+    (:documentation "My package, using CIEL and defining the same local nicknames."))
+~~~
+
 
 
 Pattern matching

@@ -804,13 +804,15 @@ one. This check is done by looking at the `TERM` environment variable.
 
 The [FiveAM](https://common-lisp.net/project/fiveam/docs/) test framework is available for use.
 
-Below we create a package to contain our tests and we define the most simple one:
+CIEL defines a package `ciel-5am-user` that also "uses" all Fiveam symbols, in addition of all others.
+
+It's best to define your own test package for your application (see
+below), but you can start with this one.
+
+Here's how we define a very simple test:
 
 ```lisp
-(defpackage ciel-5am
-  (:use :cl :5am))
-
-(in-package :ciel-5am)
+(in-package :ciel-5am-user)
 
 (test test-one
   (is (= 1 1)))
@@ -873,11 +875,48 @@ Use `run` to not print explanations.
 
 You can use `(!)` to re-run the last run test.
 
+#### Interactive debugger on errors
+
 You can ask 5am to open the interactive debugger on an error:
 
 ``` example
 (setf *debug-on-error* t)
 ```
+
+#### Define your own test package, add local-nicknames
+
+Using only this built-in `ciel-5am-user` package won't be practical if
+you develop different applications at the same time in the same Lisp
+image. Just define a new package:
+
+```lisp
+(uiop:define-package myproject-tests
+   (:use :cl :ciel :5am))
+```
+
+This "uses" all CL, CIEL and Fiveam symbols.
+
+If you want all the local nicknames that are available in the CIEL
+package, copy the list below:
+
+~~~lisp
+(uiop:define-package myproject
+    (:use :cl :ciel)
+    (:local-nicknames (:/os :uiop/os)
+                      (:os :uiop/os)
+                      (:filesystem :uiop/filesystem)
+                      (:finder :file-finder)
+                      (:notify :org.shirakumo.file-notify)
+                      (:alex :alexandria)
+                      (:csv :cl-csv)
+                      (:http :dexador)
+                      (:json :shasht)
+                      (:json-pointer :cl-json-pointer/synonyms)
+                      (:time :local-time)
+                      (:routes :easy-routes))
+    (:documentation "My package, using CIEL and defining the same local nicknames."))
+~~~
+
 
 ### Logging (log4cl)
 
