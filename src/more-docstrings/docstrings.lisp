@@ -318,3 +318,14 @@ Read more:
 
 - https://lispcookbook.github.io/cl-cookbook/numbers.html
 - https://cl-community-spec.github.io/pages/floor.html")
+
+#+ciel
+(docstring-append 'function-cache:defcached "
+
+Example:
+
+(defcached (foo :timeout 10) (arg)
+  (sleep 3)
+  arg)
+
+The functions's result is cached for 10 seconds, for the given argument. A second call returns immediately.")
