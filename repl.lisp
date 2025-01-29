@@ -671,7 +671,12 @@ strings to match candidates against (for example in the form \"package:sym\")."
   ;; !ls
   ;; as well as [ ... ] on multilines.
   ;; Beware: the double bang !! doesn't work. See issues.
-  (named-readtables:in-readtable clesh:syntax)
+  ;;
+  ;; <2025-01-29> disable Clesh altogether,
+  ;; a ! anywhere in the function name fails.
+  ;; https://github.com/ciel-lang/CIEL/issues/85
+  ;; I also noticed other issues.
+  ;; (named-readtables:in-readtable clesh:syntax)
 
   (handler-case (sbcli::sbcli "" sbcli::*prompt*)
     (error (c)
