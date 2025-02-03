@@ -1,6 +1,6 @@
 ;; #!/usr/bin/sbcl --script
-(load "~/quicklisp/setup")
-
+(ignore-errors (load "~/quicklisp/setup"))
+#+quicklisp
 (let ((*standard-output* (make-broadcast-stream)))
   (ql:quickload "cl-readline"))
 (uiop:define-package :sbcli
