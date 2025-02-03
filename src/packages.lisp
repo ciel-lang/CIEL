@@ -15,9 +15,7 @@
                     (:json-pointer :cl-json-pointer/synonyms)
                     (:time :local-time)
                     (:routes :easy-routes))
-  (:export #:enable-shell-passthrough
-           #:disable-shell-passthrough
-           #:-->
+  (:export #:-->
            #:^
            #:load-without-shebang))
 

@@ -9,8 +9,6 @@ CIEL's REPL is more user friendly than the default SBCL one. In particular:
 -  it handles errors gracefully: you are not dropped into the debugger and its sub-REPL, you simply see the error message.
 -  it has optional **syntax highlighting**.
 - it has a **shell pass-through**: try `!ls` (also available in Slime)
-  - you must activate it with `(enable-shell-passthrough)`
-  - you can mix and match shell and Lisp: try `!echo ?(+ 1/3 1/3)` (look, a fraction)
   - it runs **interactive commands**: try `!htop`, `!vim test.lisp`, `!emacs -nw test.lisp` or `!env FOO=BAR sudo -i powertop`.
 - it has a quick **edit and load file** command: calling `%edit file.lisp` will open the file with the editor of the EDITOR environment variable. When you close it, the file is loaded and evaluated.
 - it has an optional **lisp critic** that scans the code you enter at

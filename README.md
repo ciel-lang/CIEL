@@ -389,8 +389,7 @@ CIEL ships a terminal REPL for the terminal which is more user friendly than the
   and its sub-REPL, you simply see the error message.
 - it has optional **syntax highlighting**.
 - it has a **shell pass-through**: try `!ls`.
-  - you can mix and match shell and Lisp: try `!echo ?(+ 1/3 1/3)` (look, a fraction)
-  - it runs **interactive commands**: try `!htop`, `!vim test.lisp`, `!emacs -nw test.lisp` or `!env FOO=BAR sudo -i powertop`.
+  - it runs **interactive commands**: try `!htop`, `!vim test.lisp`, `!emacs -nw test.lisp` or `!env FOO=BAR sudo -i top`.
 - it has **documentation lookup** shorthands: use `:doc symbol` or `?`
   after a symbol to get its documentation: `ciel-user> (dict ?`.
 - it has **developer friendly** macros: use `(printv code)` for an
