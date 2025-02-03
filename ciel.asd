@@ -152,7 +152,6 @@
                ;;; ;TODO: we don't want these dependencies when we build a binary.
                ;;;
                :named-readtables
-               :clesh  ;; shell pass-through
                :quicksearch  ;; search on GitHub, Cliki, Quickdocs.
                )
   :components ((:module "src"
@@ -180,7 +179,6 @@
   :components ((:file "repl")
                (:file "utils")
                (:file "scripting")
-               (:file "shell-utils")
                (:file "repl-utils")
 
                ;; I define them here, for good practice (for me),

@@ -473,16 +473,6 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
 (when *pretty-print-hash-tables*
   (toggle-pretty-print-hash-table t))
 
-(defun enable-shell-passthrough ()
-  "Enable the shell passthrough with \"!\" and \"[\". Enable Clesh's readtable."
-  (named-readtables:in-readtable clesh:syntax))
-
-(defun disable-shell-passthrough ()
-  "(experimental) Disable the shell passthrough with \"!\" and \"[\". Disable Clesh's syntax."
-  (set-macro-character #\! (get-macro-character #\! (copy-readtable nil)))
-  (set-macro-character #\[ (get-macro-character #\[ (copy-readtable nil)))
-  (set-macro-character #\] (get-macro-character #\] (copy-readtable nil))))
-
 (defun ciel-user-help ()
   "Print a short welcome and help message."
   (format t "CIEL version ~a~&" (asdf:system-version (asdf:find-system "ciel")))

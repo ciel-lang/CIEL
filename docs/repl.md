@@ -45,52 +45,16 @@ ciel-user> (dict ?
 
 ## Shell pass-through with "!"
 
-Activate it with `(enable-shell-passthrough)`.
-
-Use `!` to send a shell command:
+Use `!` to send a shell command. All shell commands are run interactively, so you can run `htop`, `sudo`, `emacs -nw` etc.
 
 ```
 !ls
 !sudo emacs -nw /etc/
 ```
 
-### Mixing Lisp code with "?"
+We provide TAB completion for shell commands that are in your PATH.
 
-You can mix shell commands and Lisp code. The `?` character is the
-"lisp escape". For example:
-
-    * !echo ?(+ 2 3)
-
-or:
-
-    * (defun factorial (x) (if (zerop x) 1 (* x (factorial (1- x)))))
-    * !echo "fact 3: " ?(factorial 3)
-
-Escape the "?" with "\?" to write it in a shell command.
-
-### Shell commands in Slime and limitations
-
-The "!" shell pass-through is not enabled by default. You can enable both in the terminal REPL and in Slime:
-
-      CIEL-USER> (enable-shell-passthrough)
-
-There are differences on how shell commands are handled in the terminal REPL and in Slime.
-
-All shell commands in the terminal are run interactively. You can see
-the program output as it goes. In Emacs and Slime, the commands are
-run *synchronously*, the output (and error output) is captured and
-displayed when the command is finished.
-
-In the terminal REPL, you can use `sudo`, `emacs -nw` and other visual
-and interactive commands, but not in Slime.
-
-> Note: the shell-passthrough feature is experimental.
-
-> Note: we encourage our users to use a good editor rather than a terminal!
-
-We use our fork of the [Clesh](https://github.com/lisp-maintainers/clesh) library.
-
-See also [Lish](https://github.com/nibbula/lish/) and [SHCL](https://github.com/bradleyjensen/shcl) for more unholy union of (posix) shells and Common Lisp.
+See [Lish](https://github.com/nibbula/lish/) and [SHCL](https://github.com/bradleyjensen/shcl) for more unholy union of (posix) shells and Common Lisp.
 
 
 ## Syntax highlighting

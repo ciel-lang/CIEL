@@ -32,12 +32,6 @@ ql-deps: check-asdf-version
 	# I asked for inclusion in Quicklisp.
 	$(call git-clone-pull,https://github.com/vindarel/termp)
 
-	# NOT in Quicklisp <2025-02-03>
-	# updated Clesh for a shell pass-through that handles all shell commands interactively.
-	# So we now see the output in real time (instead of at the end of the execution),
-	# and commands like "emacs -nw" now work, in addition of sudo, vim or htop that were handled separately.
-	$(call git-clone-pull,https://github.com/lisp-maintainers/clesh)
-
 	# 2023-11: The symbol SB-INT:TRULY-DYNAMIC-EXTENT is absent since at least
 	# SBCL v2.3.10, which was required in older versions of cl-environments
 	# and cl-form-types.

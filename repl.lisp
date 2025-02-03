@@ -1,12 +1,17 @@
 ;; #!/usr/bin/sbcl --script
 (load "~/quicklisp/setup")
 
-(let ((*standard-output* (make-broadcast-stream)))
-  (ql:quickload "cl-readline"))
+(ql:quickload "cl-readline" :silent t)
+
+;;; update <2024-09-04>: now all shell commands are run interactively.
+;;; It works for htop, vim, sudo, emacs -nw…
+;;;
+;;; update <2025-02-03>: the "!" "pass-through" is disabled on Slime and "dumb" terminals.
+
 (uiop:define-package :sbcli
-  (:use :common-lisp :trivial-package-local-nicknames)
+    (:use :common-lisp :trivial-package-local-nicknames)
   (:import-from :magic-ed
-                :magic-ed)
+   :magic-ed)
   (:export repl sbcli help what *repl-version* *repl-name* *prompt* *prompt2* *result-indicator* *init-file*
            *quicklisp*
            *hist-file* *special*
@@ -420,12 +425,10 @@ strings to match candidates against (for example in the form \"package:sym\")."
                   (select-completions "str:con" (list "str:containsp" "str:concat" "str:constant-case"))
                   :test #'string-equal)))
 
-(defun shell-passthrough-p (arg)
-  "Return t if arg (string) starts with \"!\".
-
-  This is used to offer custom TAB completion, not to launch shell commands.
-  The Clesh readtable is responsible of that."
-  (str:starts-with-p "!" arg))
+(defun shell-passthrough-p (s)
+  "Return t if s (string) starts with \"!\".
+   We also use it to offer custom TAB completion."
+  (str:starts-with-p "!" s))
 
 (defun complete-filename-p (text start end &key (line-buffer rl:*line-buffer*))
   "Return T if we should feed the tab completion candidates filenames, instead of the regular Lisp symbols.
@@ -543,6 +546,14 @@ strings to match candidates against (for example in the form \"package:sym\")."
                          (cl-ansi-text:green prompt)
                          prompt))))
 
+(defun run-visual-command (text)
+  "Run this visual command (string, sans \"!\" prefix)."
+  (if (termp:termp)
+      (uiop:run-program (string-left-trim "!" text)
+                        :output :interactive
+                        :input :interactive)
+      (uiop:format! *error-output* "~&Cannot run this shell command: we are not inside a \"real\" terminal.~&")))
+
 (defun sbcli (txt prompt)
   "Read user input and evaluate it.
   This function must be called from inside the CIEL-USER package."
@@ -577,11 +588,9 @@ strings to match candidates against (for example in the form \"package:sym\")."
        (sbcli::symbol-documentation (last-nested-expr text)))
 
       ;; Interactive and visual shell command?
-      ;; They are now handled by Clesh.
-      ;; When on a non "dumb" terminal, all shell commands are run interactively.
-
-      ;; No need to check for a "!" in the input here,
-      ;; it's done with the clesh readtable when handling lisp.
+      ;; All shell commands are run interactively.
+      ((shell-passthrough-p text)
+       (run-visual-command text))
 
       ;; Default: run the lisp command (with the lisp-critic, the shell passthrough
       ;; and other add-ons).
@@ -663,20 +672,6 @@ strings to match candidates against (for example in the form \"package:sym\")."
   (when *hist-file* (read-hist-file))
 
   (in-package :ciel-user)
-
-  ;; Enable Clesh, only for the readline REPL,
-  ;; part because we don't want to clutter the ciel-user package,
-  ;; part because Clesh is buggy for us on Slime (!! and [...]).
-  ;; We get the ! pass-through shell:
-  ;; !ls
-  ;; as well as [ ... ] on multilines.
-  ;; Beware: the double bang !! doesn't work. See issues.
-  ;;
-  ;; <2025-01-29> disable Clesh altogether,
-  ;; a ! anywhere in the function name fails.
-  ;; https://github.com/ciel-lang/CIEL/issues/85
-  ;; I also noticed other issues.
-  ;; (named-readtables:in-readtable clesh:syntax)
 
   (handler-case (sbcli::sbcli "" sbcli::*prompt*)
     (error (c)

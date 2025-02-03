@@ -249,8 +249,6 @@ small and trivial library, you can clone it into your
 
     git clone https://github.com/vindarel/termp/ ~/quicklisp/local-projects/termp
 
-As of writing, you also need [https://github.com/lisp-maintainers/clesh](https://github.com/lisp-maintainers/clesh), but we aim to remove this dependency.
-
 For a number of other libraries we need the Quicklisp version of August, 2024, or later.
 
 For those, you should either:

@@ -10,7 +10,6 @@
 - cl-ftp: send or receive files from FTP.
 - cl-ppcre: Perl-compatible regular expression library
 - cl-reexport: Reexport external symbols in other packages.
-- clesh: Clesh is a very short program that provides
   mechanisms for running and composing Unix shell commands and
   constructs from Common Lisp.
 
