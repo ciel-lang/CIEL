@@ -116,7 +116,7 @@ See *the documentation*.
         - [System dependencies](#system-dependencies)
         - [ASDF >= 3.3.4 (local-nicknames)](#asdf--334-local-nicknames)
         - [Install Quicklisp](#install-quicklisp)
-        - [Install our Lisp dependencies [MANDATORY]](#install-our-lisp-dependencies-mandatory)
+        - [Install our Lisp dependencies [depends on your Quicklisp version]](#install-our-lisp-dependencies-depends-on-your-quicklisp-version)
     - [How to load CIEL with Quicklisp](#how-to-load-ciel-with-quicklisp)
     - [How to build a CIEL binary and a core image](#how-to-build-a-ciel-binary-and-a-core-image)
     - [Docker](#docker)
@@ -242,15 +242,26 @@ It creates a `~/quicklisp/` directory. Read its installation instructions to kno
 
 ### Install our Lisp dependencies [MANDATORY]
 
-Even if you have a Lisp setup with Quicklisp installed, the current
-distribution of Quicklisp is quite old (as of August, 2024) and you
-need to pull recent dependencies.
+One library that we use is not included in Quicklisp (as of
+<2025-02-03>), [termp](https://github.com/vindarel/termp). It is a
+small and trivial library, you can clone it into your
+~/quicklisp/local-projects:
 
-We'll clone the required ones into your `~/quicklisp/local-projects/`.
+    git clone https://github.com/vindarel/termp/ ~/quicklisp/local-projects/termp
+
+As of writing, you also need [https://github.com/lisp-maintainers/clesh](https://github.com/lisp-maintainers/clesh), but we aim to remove this dependency.
+
+For a number of other libraries we need the Quicklisp version of August, 2024, or later.
+
+For those, you should either:
+* ensure that your Quicklisp version is recent enough (with `(ql:dist-version "quicklisp")`) and maybe update it (with `(ql:update-dist "quicklisp")`)
+* clone our dependencies locally with the command below.
+
+If you need it, clone all the required dependencies into your `~/quicklisp/local-projects/` with this command:
 
     make ql-deps
 
-Other tools exist for this (Qlot, ocicl…), we are just not using them yet.
+NB: other tools exist for this (Qlot, ocicl…), we are just not using them yet.
 
 
 ## How to load CIEL with Quicklisp
