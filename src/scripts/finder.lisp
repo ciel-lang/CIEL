@@ -13,12 +13,12 @@
 (defparameter *directories* '("~/Music/" "~/Downloads/"))
 
 (defun find-on-directory (root params)
-  (fof:finder*
+  (finder:finder*
    :root root
    ;; "and" the params: needs ongoing PR.
-   ;; :predicates (apply #'fof/p:every-path~ params)))
+   ;; :predicates (apply #'finder/p:every-path~ params)))
    ;; does a "or":
-   :predicates (apply #'fof/p:path~ params)))
+   :predicates (apply #'finder:path~ params)))
 
 (defun find-files (&optional params)
   (unless params
@@ -33,7 +33,7 @@
 
 (defun pprint-for-shell (list)
   (mapcar (lambda (p)
-            (format t "~s~&" (fof:path p)))
+            (format t "~s~&" (finder:path p)))
           list)
   (terpri))
 
