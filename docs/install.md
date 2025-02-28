@@ -19,6 +19,7 @@ To download a CIEL binary:
   <https://gitlab.com/vindarel/ciel/-/pipelines>, download the latest
   artifacts, unzip the `ciel-v0-{platform}.zip` archive and run `ciel-v0-{platform}/ciel`.
 - if you use the [Guix](https://guix.gnu.org/) package manager, install package `sbcl-ciel-repl`.
+- if you use the [Nix](https://nixos.org/) package manager in Linux and macOS, install package `ciel` and `ciel` in SBCL.
 
 CIEL is currently built for the following platforms:
 
@@ -128,6 +129,85 @@ In either case, you get a Lisp environment with CIEL preloaded, so all you have 
 (in-package :ciel-user)
 ```
 
+### Nix
+
+CIEL's repository contains a `flake.nix` file that can be used to build CIEL with Nix.
+To use it, you need to add the CIEL repository to your `flake.nix` file.
+
+#### Install CIEL with home-manager
+
+You can use CIEL with home-manager by adding the CIEL repository to your `home.nix` file.
+
+1. Add the CIEL repository to your `flake.nix` file.
+2. Add the CIEL overlay to your Nixpkgs overlay list.
+3. Add CIEL to your `home.packages` list.
+
+```diff
+# flake.nix
+inputs = {
++  # Add the CIEL repository
++  ciel.url = "github:ciel-lang/CIEL";
++  ciel.inputs.nixpkgs.follows = "nixpkgs";
+};
+outputs = { self, ciel, nixpkgs, ... }:
+  flake-utils.lib.eachDefaultSystem (system: {
+  legacyPackages.homeConfigurations."USERNAME" = home-manager.lib.homeManagerConfiguration {
+    pkgs = import nixpkgs {
+      inherit system;
+      overlays = [
++        # Add the CIEL overlay
++        ciel.overlays.default
+      ];
+    };
+```
+
+```diff
+# home.nix
+packages = with pkgs; [
++  # Use CIEL command line interface
++  ciel
++  # Use CIEL as a library
++  sbcl.withPackages (ps: [ ps.ciel ]);
+];
+```
+
+#### Install CIEL to your devShell
+
+You need to modify your `flake.nix` file to include CIEL in your development environment.
+
+1. Add the CIEL repository to your `flake.nix` file.
+2. Add the CIEL overlay to your Nixpkgs overlay list.
+3. Add CIEL to your `devShell` packages or any other package set.
+
+```diff
+{
+  inputs = {
++    # Add the CIEL repository
++    ciel.url = "github:ciel-lang/CIEL";
++    ciel.inputs.nixpkgs.follows = "nixpkgs";
+  };
+  outputs = { self, ciel, nixpkgs }:
+    let
+      pkgs = import nixpkgs {
+        inherit system;
+        overlays = [
++          # Add the CIEL overlay
++          ciel.overlays.default
+        ];
+      };
+    in
+    {
+      devShell = nixpkgs.mkShell {
+        packages = with pkgs; [
++          # Use CIEL command line interface
++          ciel
++          # Use CIEL as a library
++          sbcl.withPackages (ps: [ ps.ciel ]);
+        ];
+      };
+    };
+}
+```
 
 ## Using CIEL as a library in your Lisp code
 
