@@ -1,4 +1,4 @@
-#!/usr/bin/env sbcl --script
+#!/usr/bin/sbcl --script
 
 #|
 Show CIEL's dependencies.
