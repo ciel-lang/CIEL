@@ -1,5 +1,8 @@
 (in-package :cl-user)
 
+(uiop:define-package ciel-csv
+    (:use :cl))
+
 (uiop:define-package ciel
     (:use :cl)
   ;; xxx: nicknames copied from ciel-user below.
@@ -9,7 +12,7 @@
                     (:finder :file-finder)
                     (:notify :org.shirakumo.file-notify)
                     (:alex :alexandria)
-                    (:csv :cl-csv)
+                    (:csv :ciel-csv)
                     (:http :dexador)
                     (:json :shasht)
                     (:json-pointer :cl-json-pointer/synonyms)
@@ -30,9 +33,8 @@
                     (:filesystem :uiop/filesystem)
                     (:finder :file-finder)
                     (:notify :org.shirakumo.file-notify)
-
                     (:alex :alexandria)
-                    (:csv :cl-csv)
+                    (:csv :ciel-csv)
                     (:http :dexador)
                     (:json :shasht)
                     (:json-pointer :cl-json-pointer/synonyms)

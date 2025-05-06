@@ -21,6 +21,11 @@
                :alexandria
                :arrow-macros
 
+               ;; CSV
+               :cl-csv
+               :cl-csv-data-table
+               :data-table
+
                ;; Previously, we had dependencies that depended on Osicat (fof, moira),
                ;; hence complicating deployment of binaries.
                ;; Check with (ql:who-depends-on "osicat") and ditch Osicat.
@@ -159,6 +164,7 @@
                         ((:file "packages")
                          (:file "json-pointer-minus")
                          (:file "ciel")
+                         (:file "csv")
                          (:file "gui")))
                (:file "utils")
                (:module "src/more-docstrings"

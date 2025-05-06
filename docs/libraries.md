@@ -10,27 +10,71 @@ Data formats
 
 ### CSV
 
-You have [cl-csv](https://github.com/AccelerationNet/cl-csv), under its `cl-csv` package name and the `csv` local nickname.
+Use the `csv` nickname.
+
+You have [cl-csv](https://github.com/AccelerationNet/cl-csv),
+[data-table](https://github.com/AccelerationNet/data-table/) and
+`cl-csv-data-tables` at your disposal, the libraries' symbols are
+re-exported and grouped in the `ciel-csv` package, also available
+under the `csv` local nickname.
+
+`cl-csv` allows to read and write a CSV file, string or stream.
+
+`data-table` allows to work with a "table-like" data-structure where
+you can access columns by name (instead of only by index), coerce
+column types, and more.
+
+`cl-csv-data-tables` brings a couple helpers.
+
+Read a file into a list of lists:
 
 ```lisp
-;; read a file into a list of lists
-(cl-csv:read-csv #P"file.csv")
+(csv:read-csv #P"file.csv")   ;; <--- note the #P
 => (("1" "2" "3") ("4" "5" "6"))
 
-;; read csv from a string (streams also supported)
-(cl-csv:read-csv "1,2,3
+;; read csv from a string (streams are also supported)
+(csv:read-csv "1,2,3
 4,5,6")
 => (("1" "2" "3") ("4" "5" "6"))
+```
 
-;; read a file that's tab delimited
-(cl-csv:read-csv #P"file.tab" :separator #\Tab)
+Read a file that's TAB delimited:
 
-;; loop over a CSV for effect
+```lisp
+(csv:read-csv #P"file.tab" :separator #\Tab)
+```
+
+loop over a CSV for side effects with `do-csv`:
+
+```lisp
 (let ((sum 0))
-  (cl-csv:do-csv (row #P"file.csv")
+  (csv:do-csv (row #P"file.csv")
     (incf sum (parse-integer (nth 0 row))))
   sum)
 ```
+
+Read a CSV, create a data-table object, assume headers are on the
+first row (`:has-column-names`), guess the column types (`:munge-types`):
+
+~~~lisp
+(csv:get-data-table-from-csv #p"file.csv")   ;; <--- still the #P
+;; #<DATA-TABLE:DATA-TABLE {10018A9F63}>
+
+(describe *)
+;; =>
+  COLUMN-NAMES                   = ("Date" "Type" "Quantity" "Total")
+  COLUMN-TYPES                   = (STRING STRING INTEGER DOUBLE-FLOAT)
+  ROWS                           = (("9 jan. 1975" "Sell" 1 9.90) …)
+~~~
+
+Access rows and columns with:
+
+- `csv:rows`
+- `csv:data-table-value dt &key row row-idx col-name col-idx`
+- and more
+
+Write the data-table to a file with `data-table-to-csv dt &optional stream)`.
+
 
 See also:
 
@@ -908,7 +952,7 @@ package, copy the list below:
                       (:finder :file-finder)
                       (:notify :org.shirakumo.file-notify)
                       (:alex :alexandria)
-                      (:csv :cl-csv)
+                      (:csv :ciel-csv)
                       (:http :dexador)
                       (:json :shasht)
                       (:json-pointer :cl-json-pointer/synonyms)
