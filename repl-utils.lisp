@@ -40,10 +40,13 @@ bar:qux
     str))
 
 (defun syntax-hl ()
+  ;; XXX: when enabled, this f* up the whitespace output of the first output line.
+  ;; To try, print this:
+  ;; (format t "~s" '(hello some test arithmetic))
+  ;; it will be shown on multiple lines with lots of whitespace.
   (rl:redisplay)
   (let ((res (maybe-highlight rl:*line-buffer*)))
     (format t "~c[2K~c~a~a~c[~aD" #\esc #\return rl:*display-prompt* res #\esc (- rl:+end+ rl:*point*))
     (when (= rl:+end+ rl:*point*)
       (format t "~c[1C" #\esc))
     (finish-output)))
-

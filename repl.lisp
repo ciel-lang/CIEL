@@ -618,6 +618,11 @@ strings to match candidates against (for example in the form \"package:sym\")."
     (rl:redisplay)
     ))
 
+;; testing…
+(defun print-some-text (arg key)
+  (declare (ignore arg key))
+  (rl:insert-text "inserted text"))
+
 (defun repl (&key noinform no-usernit)
   "Toplevel REPL.
 
@@ -639,12 +644,10 @@ strings to match candidates against (for example in the form \"package:sym\")."
       (uiop:quit)))
 
   (rl:register-function :complete #'custom-complete)
-  (rl:register-function :redisplay #'syntax-hl)
 
-  ;; testing…
-  (defun print-some-text (arg key)
-    (declare (ignore arg key))
-    (rl:insert-text "inserted text"))
+  (if *syntax-highlighting*
+      (rl:register-function :redisplay #'syntax-hl)
+      (rl:register-function :redisplay #'rl:redisplay))
 
   #+(or)
   (rl:bind-keyseq "\\C-o" #'print-some-text)
