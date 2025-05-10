@@ -1,9 +1,9 @@
 ;; #!/usr/bin/sbcl --script
-(load "~/quicklisp/setup")
-
-(ql:quickload "cl-readline" :silent t)
-
-;;; update <2024-09-04>: now all shell commands are run interactively.
+(ignore-errors (load "~/quicklisp/setup"))
+#+quicklisp
+(let ((*standard-output* (make-broadcast-stream)))
+  (ql:quickload "cl-readline"))
+;; update <2024-09-04>: now all shell commands are run interactively.
 ;;; It works for htop, vim, sudo, emacs -nw…
 ;;;
 ;;; update <2025-02-03>: the "!" "pass-through" is disabled on Slime and "dumb" terminals.
