@@ -1,0 +1,1 @@
+(setf ql:*local-project-directories* '("/root/quicklisp/local-projects"));
