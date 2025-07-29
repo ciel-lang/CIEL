@@ -11,8 +11,8 @@ COPY . .
 RUN mkdir -p ~/common-lisp \
     && ( cd ~/common-lisp/ && wget https://asdf.common-lisp.dev/archives/asdf-3.3.5.tar.gz  && tar -xvf asdf-3.3.5.tar.gz && mv asdf-3.3.5 asdf )
 
-RUN mv src/scripts/sbclrc ~/.sbclrc \
-    && mv src/scripts/sbcl_ros_wrapper /usr/local/bin/sbcl \
+RUN mv src/docker_utils/sbclrc ~/.sbclrc \
+    && mv src/docker_utils/sbcl_ros_wrapper /usr/local/bin/sbcl \
     && ln -sf ~/.roswell/lisp/quicklisp ~/quicklisp
 
 RUN make ql-deps \
