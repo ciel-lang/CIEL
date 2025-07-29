@@ -155,7 +155,7 @@ CIEL is currently built for the following platforms:
 
 | Platform | System Version (release date) |
 |----------|-------------------------------|
-| debian   | Debian Buster (2019)          |
+| Debian x86-64   | Debian Buster (2019)          |
 | void     | Void Linux glibc (2023-05), using [cinerion's Docker image](https://github.com/cinerion/sbcl-voidlinux-docker)  |
 
 
