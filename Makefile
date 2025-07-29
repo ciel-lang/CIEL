@@ -10,6 +10,13 @@ define git-clone-pull =
 if test -d $(QLDIR)/$(notdir $1); then cd $(QLDIR)/$(notdir $1) && git pull; else git clone $1 $(QLDIR)/$(notdir $1); fi
 endef
 
+MISC_EXTENSIONS_HEALTHY_COMMIT=7af1c37c725fa32cf74c69a4bdafa00d1b79a1ca
+
+$(QLDIR)/misc-extensions:
+	mkdir -p $(QLDIR)
+	git clone https://gitlab.common-lisp.net/misc-extensions/misc-extensions.git $(QLDIR)/misc-extensions
+	cd $(QLDIR)/misc-extensions && git checkout $(MISC_EXTENSIONS_HEALTHY_COMMIT)
+
 $(QLDIR)/asdf:
 	# 2024-08: building with older asdf fails
 	# unrecognized define-package keyword :LOCAL-NICKNAMES
@@ -58,7 +65,7 @@ ql-deps: check-asdf-version
 	# fix fset on latest SBCL
 	# "Lock on package SB-EXT violated when interning ONCE-ONLY while in package FSET"
 	# see https://github.com/slburson/fset/pull/46
-	$(call git-clone-pull,https://gitlab.common-lisp.net/misc-extensions/misc-extensions)
+	$(MAKE) $(QLDIR)/misc-extensions
 	$(call git-clone-pull,https://github.com/slburson/fset)
 
 # Install some system dependencies.
