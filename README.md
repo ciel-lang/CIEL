@@ -48,7 +48,7 @@ NEW: we now have a Docker file.
 ```
 
 ```bash
-$ chmodx +x getproduct.lisp
+$ chmod +x getproduct.lisp
 $ time ./getproduct.lisp
 "Fjallraven - Foldsack No…ckpack, Fits 15 Laptops"
 ./getproduct.lisp  0.10s user 0.02s system 24% cpu 0.466 total
