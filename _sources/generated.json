@@ -1,0 +1,42 @@
+{
+    "cl-json-pointer": {
+        "cargoLocks": null,
+        "date": "2022-09-14",
+        "extract": null,
+        "name": "cl-json-pointer",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "rev": "f6760e2a02972783f96b92a15f801e14a6828e0c",
+            "sha256": "sha256-UKzPSpF1WXUC0D2Qq7UlMIh1DhKjnX1D0/AJxks56iw=",
+            "sparseCheckout": [],
+            "type": "git",
+            "url": "https://github.com/y2q-actionman/cl-json-pointer"
+        },
+        "version": "f6760e2a02972783f96b92a15f801e14a6828e0c"
+    },
+    "termp": {
+        "cargoLocks": null,
+        "date": "2024-09-02",
+        "extract": null,
+        "name": "termp",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "rev": "29789fe83db624679b6f341e3fae3f2577ce6a45",
+            "sha256": "sha256-kDYbM0fYJIUbuBMOnHVMfhTtu7CTid2EAs8THMBmJQ8=",
+            "sparseCheckout": [],
+            "type": "git",
+            "url": "https://github.com/vindarel/termp"
+        },
+        "version": "29789fe83db624679b6f341e3fae3f2577ce6a45"
+    }
+}
