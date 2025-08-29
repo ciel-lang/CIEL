@@ -93,7 +93,7 @@ ciel-user>
 
 ### Run (interactive) shell commands
 
-Use [cmd](https://github.com/ruricolist/cmd):
+Use [cmd](https://github.com/ruricolist/cmd), a short wrapper around `uiop:run-program`:
 
 ~~~lisp
 (cmd:cmd "shell command")
@@ -257,6 +257,11 @@ You also need to add the `ciel` binary in your path. A possibility:
 
 It magically works because before LOAD-ing this Lisp file, we remove the shebang line, and load the remaining Lisp code.
 
+In stock SBCL, you would use `#!/bin/sbcl --script` (and not
+`#!/usr/bin/env sbcl --script`), but this implies `--no-userinit`, so
+you'll need some ceremony to bring your utilities, like Quicklisp,
+back.
+
 <!-- daaaamn no need of a complex shebang like Roswell like at did at the beginning. See previous commits. Do we want a complex shebang to pass options to the CIEL binary ?
 
 #!/bin/sh
@@ -321,6 +326,10 @@ always disable a piece of code, the pattern is `#+(or)`, that always
 evaluates to nil.
 
 Make sure you are "in" the `ciel-user` package when writing this `#+ciel` check.
+
+In stock SBCL, you'd use `(eval-when (:execute) (main-function))`, and
+`(eval-when (:compile-toplevel :load-toplevel :execute) ...)` around
+any `ql:quickload`.
 
 
 ## Eval and one-liners
@@ -567,22 +576,21 @@ terminal (even though Emacs'
 
 ### Searching files
 
-We use the File Object Finder library
-([`fof`](https://gitlab.com/ambrevar/fof), a new library meant to
-supersede `find`, `ls`, `stat`, `chown`, `chmod`, `du`, `touch` and
-the Osicat library) to search for files recursively:
+We use the `file-finder` library
+([`file-finder`](https://github.com/lisp-maintainers/file-finder/), a new library meant to
+supersede `find` to search for files recursively:
 
 ~~~lisp
 (defun find-on-directory (root params)
-  (fof:finder*
+  (file-finder:finder*
    :root root
-   :predicates (apply #'fof/p:path~ (ensure-list params))))
+   :predicates (apply #'finder:path~ (ensure-list params))))
 
 (find-on-directory "~/Music/" "mp3")
 ~~~
 
-and this returns a list of `fof:file` objects. Get their real name as
-a string with `fof:path`.
+and this returns a list of `finder:file` objects. Get their real name as
+a string with `finder:path`.
 
 Of course, you can also outsource the work to Unix commands, with
 `cmd:cmd` (prints to standard output) or `cmd:$cmd` (returns a

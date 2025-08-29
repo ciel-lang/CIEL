@@ -327,7 +327,7 @@ start. See below.
 
 ## Docker
 
-We have a Dockerfile.
+We have a Dockerfile. It uses SBCL 2.3.8. It works on Apple Silicon.
 
 Build your CIEL image:
 
