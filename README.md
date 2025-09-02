@@ -171,6 +171,14 @@ To build CIEL, both the binary and the core image, you need a couple
 system dependencies and you have to check a couple things on the side
 of lisp before proceeding.
 
+Implementations support:
+
+- CIEL is primarily developed and tested with SBCL.
+- it was reported (thanks fosskers) to compile on CCL.
+- ECL, ABCL and Allegro got issues.
+- LispWorks: cannot test due to the free version limitations. You're welcome to offer me a licence :)
+
+
 ## Dependencies
 
 ### System dependencies
