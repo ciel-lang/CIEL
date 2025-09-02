@@ -282,3 +282,28 @@ process with `M-- M-x slime` (alt-minus prefix), and choose
 
 The Lisp process should start instantly, as fast as the default SBCL,
 you won't wait for the quicklisp libraries to load.
+
+## Post-installation tips
+
+### Zsh completion
+
+zsh users can add a one-liner to their .zshrc to add TAB-completion for CIEL arguments:
+
+    compdef _gnu_generic ciel
+
+this `_gnu_generic` zsh helper scrapes the output of `ciel --help` to
+offer you the completion. It shows like this, after a `ciel -` (with a dash):
+
+```sh
+$ ciel -
+--eval         -e  -- eval a lisp form
+--help             -- display usage information and exit
+--noinform         -- Don't print the welcome banner.
+--no-userinit      -- Don't load the ~/.cielrc init file at start-up (for the CIEL terminal
+--script       -s  -- run a lisp file
+--scripts      -z  -- list available scripts.
+--verbose      -v  -- verbosity level (default- 0)
+--version          -- display version and exit
+```
+
+If anyone got to get this *and* the completion of ciel scripts, please ping us.

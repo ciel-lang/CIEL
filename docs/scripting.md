@@ -27,6 +27,9 @@ $ ciel -s simpleHTTPserver 9000
 
 > Note: script names are case insensitive.
 
+> Note: zsh users: get tab-completion of CIEL arguments with `compdef _gnu_generic ciel` in your .zshrc.
+
+
 ### Example script
 
 ```lisp
