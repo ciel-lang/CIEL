@@ -1,0 +1,10 @@
+--- a/repl.lisp
++++ b/repl.lisp
+@@ -1,7 +1,4 @@
+ ;; #!/usr/bin/sbcl --script
+-(load "~/quicklisp/setup")
+-
+-(ql:quickload "cl-readline" :silent t)
+ 
+ ;; update <2024-09-04>: now all shell commands are run interactively.
+ ;;; It works for htop, vim, sudo, emacs -nw…

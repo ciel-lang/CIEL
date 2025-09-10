@@ -157,8 +157,8 @@
                ;;; ;TODO: we don't want these dependencies when we build a binary.
                ;;;
                :named-readtables
-               :quicksearch  ;; search on GitHub, Cliki, Quickdocs.
-               )
+               :quicksearch)  ;; search on GitHub, Cliki, Quickdocs.
+               
   :components ((:module "src"
                         :components
                         ((:file "packages")
@@ -169,8 +169,8 @@
                (:file "utils")
                (:module "src/more-docstrings"
                         :components
-                        ((:file "docstrings"))))
-  )
+                        ((:file "docstrings")))))
+  
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Sub-system for the terminal REPL.
@@ -193,8 +193,8 @@
                (:module "src/scripts"
                         :components
                         ((:static-file "quicksearch")
-                         (:static-file "simpleHTTPserver")))
-               )
+                         (:static-file "simpleHTTPserver"))))
+               
 
   :build-operation "program-op"
   :build-operation "program-op"
