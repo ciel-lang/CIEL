@@ -81,7 +81,7 @@ In standard Common Lisp, the equivalent is more convoluted:
 ;; (and we don't get a readable representation, so our example is not even equivalent)
 ~~~
 
-We **add missing functions**. For example, after you used `parse-integer`, you are probably looking for a `parse-float` function… but you can't find it, because it isn't defined by the standard. You must install a third-party library. Now you have it.
+We **add missing functions**. For example, after you used `parse-integer`, you are probably looking for a `parse-float` function… but you can't find it, because it isn't defined by the standard. You must install a third-party library. Now you have it. Or, you know `append` and you want is non-consing (destructive) counterpart. In pure CL, it's `nconc`, we ship an `nappend` alias.
 
 We **enhance the docstrings** of built-in functions and macros with more
 explanations and examples, so you don't have to reach to external

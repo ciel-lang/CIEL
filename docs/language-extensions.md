@@ -116,6 +116,13 @@ From `alexandria-2` we import:
 
 and some more.
 
+### More commonly-named functions
+
+We currently only add 2 aliases: `nappend`, the "non-consing"
+(destructive, memory-efficient) counterpart of `append`, also known as
+`nconc`, and `nremove` as an alias for `delete`.
+
+
 ### String manipulation (str)
 
 Available with the `str` prefix.

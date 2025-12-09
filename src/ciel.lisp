@@ -43,6 +43,12 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
                              :not-implemented-error
                              :command-line-arguments))
 
+;; More common names: nappend instead of nconc, etc.
+(cl-reexport:reexport-from :more-common-names
+                           :include
+                           '(:nappend
+                             :nremove))
+
 ;; Syntax.
 (cl-reexport:reexport-from :pythonic-string-reader
                            :include
