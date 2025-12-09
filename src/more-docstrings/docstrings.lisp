@@ -301,6 +301,11 @@ This binds a stream to the `f' variable and we write content to it.
 
 You can read files with :direction :input as well as UIOP: uiop:read-file-string, uiop:read-file-lines etc.
 
+:if-exists options are :error :supersede :append :rename and NIL (this binds the stream variable to NIL).
+
+:if-does-not-exist options are :error :create and NIL (this binds the stream variable to NIL).
+
+
 Read more:
 
 - https://lispcookbook.github.io/cl-cookbook/files.html
