@@ -72,6 +72,12 @@
 (defun escape-file-name (name)
   "Escape [ and ] with double \\,
 
+  Or test the file exists with:
+
+  (probe-file (make-pathname :name name :type extension))
+
+  this doesn't choke with wildcard characters such as [ and ].
+
   otherwise uiop:file-exists-p returns NIL for an existing file."
   ;; This works on upstream file-finder <2025-09-09>
   ;; (when (finder:file? name)
