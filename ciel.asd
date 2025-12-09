@@ -159,7 +159,10 @@
                :named-readtables
                :quicksearch  ;; search on GitHub, Cliki, Quickdocs.
                )
-  :components ((:module "src"
+  :components ((:module "src/more-common-names"
+                        :components
+                        ((:file "names")))
+               (:module "src"
                         :components
                         ((:file "packages")
                          (:file "json-pointer-minus")
