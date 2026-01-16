@@ -67,7 +67,8 @@
                ;; We'll test again with its lightweight nodgui-lite system.
                ;; :nodgui  ;; ltk fork with built-in themes and more widgets.
                ;; to test:
-               ;; :nodgui-lite
+               :nodgui-lite
+
 
                ;; CLI
                :clingon  ;; args parsing
