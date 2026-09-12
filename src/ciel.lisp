@@ -338,6 +338,10 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
   `(lambda ,@forms))
 
 
+;; Use double floats.
+(setf *read-default-float-format* 'double-float)
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun symbol-documentation (symbol &key (stream t))

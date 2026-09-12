@@ -1,3 +1,28 @@
+
+## Settings
+
+### double floats by default
+
+Common Lisp's floating-point type is `'single-float`. We change it to `'double-float`.
+
+```lisp
+;; before:
+CL-USER> (type-of 3.14)
+SINGLE-FLOAT
+
+;; now, in CIEL:
+CIEL-USER> (type-of 3.14)
+DOUBLE-FLOAT
+```
+
+You can do it yourself by adding `(setf *read-default-float-format* 'double-float)` in your `.sbclrc`.
+
+In default CL, write double floats with a trailing `d0`:
+`3.14d0`. Write a single float with a trailing `f0` (or any other
+base: `f2` etc).
+
+Don't forget that CL has exact rationals ;)
+
 ## Data structures
 
 ### Generic and nested access to datastructures (access)
