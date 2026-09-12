@@ -300,6 +300,13 @@ We currently only try this with serapeum. See *deps/serapeum/sequences-hashtable
 (cl-reexport:reexport-from :function-cache
                            :include '(:defcached))  ;; not in binary??
 
+;; shorter CLOS classes
+(cl-reexport:reexport-from :defclass-std
+                           :include '(:defclass/std
+                                      ;; should be in from our git clone, but maybe not for someone who loaded from Quicklisp:
+                                      ;; :define-print-object
+                                      ))
+
 
 ;;;
 ;;; Conveniently add type declarations.

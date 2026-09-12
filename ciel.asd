@@ -6,7 +6,7 @@
 
 (asdf:defsystem "ciel"
   :description "CIEL Is an Extended Lisp (Common Lisp, batteries included)."
-  :version "0.2.1"
+  :version "0.3.0"
   :author "vindarel"
   :license "MIT"
   :homepage "https://github.com/ciel-lang/CIEL/"
@@ -25,12 +25,17 @@
                :cl-csv
                :cl-csv-data-table
                :data-table
+               ;; JSON
+               :shasht
+               :cl-json-pointer/synonyms
+               ;; YAML
+               :yamson
 
                ;; Previously, we had dependencies that depended on Osicat (fof, moira),
                ;; hence complicating deployment of binaries.
                ;; Check with (ql:who-depends-on "osicat") and ditch Osicat.
                ;;
-               :file-finder  ;; file-object finder
+               :file-finder
 
                ;; threads
                :bordeaux-threads
@@ -41,10 +46,6 @@
 
                :closer-mop
                :cl-ansi-text
-               :cl-csv
-               :shasht  ;; JSON
-               :cl-json-pointer/synonyms
-               :yamson ;; YAML
                :dissect
                :fset
                :file-notify  ;; needs inotify (linux) or fsevent (macos)
@@ -106,6 +107,9 @@
 
                ;; string manipulation
                :str
+
+               ;; shorter CLOS
+               :defclass-std
 
                ;; security
                :secret-values

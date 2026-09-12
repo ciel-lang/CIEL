@@ -36,6 +36,9 @@ ql-deps: check-asdf-version
 	$(call git-clone-pull,https://github.com/bohonghuang/buffered-streams)
 	$(call git-clone-pull,https://github.com/bohonghuang/yamson)
 
+	# defclass/std
+	# awaiting that Quicklisp changes its URL: https://github.com/quicklisp/quicklisp-projects/issues/2454#issuecomment-2511594589 <2026-09-12>
+	$(call git-clone-pull,https://github.com/lisp-maintainers/defclass-std)
 
 # Install some system dependencies.
 debian-deps:

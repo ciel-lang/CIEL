@@ -378,8 +378,7 @@ You can use usual lambda parameters for more destructuring:
 It's all well explained [in the documentation](https://common-lisp.net/project/metabang-bind/user-guide.html)!
 
 
-Conditions
-----------
+## Conditions
 
 See <https://lispcookbook.github.io/cl-cookbook/error_handling.html>
 
@@ -393,6 +392,69 @@ An improved version of `ignore-errors`. The behavior is the same: if an error oc
 (ignoring parse-error
           ...)
 ```
+
+## CLOS: shorter class definitions
+
+We ship [defclass-std](https://github.com/lisp-maintainers/defclass-std/),
+that gives us macros to write very terse class definitions.
+
+This:
+
+```lisp
+(defclass/std example ()
+  ((slot1 slot2 slot3)))
+```
+
+expands to a `defclass` with added `:initforms` to NIL, `:accessors` and `:initargs`:
+
+```lisp
+
+(DEFCLASS EXAMPLE ()
+  ((SLOT1 :ACCESSOR SLOT1 :INITARG :SLOT1 :INITFORM NIL)
+   (SLOT2 :ACCESSOR SLOT2 :INITARG :SLOT2 :INITFORM NIL)
+   (SLOT3 :ACCESSOR SLOT3 :INITARG :SLOT3 :INITFORM NIL)))
+```
+
+We can even write a shorter `class/std`:
+
+```lisp
+
+(class/std example
+  slot1 slot2 slot3)
+```
+
+We typically like this when doing Advent Of Code. Structs are short to
+define and might be a good choice for efficiency, but they are a pain
+to work with interactively (redifinitions, re-using
+objects…).
+
+You can also define a standard `print-object` method:
+
+```lisp
+(define-print-object/std example)
+```
+
+expands to:
+
+```lisp
+(defmethod print-object ((obj example) stream)
+    (print-unreadable-object (obj stream :type t :identity t)
+        (format stream \"~{~a~^ ~}\" (collect-object-slots obj))))
+```
+
+In use:
+
+```lisp
+(make-instance 'example)
+;; we can see all our object's slots by default =>
+;; #<EXAMPLE (SLOT1 NIL) (SLOT2 NIL) (SLOT3 NIL) {100ADFFF73}>
+```
+
+Note that as of writing (Sept, 2026), the `defclass-std` of Quicklisp
+points to the original repository by EuAndreh (lacking
+`define-print-object/std`). We [are waiting](https://github.com/quicklisp/quicklisp-projects/issues/2454)
+the next Quicklisp release.
+
 
 ## Iteration
 
