@@ -8,7 +8,7 @@ build debian:
   # when running on newer systems.
   # Buster: released in July, 2019.
   # Bullseye: released in August, 2021, supported until July, 2024.
-  image: clfoundation/sbcl:2.1.5-buster 
+  image: clfoundation/sbcl:2.5.10-trixie
 
   # We need to install some system dependencies,
   # to clone libraries not in Quicklisp,
