@@ -360,7 +360,23 @@ To write YAML, you can quickload `cl-yaml` which uses libyaml.
 
 ## Date and time
 
-The [local-time](https://common-lisp.net/project/local-time/) package is available.
+### local-time
+
+The "de-facto" [local-time](https://common-lisp.net/project/local-time/) package is available.
+
+### periods - ranges, durations, periods, relative times
+
+We ship the [periods](https://github.com/jwiegley/periods/)
+library, greatly complementing `local-time`.
+
+Read its documentation online here:
+
+- [https://lisp-maintainers.github.io/periods/](https://lisp-maintainers.github.io/periods/)
+
+It allows to manipulate time ranges, durations, periods.
+
+Each `fixed-time` object returned by `periods` is an type alias for
+`local-time:timestamp`.
 
 See also [awesome-cl\#date-and-time](https://github.com/CodyReichert/awesome-cl#date-and-time) and the [Cookbook](https://lispcookbook.github.io/cl-cookbook/dates_and_times.html).
 

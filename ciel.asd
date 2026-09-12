@@ -75,8 +75,11 @@
                ;; CLI
                :clingon  ;; args parsing
 
+               ;; time
                :local-time
-               :modf
+               :periods  ;; with documentation here: https://lisp-maintainers.github.io/periods/
+
+               :modf  ;; <2026-09-12> unused? Exclude?
 
                ;; number parsing
                :parse-float
