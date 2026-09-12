@@ -12,6 +12,31 @@ It's always
 
 for an alist, a hash-table, a struct, an object… Use `accesses` for nested access (specially useful with JSON). See also `json-pointer`.
 
+One caveat though: if the key to your hash-table is a symbol (`'foo`),
+and that symbol refers to an existing symbol function in the current
+package (`'sort`), then `access` tries to *funcall* that function :/
+It makes sense for objects' accessors, but not for regular
+symbols. You must use the `skip-call? t` key parameter. We find this
+unfortunate and we migth eventually fix this.
+
+```lisp
+(defvar v1 '(a 1 b 2 sort "desc"))
+
+;; not working:
+(access v1 'sort)
+=> ERROR
+
+;; works:
+(access v1 'sort :skip-call? t)
+"desc"
+T
+```
+
+If you can, prefer using keywords as keys (`:sort`).
+
+<!-- https://github.com/AccelerationNet/access/issues/24 closed, not planned -->
+
+
 ### Hash-table utilities (Alexandria and Serapeum)
 
 We import functions from [Alexandria](https://alexandria.common-lisp.dev/draft/alexandria.html#Hash-Tables) and [Serapeum](https://github.com/ruricolist/serapeum/blob/master/REFERENCE.md#hash-tables).
