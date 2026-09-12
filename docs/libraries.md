@@ -332,9 +332,30 @@ A JSON pointer starts with a "/".
 <!-- A note on functions naming: [cl-json-pointer](https://github.com/y2q-actionman/cl-json-pointer/) has some lengthy function names by default (`get-by-json-pointer`), especially if we access them with the `json-pointer:` prefix. They provide very short ones (`get`), they live in another package name `cl-json-pointer/synonyms`. Our `json-pointer` is a nickname to it. If you want to import all the json-pointer functions with `use-package`, you can do so with `cl-json-pointer`. We created smaller function names, which you can import without conflicts (`get-by`). -->
 
 
-### YAML (not included)
+### YAML
 
-Please quickload `cl-yaml` (uses libyaml) or have a look at [nyaml](https://github.com/jasom/nyaml), a Lisp native parser and dumper
+We ship the [yamson](https://github.com/bohonghuang/yamson) library, a
+fast YAML parser, not yet dumper.
+
+Use `yamson:parse`:
+
+```lisp
+(yamson:parse "
+key:
+- value1
+- value2")
+;; =>
+(("key" "value1" "value2"))
+```
+
+Features (from their README):
+
+- Almost all YAML 1.2 features have been implemented, with a few incompatibilities (related to anchors and tags, see their README).
+- streaming parsing support
+- fast: Yamson can parse YAML at speeds around 50MB/s (Intel Core I7-11700K with SBCL)
+- low-memory footprint.
+
+To write YAML, you can quickload `cl-yaml` which uses libyaml.
 
 
 ## Date and time

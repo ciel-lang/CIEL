@@ -42,8 +42,9 @@
                :closer-mop
                :cl-ansi-text
                :cl-csv
-               :shasht  ;; json
+               :shasht  ;; JSON
                :cl-json-pointer/synonyms
+               :yamson ;; YAML
                :dissect
                :fset
                :file-notify  ;; needs inotify (linux) or fsevent (macos)

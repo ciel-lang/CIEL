@@ -29,6 +29,13 @@ check-asdf-version:
 # Install some Quicklisp dependencies.
 ql-deps: check-asdf-version
 
+	# YAML library and its dependencies.
+	# not on Quicklisp as of Sept, 2026.
+	# (they transitively depend on alexandria and trivial-gray-streams)
+	$(call git-clone-pull,https://github.com/bohonghuang/parsonic)
+	$(call git-clone-pull,https://github.com/bohonghuang/buffered-streams)
+	$(call git-clone-pull,https://github.com/bohonghuang/yamson)
+
 
 # Install some system dependencies.
 debian-deps:
