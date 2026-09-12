@@ -35,32 +35,6 @@ check-asdf-version:
 
 # Install some Quicklisp dependencies.
 ql-deps: check-asdf-version
-	# termp, little utility, it is NOT in Quicklisp as of <2025-02-02>.
-	# I asked for inclusion in Quicklisp.
-	$(call git-clone-pull,https://github.com/vindarel/termp)
-
-	# 2023-11: The symbol SB-INT:TRULY-DYNAMIC-EXTENT is absent since at least
-	# SBCL v2.3.10, which was required in older versions of cl-environments
-	# and cl-form-types.
-	# See issue https://github.com/ciel-lang/CIEL/issues/38
-	# This has been fixed upstream, it is in Quicklisp 2024-08
-	$(call git-clone-pull,https://github.com/alex-gutev/cl-environments)
-	$(call git-clone-pull,https://github.com/alex-gutev/cl-form-types)
-
-	# 2024-08: Moira needs moira/light, added <2023-11-23 Thu>,
-	# it is in Quicklisp 2024-08
-	# moira/light doesn't depend on Osicat.
-	$(call git-clone-pull,https://github.com/ruricolist/moira)
-
-	# 2024-08: simple progress bar, it is in Quicklisp 2024-08.
-	$(call git-clone-pull,https://github.com/vindarel/progressons)
-
-	# In Quicklisp 2024-08.
-	$(call git-clone-pull,https://github.com/lisp-maintainers/file-finder)
-
-	# <2024-08-30> error with SBCL: Lock on package SB-DI violated…
-	# fixed https://github.com/Shinmera/dissect/issues/18 on March, 2024, in Quicklisp 2024-08.
-	$(call git-clone-pull,https://github.com/Shinmera/dissect)
 
 	# fix fset on latest SBCL
 	# "Lock on package SB-EXT violated when interning ONCE-ONLY while in package FSET"
