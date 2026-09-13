@@ -265,24 +265,21 @@ It creates a `~/quicklisp/` directory. Read its installation instructions to kno
 
 ### Install our Lisp dependencies [MANDATORY]
 
-One library that we use is not included in Quicklisp (as of
-<2025-02-03>), [termp](https://github.com/vindarel/termp). It is a
-small and trivial library, you can clone it into your
-~/quicklisp/local-projects:
+It is possible that we use Lisp libraries that are not in Quicklisp
+yet, or that we need a newer version of.
 
-    git clone https://github.com/vindarel/termp/ ~/quicklisp/local-projects/termp
+For a number of libraries we need the Quicklisp version of June 2025
+or later. You should ensure that your Quicklisp version is recent
+enough:
 
-For a number of other libraries we need the Quicklisp version of August, 2024, or later.
+- check with `(ql:dist-version "quicklisp")`
+- update it if needed with `(ql:update-dist "quicklisp")`
 
-For those, you should either:
-* ensure that your Quicklisp version is recent enough (with `(ql:dist-version "quicklisp")`) and maybe update it (with `(ql:update-dist "quicklisp")`)
-* clone our dependencies locally with the command below.
-
-If you need it, clone all the required dependencies into your `~/quicklisp/local-projects/` with this command:
+You must clone the required dependencies into your `~/quicklisp/local-projects/` with this command:
 
     make ql-deps
 
-NB: other tools exist for this (Qlot, ocicl…), we are just not using them yet.
+NB: yes tools exist for this now (Qlot, ocicl…), we are just not using them yet.
 
 
 ## How to load CIEL with Quicklisp
