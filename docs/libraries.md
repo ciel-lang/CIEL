@@ -364,10 +364,12 @@ To write YAML, you can quickload `cl-yaml` which uses libyaml.
 
 The "de-facto" [local-time](https://common-lisp.net/project/local-time/) package is available.
 
+It provides: the `timestamp` object, `today`, `parse-timestring`, `format-timestring`, etc.
+
 ### periods - ranges, durations, periods, relative times
 
 We ship the [periods](https://github.com/jwiegley/periods/)
-library, greatly complementing `local-time`.
+library, which greatly complements `local-time`.
 
 Read its documentation online here:
 
@@ -375,10 +377,52 @@ Read its documentation online here:
 
 It allows to manipulate time ranges, durations, periods.
 
-Each `fixed-time` object returned by `periods` is an type alias for
+Each `fixed-time` object returned by `periods` is a type alias for
 `local-time:timestamp`.
 
-See also [awesome-cl\#date-and-time](https://github.com/CodyReichert/awesome-cl#date-and-time) and the [Cookbook](https://lispcookbook.github.io/cl-cookbook/dates_and_times.html).
+### Example: IRC fetcher
+
+Here's a short script showing the libraries in use. It's a standalone
+CIEL script that fetches content of the #commonlisp IRC channel.
+
+As a CIEL script, it uses `local-time` (`today`,
+`parse-timestring`,`format-timestring`…), `periods` (`do-times`,
+`duration`), the `->` arrow macro, the `str` library, `dexador` to
+make HTTP requests and `lquery` to parse HTML.
+
+Run it the first time with a date as argument:
+
+```
+$ ciel -s irc-fetcher.lisp 2026-09-10
+```
+
+The next times, it resumes fetching from today (storing the day in `~/.irc-log-reader-last`).
+
+Here's the core function:
+
+```lisp
+(defun fetchit (date)
+  (do-times (day
+             date
+             (periods:duration :days 1)
+             (today))
+    (format! t "Fetching day ~a...~&" day)
+    (let* ((url (str:concat "https://libera.irclog.whitequark.org/commonlisp/" (fmt-date day)))
+           (doc (lquery:$ (initialize (dex:get url)))))
+      (format t "~%:: ~a ::~%" day)
+      (lquery:$ doc ".talk.op-msg" (text)
+        (map #'println)))))
+```
+
+Read the full source with the utility functions here (62 lines):
+
+- https://github.com/ciel-lang/CIEL/blob/master/src/scripts/irc-fetcher.lisp
+
+
+For more date and time libraries, see
+[awesome-cl\#date-and-time](https://github.com/CodyReichert/awesome-cl#date-and-time)
+and for more examples, see the
+[Cookbook](https://lispcookbook.github.io/cl-cookbook/dates_and_times.html).
 
 ## Databases
 
