@@ -1,6 +1,8 @@
 #!/usr/bin/env ciel
 ;;;
 ;;; description: example web app, defining a route on /
+;;; with an optional "name" URL parameter.
+;;; The app is reachable through your server's IP.
 ;;;
 ;;; Run with:
 ;;; $ ./webapp.lisp
@@ -24,4 +26,5 @@
 (progn
   (start-webapp)
   (format t "~&App started on localhost:4567…~&")
+  (format t "It accepts an optional URL parameter: localhost:4567/?name=you")
   (sleep most-positive-fixnum))
