@@ -13,9 +13,19 @@
 
 (defun install-ql-with-https ()
   "Call out to cURL to install Quicklisp."
-  (uiop:run-program ciel::*ql-https-install.sh*
-                    :output t
-                    :error-output t))
+  ;; Also call with bash.
+  ;; The script is stored in a string… we put it back to a file.
+  (uiop:with-temporary-file (:pathname f)
+    (format! t "Calling Quicklisp installer…~&")
+    #-unix
+    (format! *error-output* "we need to make the script file executable.~&")
+    #+unix
+    (uiop:run-program (list "chmod" "+x" (uiop:native-namestring f)))
+    (str:to-file f ciel::*ql-https-install.sh*)
+    (uiop:run-program (list f)
+                      :output t
+                      :error-output t))
+  (format! t "done.~&"))
 
 (defun add-to-init-file (file &key (snippet *setup-for-init-file*))
   (with-open-file (stream (uiop:native-namestring file)
@@ -35,13 +45,15 @@
 (progn
 
   ;; Install.
-  (ignore-errors
-   ;; We get the script's error output,
-   ;; and run-program would print the whole script content to say it exited with an error code.
-   (install-ql-with-https)
+  (handler-case
+      (progn
+        ;; and run-program would print the whole script content to say it exited with an error code.
+        (install-ql-with-https)
 
-   ;; Configure.
-   (add-to-cielrc)))
+        ;; Configure.
+        (add-to-cielrc))
+  (error (c)
+         (format! *error-output* "~a" c))))
 
 #+(and ciel windows)
 (error "We currently use a shell script to install ql-https. Feel free to open an issue.")

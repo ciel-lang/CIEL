@@ -17,9 +17,9 @@ if test -d "$QL_TOPDIR"; then
 fi
 
 echo "Downloading quicklisp metadata..."
-mkdir -p "$QL_TOPDIR"
 meta=$( curl -s https://beta.quicklisp.org/client/quicklisp.sexp | \
             awk '/:client-tar/,/)/' | tr '\n' ' ' | tr -s ' ' )
+mkdir -p "$QL_TOPDIR"
 
 url=$( perl -nle 'print $& if m{(?<=:url ")[^"]*}g' <<< "$meta" )
 [[ "$url" =~ ^http:// ]] && url="https${url#http}"
