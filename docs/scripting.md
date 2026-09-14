@@ -373,95 +373,23 @@ Call `ciel --scripts` to list the available ones.
 
 Those are for demo purposes and are subject to evolve. Ideas and contributions welcome.
 
-### Simple HTTP server
-
-```
-$ ciel -s simpleHTTPserver 9000
-```
-
-open `http://localhost:9000` and see the list of files.
-
-See `src/scripts/simpleHTTPserver.lisp` in the CIEL repository.
-
-You can preview HTML files and have static assets under a `static/` directory.
-
-Given you have an `index.html` file:
-
-```html
-<html>
-  <head>
-    <title>Hello!</title>
-  </head>
-  <body>
-    <h1>Hello CIEL!</h1>
-    <p>
-    We just served our own files.
-    </p>
-  </body>
-</html>
-```
-
-The script will serve static assets under a `static/` directory.
-
-Now load a .js file as usual in your template:
-
-        <script src="/static/ciel.js"></script>
-
-which can be:
-
-~~~javascript
-// ciel.js
-alert("hello CIEL!");
-~~~
-
-Example output:
-
-```
-$ ciel -s simpleHTTPserver 4242
-Serving files on port 4242…
-
-  ⤷ http://127.0.0.1:4242
-
-[click on the index.html file]
-
-127.0.0.1 - [2022-12-14 12:06:00] "GET / HTTP/1.1" 200 200 "-" "Mozilla/5.0 (X11; Linux x86_64; rv:103.0) Gecko/20100101 Firefox/103.0"
-```
-
-### Install-quicklisp
+### Install Quicklisp
 
 Call
 
-    $ ciel -s install-quicklisp
+    $ ciel -s install-raw-quicklisp
 
 to install the [Quicklisp](https://www.quicklisp.org/beta/#installation) library manager.
 
-We install it with HTTPS via cURL (using [ql-https](https://github.com/rudolfochrist/ql-https/)'s shell script).
+To install it with HTTPS, use
+[ql-https](https://github.com/rudolfochrist/ql-https/)'s one-liner:
 
-Note that:
+    curl https://raw.githubusercontent.com/rudolfochrist/ql-https/master/install.sh | bash
 
-- it installs itself into `~/quicklisp/`. No customization option yet, it will come, feel free to open an issue or send a PR.
-- we add a snippet to `~/.cielrc` (it loads Quicklisp automatically when you start a lisp, so you can use it on the REPL straight-away).
-- this script is Unix only, but you can also use the
-  `install-raw-quicklisp` script that uses the default Quicklisp installation method: no curl, no HTTPS, but pure Lisp.
+See also [Qlot](https://github.com/fukamachi/qlot/) or
+[ocicl](https://github.com/ocicl/ocicl/) to install libraries from the
+command line, and to manage project-local dependencies.
 
-It is all automatic. If the `~/quicklisp` directory already exists, the install stops.
-
-### Install (a Quicklisp library)
-
-Call
-
-    $ ciel -s install foo
-
-to install the *foo* library from Quicklisp in your Quicklisp `local-projects/`.
-
-Note that Quicklisp is best used from the REPL. And you *must* call
-`(ql:quickload "foo")` from the REPL to load the library in your Lisp
-image.
-
-At this point though, if you really want to use a package manager on
-the command-line, and if you want project-local dependencies instead
-of dependencies shared in `local-projects`, you might want to look at
-[qlot](https://qlot.tech/) or [ocicl](https://github.com/ocicl/ocicl/).
 
 ### Build a project
 
@@ -520,6 +448,59 @@ When `hello.lisp` is:
 (main)
 ```
 
+### Simple HTTP server
+
+```
+$ ciel -s simpleHTTPserver 9000
+```
+
+open `http://localhost:9000` and see the list of files.
+
+See `src/scripts/simpleHTTPserver.lisp` in the CIEL repository.
+
+You can preview HTML files and have static assets under a `static/` directory.
+
+Given you have an `index.html` file:
+
+```html
+<html>
+  <head>
+    <title>Hello!</title>
+  </head>
+  <body>
+    <h1>Hello CIEL!</h1>
+    <p>
+    We just served our own files.
+    </p>
+  </body>
+</html>
+```
+
+The script will serve static assets under a `static/` directory.
+
+Now load a .js file as usual in your template:
+
+        <script src="/static/ciel.js"></script>
+
+which can be:
+
+~~~javascript
+// ciel.js
+alert("hello CIEL!");
+~~~
+
+Example output:
+
+```
+$ ciel -s simpleHTTPserver 4242
+Serving files on port 4242…
+
+  ⤷ http://127.0.0.1:4242
+
+[click on the index.html file]
+
+127.0.0.1 - [2022-12-14 12:06:00] "GET / HTTP/1.1" 200 200 "-" "Mozilla/5.0 (X11; Linux x86_64; rv:103.0) Gecko/20100101 Firefox/103.0"
+```
 
 ### Quicksearch
 

@@ -2,6 +2,38 @@
 
 (in-package :ciel-user)
 
+#|
+
+error:
+
+Cloning into '/home/debian/common-lisp/ql-https'...
+remote: Enumerating objects: 327, done.
+remote: Counting objects: 100% (98/98), done.
+remote: Compressing objects: 100% (30/30), done.
+remote: Total 327 (delta 77), reused 69 (delta 68), pack-reused 229 (from 2)
+Receiving objects: 100% (327/327), 78.30 KiB | 2.53 MiB/s, done.
+Resolving deltas: 100% (155/155), done.
+Running setup code...
+This is SBCL 2.5.2.debian, an implementation of ANSI Common Lisp.
+More information about SBCL is available at <http://www.sbcl.org/>.
+
+SBCL is free software, provided as is, with absolutely no warranty.
+It is mostly in the public domain; some portions are provided under
+BSD-style licenses.  See the CREDITS and COPYING files in the
+distribution for more information.
+* ("ASDF" "asdf" "UIOP" "uiop")
+* T
+* ; compiling file "/home/debian/common-lisp/ql-https/ql-https.lisp" (written 14 SEP 2026 11:44:39 AM):
+
+debugger invoked on a PACKAGE-DOES-NOT-EXIST in thread
+#<THREAD tid=649326 "main thread" RUNNING {1003F680A3}>:
+  The name "QL-GUNZIPPER" does not designate any package.
+
+
+(it's in quicklisp/packages.lisp)
+
+|#
+
 (defparameter *setup-for-init-file* ";;; The following lines were added when you installed Quicklisp with ciel -s install-quicklisp.
 ;;; This loads Quicklisp when you start CIEL, so you can use Quicklip straight away.
 #-quicklisp

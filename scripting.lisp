@@ -17,12 +17,13 @@
 (defparameter *scripts-description* (dict)
   "For each script (string), its description.")
 
+;; <2026-09-14> don't mess with this.
 ;; in-memory sources to be called in scripts.
-(defvar *quicklisp.lisp* #.(str:from-file (asdf:system-relative-pathname :ciel "vendor/quicklisp.lisp"))
-        "The content of quicklisp.lisp, to be LOAD-ed in the install-raw-quicklisp script.")
+;; (defvar *quicklisp.lisp* #.(str:from-file (asdf:system-relative-pathname :ciel "vendor/quicklisp.lisp"))
+;;         "The content of quicklisp.lisp, to be LOAD-ed in the install-raw-quicklisp script.")
 
-(defvar *ql-https-install.sh* #.(str:from-file (asdf:system-relative-pathname :ciel "vendor/ql-https-install.sh"))
-        "The content of ql-https' install.sh, used in the install-quicklisp script.")
+;; (defvar *ql-https-install.sh* #.(str:from-file (asdf:system-relative-pathname :ciel "vendor/ql-https-install.sh"))
+;;         "The content of ql-https' install.sh, used in the install-quicklisp script.")
 
 ;; eval
 (defun wrap-user-code (s)

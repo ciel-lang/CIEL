@@ -214,7 +214,13 @@ releases, where libraries are tested to load.
 
 It isn't the only library manager nowadays. See [https://github.com/CodyReichert/awesome-cl#library-manager](https://github.com/CodyReichert/awesome-cl#library-manager).
 
-Install it:
+Install it with HTTPS:
+
+```sh
+curl https://raw.githubusercontent.com/rudolfochrist/ql-https/master/install.sh | bash
+```
+
+or, the classic way:
 
 ```sh
 curl -O https://beta.quicklisp.org/quicklisp.lisp
