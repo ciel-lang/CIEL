@@ -1,8 +1,8 @@
 
 (in-package :cl-user)
 
-(ql:quickload "deploy")  ;; not used to build the image, but used in the .asd.
-(ql:quickload "cl+ssl")  ;; only because of Deploy's parameters.
+;; (ql:quickload "deploy")  ;; not used to build the image, but used in the .asd.
+;; (ql:quickload "cl+ssl")  ;; only because of Deploy's parameters.
 ;; (asdf:load-asd "./ciel.asd")
 ;; Bug on CI, needs an absolute pathname.
 (let ((pathname (merge-pathnames "ciel.asd" (uiop:getcwd))))
