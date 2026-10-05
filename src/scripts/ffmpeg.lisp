@@ -8,10 +8,9 @@
 ;;; ciel src/scripts/ffmpeg search terms
 ;;;
 ;;; Todo:
-;;; - choose search directories (do we even search on the current directory?)
+;;; - choose search directories (we don't even search on the current directory)
 ;;; - choose output format, etc.
 ;;;
-;;; TIL: we need to escape file names if they contain characters such as [ ].
 ;;;
 
 (defparameter *directories* '("~/Music/" "~/Downloads/" "~/zique/"))
@@ -68,28 +67,10 @@
        (str:replace-all extension "mp3" file)
        extension))))
 
-;; warn!
-(defun escape-file-name (name)
-  "Escape [ and ] with double \\,
-
-  Or test the file exists with:
-
-  (probe-file (make-pathname :name name :type extension))
-
-  this doesn't choke with wildcard characters such as [ and ].
-
-  otherwise uiop:file-exists-p returns NIL for an existing file."
-  ;; This works on upstream file-finder <2025-09-09>
-  ;; (when (finder:file? name)
-    ;; (setf name (finder:path name)))
-  (str:replace-using '("[" "\\["
-                       "]" "\\]")
-                     name))
-
 (defun run-ffmpeg (file)
   "Run ffmpeg on FILE, transform to mp3."
   (let ((target (change-extension file)))
-    (if (uiop:file-exists-p (escape-file-name target))
+    (if (uiop:file-exists-p (uiop:ensure-pathname target))
         (progn
           (format t "~&mp3 already exists: ~a~&" target)
           target)
@@ -107,7 +88,7 @@
   (loop for file in files
         for path = (finder:path file)
         when (and (music-file-p path)
-                  (uiop:file-exists-p (escape-file-name path)))
+                  (uiop:file-exists-p (uiop:ensure-pathname path)))
           do (format t "~&transforming: ~a~&" file)
              (run-ffmpeg file)
           and collect file into processed
